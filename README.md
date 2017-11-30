@@ -1,6 +1,6 @@
-# system-font
+# fast-font.css
 
-A simple CSS snipped to select the nicests system font. This prevents the performance hit from downloading render-blocking webfonts.
+A simple CSS snipped to select the system's nicest font. This prevents the performance hit from downloading render-blocking webfonts.
 
 See also: 
 - [Medium decided to use system fonts](https://medium.design/system-shock-6b1dc6d6596f) 
