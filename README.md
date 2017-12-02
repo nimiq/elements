@@ -3,6 +3,7 @@
 A simple CSS snipped to select the system's nicest font. This prevents the performance hit from downloading render-blocking webfonts.
 
 See also: 
+- [Our Blog about system fonts](https://medium.com/nimiq-network/nimiq-devblog-1-fast-and-beautiful-fonts-a806b45cd3f0)
 - [Medium decided to use system fonts](https://medium.design/system-shock-6b1dc6d6596f) 
 - [Github decided to use system fonts](https://www.designernews.co/stories/71645-github-now-uses-default-system-font)
 - [system-font-css](https://github.com/jonathantneal/system-font-css) ( same idea without apple's new `-apple-system, BlinkMacSystemFont` commands )
