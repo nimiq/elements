@@ -1,0 +1,15 @@
+x-time-estimate {
+    display: block;
+    font-weight: 500;
+    /* padding-bottom: 24px; */
+}
+
+x-time-estimate:before {
+    content: 'Estimated Processing Time:';
+    font-weight: normal;
+    padding-right: 4px;
+}
+
+x-time-estimate:empty:after {
+    content: '~60 Seconds';
+}
