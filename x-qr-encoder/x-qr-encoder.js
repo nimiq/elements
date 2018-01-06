@@ -1,7 +1,7 @@
-class Nimiqode extends XElement {
+class XQrEncoder extends XElement {
     set address(address) {
         this.$el.innerHTML = '';
-        QrCode.render({
+        QrEncoder.render({
             text: address,
             radius: 0.6,
             ecLevel: 'H',
