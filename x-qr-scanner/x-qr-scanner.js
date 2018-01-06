@@ -16,4 +16,11 @@ class XQrScanner extends XElement {
     setGrayscaleWeights(red, green, blue) {
         this._scanner.setGrayscaleWeights(red, green, blue);
     }
+
+    html(){
+        return `<x-camera>
+                    <video muted autoplay playsinline width="600" height="600"></video>
+                    <canvas id="qr-canvas" width="320" height="320"></canvas>
+                </x-camera>`
+    }
 }
