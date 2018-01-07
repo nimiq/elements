@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Nimiq QR Code Scanner</title>
+    <link href="../../fast-font/fast-font.css" rel="stylesheet">
+    <link href="../../theme/theme.css" rel="stylesheet">
+    <link href="../../icons/icons.css" rel="stylesheet">
+    <script src="/x-element/x-element.js"></script>
+    <script src="/qr-scanner/qr-scanner.min.js"></script>
+    <link href="../x-qr-scanner.css" rel="stylesheet">
+    <script src="../x-qr-scanner.js"></script>
+    <style type="text/css">
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        a.label {
+            position: absolute;
+            max-width: 320px;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 24px;
+            background: white;
+            opacity: 0;
+            word-break: break-all;
+            font-size: 16px;
+            z-index: 1;
+        }
+
+        a.label:not([href]) {
+            color: black;
+            text-decoration: none;
+        }
+
+        a.label-active {
+            transform: scale(1);
+            animation: fadeInFadeOut 7s ease-in;
+        }
+
+        @keyframes fadeInFadeOut {
+            0% {
+                opacity: 0.3;
+                transform: scale(0.3);
+            }
+            5% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            70% {
+                opacity: 0.9;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <x-qr-scanner></x-qr-scanner>
+    <a class="label"></a>
+<script>
+    const $scanner = new XQrScanner();
+    const label = document.querySelector('.label');
+
+    function setLabel(decoded) {
+        let isUrl = false;
+        try {
+            new Url(decoded);
+            isUrl = true;
+        } catch(e) {}
+        if (isUrl) {
+            label.href = decoded;
+        } else {
+            label.removeAttribute('href');
+        }
+        label.textContent = decoded;
+    }
+
+    let lastDecoded;
+    let lastDecodedTimer;
+
+    function resetClass(decoded) {
+        if (decoded === lastDecoded) return;
+        clearTimeout(lastDecodedTimer);
+        lastDecodedTimer = setTimeout(() => lastDecoded = false, 3000);
+        lastDecoded = decoded;
+        label.classList.remove('label-active');
+        label.offsetWidth; // force render
+        label.classList.add('label-active');
+    }
+
+    function onQrCodeChanged(event) {
+        const data = event.detail;
+        console.log(data);
+        setLabel(data);
+        resetClass(data);
+    }
+
+    $scanner.$el.addEventListener('x-decoded', onQrCodeChanged);
+    $scanner.$el.addEventListener('x-error', onQrCodeChanged);
+    $scanner.active = true;
+</script>
+</body>
+
+</html>
