@@ -69,3 +69,13 @@ x-qr-scanner > label:hover {
 x-qr-scanner > label > input[type="file"] {
     display: none;
 }
+
+@media (max-width: 550px) {
+    x-qr-scanner > label {
+        right: 24px;
+        bottom: 24px;
+        height: 64px !important;
+        width: 64px !important;
+        background-size: 32px;
+    }
+}
