@@ -1,4 +1,4 @@
-x-camera {
+x-qr-scanner {
     position: absolute;
     left: 0;
     top: 0;
@@ -10,25 +10,26 @@ x-camera {
     background: #333;
     transition: all 500ms;
     transform-origin: right bottom;
-    z-index: -1;
     justify-content: center;
 }
 
-x-camera video {
-    /* min-width: 100%; */
-    max-height: 100%;
+x-qr-scanner video {
+    height: 100%;
+    width: 100%;
     object-fit: cover;
-    /* height: 100%; */
     display: block;
 }
 
-x-camera canvas {
-    display: none;
+/* hack to flip the camera on desktop; less confusion for the user to position the phone */
+@media (min-width: 800px) {
+    x-qr-scanner video {
+        transform: scale(-1, 1);
+    }
 }
 
 /* Overlay */
 
-x-camera:before {
+x-qr-scanner:before {
     content: '';
     position: absolute;
     width: 100%;
@@ -45,9 +46,26 @@ x-camera:before {
     }
 }
 
-/* hack to flip the camera on desktop; less confusion for the user to position the phone */
-@media (min-width: 800px) {
-    video {
-         transform: scale(-1, 1); 
-    }
+/* File Selector */
+
+x-qr-scanner > label {
+    pointer-events: all;
+    z-index: 1;
+    background: var(--primary-color);
+    position: absolute;
+    right: 32px;
+    bottom: 32px;
+    height: 96px !important;
+    width: 96px !important;
+    background-size: 48px;
+    border-radius: 50%;
+    transition: transform .3s;
+}
+
+x-qr-scanner > label:hover {
+    transform: scale(1.1);
+}
+
+x-qr-scanner > label > input[type="file"] {
+    display: none;
 }
