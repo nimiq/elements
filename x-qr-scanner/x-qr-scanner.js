@@ -15,8 +15,18 @@ class XQrScanner extends XElement {
         this._scanner.active = active;
     }
 
+    set hasFileInputButton(hasFileInputButton) {
+        this.$fileUpload.parentNode.style.display = hasFileInputButton? 'block' : 'none';
+    }
+
     setGrayscaleWeights(red, green, blue) {
         this._scanner.setGrayscaleWeights(red, green, blue);
+    }
+
+    scanImage(image) {
+        QrScanner.scanImage(image)
+            .then(result => this.fire('x-decoded', result))
+            .catch(() => this.fire('x-error', 'No QR code found.'));
     }
 
     _onFileSelected() {
@@ -25,9 +35,7 @@ class XQrScanner extends XElement {
         if (!file) {
             return;
         }
-        QrScanner.scanImage(file)
-            .then(result => this.fire('x-decoded', result))
-            .catch(() => this.fire('x-error', 'No QR code found.'));
+        this.scanImage(file);
     }
 
     _positionOverlay() {
