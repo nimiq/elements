@@ -5,15 +5,14 @@ x-qr-scanner {
     right: 0;
     bottom: 0;
     overflow: hidden;
-    display: flex;
     pointer-events: none;
     background: #333;
-    transition: all 500ms;
-    transform-origin: right bottom;
-    justify-content: center;
 }
 
 x-qr-scanner video {
+    position: absolute;
+    left: 0;
+    top: 0;
     height: 100%;
     width: 100%;
     object-fit: cover;
