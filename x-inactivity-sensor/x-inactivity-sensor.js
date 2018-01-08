@@ -5,6 +5,9 @@ class XInactivitySensor extends XElement {
 
     onCreate() {
         document.addEventListener('visibilitychange', e => this._visibilityChange());
+        window.addEventListener('popstate', () => this.reset());
+        window.addEventListener('touchstart', () => this.reset());
+        window.addEventListener('mousemove', () => this.reset());
     }
 
     _visibilityChange() {
@@ -26,5 +29,4 @@ class XInactivitySensor extends XElement {
     }
 }
 
-// Todo: reset timer on mousemove/tab etc 
-// Todo: compute time diff on visibility change because timers might stop when tab inactive 
+// Todo: compute time diff on visibility change because timers might stop when tab inactive
