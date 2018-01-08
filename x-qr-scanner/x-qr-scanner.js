@@ -56,3 +56,5 @@ class XQrScanner extends XElement {
                 <label icon-upload><input type="file"></label>`;
     }
 }
+
+// Todo: remove hack to flip camera and replace with detection 'environment' vs. 'userfacing'
