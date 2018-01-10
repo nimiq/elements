@@ -42,16 +42,12 @@ class XQrScanner extends XElement {
         const scannerHeight = this.$el.offsetHeight;
         const scannerWidth = this.$el.offsetWidth;
         const smallerDimension = Math.min(scannerHeight, scannerWidth);
-        const largerDimension = Math.max(scannerHeight, scannerWidth);
-        const overlaySize = Math.round(2/3 * smallerDimension); /* not always the accurate size of the sourceRect for QR
-        detection (e.g. if video is landscape and screen portrait) but looks nicer in UI */
-        const borderWidth = Math.ceil(largerDimension / 2);
+        const overlaySize = Math.ceil(2/3 * smallerDimension); /* not always the accurate size of the sourceRect for QR
+        detection (e.g. if video is landscape and screen portrait) but looks nicer in the UI */
         this.$qrOverlay.style.width = overlaySize + 'px';
         this.$qrOverlay.style.height = overlaySize + 'px';
-        this.$qrOverlay.style.top = Math.round((scannerHeight - overlaySize) / 2 - borderWidth) + 'px';
-        this.$qrOverlay.style.left = Math.round((scannerWidth - overlaySize) / 2 - borderWidth) + 'px';
-        this.$qrOverlay.style.borderWidth = borderWidth + 'px';
-        this.$qrOverlay.style.borderRadius = (borderWidth + 10) + 'px'; // results in a radius of 10 for inner overlay
+        this.$qrOverlay.style.top = ((scannerHeight - overlaySize) / 2) + 'px';
+        this.$qrOverlay.style.left = ((scannerWidth - overlaySize) / 2) + 'px';
     }
 
     html(){
