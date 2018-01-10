@@ -13,6 +13,9 @@ class XQrScanner extends XElement {
 
     set active(active) {
         this._scanner.active = active;
+        if (active) {
+            this._positionOverlay();
+        }
     }
 
     set hasFileInputButton(hasFileInputButton) {

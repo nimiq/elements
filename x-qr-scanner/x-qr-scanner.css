@@ -30,7 +30,7 @@ x-qr-scanner video {
 
 x-qr-scanner [qr-overlay] {
     position: absolute;
-    border-radius: 20px;
+    border-radius: 10px;
     box-shadow: 0 0 0 50vmax rgba(0,0,0,0.7);
     overflow: hidden;
     transform: translateZ(0); /* to avoid rendering issues on iPhone */
