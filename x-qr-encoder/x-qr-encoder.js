@@ -3,7 +3,7 @@ class XQrEncoder extends XElement {
         this.$el.innerHTML = '';
         QrEncoder.render({
             text: address,
-            radius: 0.6,
+            radius: 0.5,
             ecLevel: 'H',
             fill: '#536DFE',
             background: 'transparent',
