@@ -30,8 +30,8 @@ x-qr-scanner video {
 
 x-qr-scanner [qr-overlay] {
     position: absolute;
-    border-radius: 20px;
-    box-shadow: 0 0 0 50vmax rgba(0,0,0,0.7);
+    border-color: rgba(0,0,0,0.7);
+    border-style: solid;
     overflow: hidden;
 }
 
@@ -49,8 +49,11 @@ x-qr-scanner [qr-overlay]:after {
 }
 
 @keyframes qr-scanner-animation {
-    0% {
+    from {
         transform: scale(1.1);
+    }
+    to {
+        transform: scale(1.01);
     }
 }
 
