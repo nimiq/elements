@@ -19,7 +19,7 @@ class XQrScanner extends XElement {
     }
 
     set hasFileInputButton(hasFileInputButton) {
-        this.$fileUpload.parentNode.style.display = hasFileInputButton? 'block' : 'none';
+        this.$fileUpload.parentNode.style.display = hasFileInputButton ? 'block' : 'none';
     }
 
     setGrayscaleWeights(red, green, blue) {
@@ -45,15 +45,16 @@ class XQrScanner extends XElement {
         const scannerHeight = this.$el.offsetHeight;
         const scannerWidth = this.$el.offsetWidth;
         const smallerDimension = Math.min(scannerHeight, scannerWidth);
-        const overlaySize = Math.ceil(2/3 * smallerDimension); /* not always the accurate size of the sourceRect for QR
-        detection (e.g. if video is landscape and screen portrait) but looks nicer in the UI */
+        const overlaySize = Math.ceil(2 / 3 * smallerDimension);
+        /* not always the accurate size of the sourceRect for QR
+               detection (e.g. if video is landscape and screen portrait) but looks nicer in the UI */
         this.$qrOverlay.style.width = overlaySize + 'px';
         this.$qrOverlay.style.height = overlaySize + 'px';
         this.$qrOverlay.style.top = ((scannerHeight - overlaySize) / 2) + 'px';
         this.$qrOverlay.style.left = ((scannerWidth - overlaySize) / 2) + 'px';
     }
 
-    html(){
+    html() {
         return `<video muted autoplay playsinline width="600" height="600"></video>
                 <div qr-overlay></div>
                 <label icon-upload><input type="file"></label>`;
