@@ -27,9 +27,10 @@ class XQrScanner extends XElement {
     }
 
     scanImage(image) {
-        QrScanner.scanImage(image)
-            .then(result => this.fire('x-decoded', result))
-            .catch(() => this.fire('x-error', 'No QR code found.'));
+        // Note that this call doesn't use the same qr worker as the webcam scanning and thus doesn't interfere with it.
+        return QrScanner.scanImage(image)
+            .then(result => this.fire('x-image-decoded', result))
+            .catch(e => this.fire('x-image-error', 'No QR code found.'));
     }
 
     _onFileSelected() {
