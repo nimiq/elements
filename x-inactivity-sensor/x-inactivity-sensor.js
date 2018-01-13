@@ -1,7 +1,7 @@
 class XInactivitySensor extends XElement {
 
-    static get NO_INPUT_TIME() { return 30 } // in seconds 
-    static get TAB_INVISIBLE_TIME() { return 10 } // in seconds 
+    static get NO_INPUT_TIME() { return 3000 } // in seconds 
+    static get TAB_INVISIBLE_TIME() { return 1000 } // in seconds 
 
     onCreate() {
         document.addEventListener('visibilitychange', e => this._visibilityChange());
