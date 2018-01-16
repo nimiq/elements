@@ -1,4 +1,10 @@
 class XQrScanner extends XElement {
+    html() {
+        return `<video muted autoplay playsinline width="600" height="600"></video>
+                <div qr-overlay></div>
+                <label icon-upload><input type="file"></label>`;
+    }
+
     onCreate() {
         const $video = this.$('video');
         this.$qrOverlay = this.$('[qr-overlay]');
@@ -53,12 +59,6 @@ class XQrScanner extends XElement {
         this.$qrOverlay.style.height = overlaySize + 'px';
         this.$qrOverlay.style.top = ((scannerHeight - overlaySize) / 2) + 'px';
         this.$qrOverlay.style.left = ((scannerWidth - overlaySize) / 2) + 'px';
-    }
-
-    html() {
-        return `<video muted autoplay playsinline width="600" height="600"></video>
-                <div qr-overlay></div>
-                <label icon-upload><input type="file"></label>`;
     }
 }
 
