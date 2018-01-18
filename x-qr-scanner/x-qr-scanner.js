@@ -61,5 +61,3 @@ class XQrScanner extends XElement {
         this.$qrOverlay.style.left = ((scannerWidth - overlaySize) / 2) + 'px';
     }
 }
-
-// Todo: remove hack to flip camera and replace with detection 'environment' vs. 'userfacing'

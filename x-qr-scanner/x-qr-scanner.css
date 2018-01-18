@@ -19,13 +19,6 @@ x-qr-scanner video {
     display: block;
 }
 
-/* hack to flip the camera on desktop; less confusion for the user to position the phone */
-@media (min-width: 800px) {
-    x-qr-scanner video {
-        transform: scale(-1, 1);
-    }
-}
-
 /* Overlay */
 
 x-qr-scanner [qr-overlay] {
