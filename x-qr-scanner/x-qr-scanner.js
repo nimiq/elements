@@ -1,4 +1,4 @@
-import XElement from "/x-element/x-element.js";
+import XElement from "/libraries/x-element/x-element.js";
 import QrScanner from "/qr-scanner/qr-scanner.min.js";
 
 export default class XQrScanner extends XElement {

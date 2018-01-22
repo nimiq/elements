@@ -1,4 +1,5 @@
-import XElement from "/x-element/x-element.js";
+import XElement from "/libraries/x-element/x-element.js";
+import NanoApi from "/libraries/nano-api/nano-api.js";
 
 export default class XNimiqApi extends XElement {
     onCreate() {
