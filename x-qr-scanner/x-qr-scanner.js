@@ -1,5 +1,5 @@
-import XElement from "/library/x-element/x-element.js";
-import QrScanner from "/qr-scanner/qr-scanner.min.js";
+import XElement from '/library/x-element/x-element.js';
+import QrScanner from '/library/qr-scanner/qr-scanner.min.js';
 
 export default class XQrScanner extends XElement {
     html() {

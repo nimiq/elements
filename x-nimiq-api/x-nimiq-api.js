@@ -18,7 +18,7 @@ class NimiqApi extends NanoApi {
     }
 
     onConsensusEstablished() {
-        this.fire('x-consensus-establised', this.address);
+        this._element.fire('x-consensus-establised', this.address);
     }
 
     onAddressChanged(address) {

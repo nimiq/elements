@@ -1,4 +1,5 @@
-import XElement from "/library/x-element/x-element.js";
+import XElement from '/library/x-element/x-element.js';
+import QrEncoder from '/library/qr-encoder/qr-encoder.min.js';
 
 export default class XQrEncoder extends XElement {
     set address(address) {
