@@ -1,4 +1,6 @@
-class XQrEncoder extends XElement {
+import XElement from "/x-element/x-element.js";
+
+export default class XQrEncoder extends XElement {
     set address(address) {
         this.$el.innerHTML = '';
         QrEncoder.render({

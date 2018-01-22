@@ -1,4 +1,6 @@
-class XNimiqApi extends XElement {
+import XElement from "/x-element/x-element.js";
+
+export default class XNimiqApi extends XElement {
     onCreate() {
         const connect = this.$el.hasAttribute('connect');
         this._api = new NimiqApi(connect, this);

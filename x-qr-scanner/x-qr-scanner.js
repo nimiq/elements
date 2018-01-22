@@ -1,4 +1,7 @@
-class XQrScanner extends XElement {
+import XElement from "/x-element/x-element.js";
+import QrScanner from "/qr-scanner/qr-scanner.min.js";
+
+export default class XQrScanner extends XElement {
     html() {
         return `<video muted autoplay playsinline width="600" height="600"></video>
                 <div qr-overlay></div>

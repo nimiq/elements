@@ -4,13 +4,7 @@
 <head>
     <title>Nimiq QR Code Scanner</title>
     <meta name="viewport" content="target-densitydpi=device-dpi,user-scalable=0,minimum-scale=1,maximum-scale=1,initial-scale=1">
-    <link href="../../fast-font/fast-font.css" rel="stylesheet">
-    <link href="../../theme/theme.css" rel="stylesheet">
-    <link href="../../icons/icons.css" rel="stylesheet">
-    <script src="/x-element/x-element.js"></script>
-    <script src="/qr-scanner/qr-scanner.min.js"></script>
     <link href="../x-qr-scanner.css" rel="stylesheet">
-    <script src="../x-qr-scanner.js"></script>
     <style type="text/css">
         body {
             height: 100vh;
@@ -67,7 +61,8 @@
 <body>
     <x-qr-scanner></x-qr-scanner>
     <a class="label"></a>
-<script>
+<script type="module">
+    import XQrScanner from "../x-qr-scanner.js";
     const $scanner = new XQrScanner();
     const label = document.querySelector('.label');
 
