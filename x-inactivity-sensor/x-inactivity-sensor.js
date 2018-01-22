@@ -1,4 +1,6 @@
-class XInactivitySensor extends XElement {
+import XElement from '/x-element/x-element.js';
+
+export default class XInactivitySensor extends XElement {
 
     static get NO_INPUT_TIME() { return 3000 } // in seconds
     static get TAB_INVISIBLE_TIME() { return 1000 } // in seconds
