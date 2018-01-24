@@ -9,14 +9,14 @@ export default class XQrScannerUi extends XElement {
                 <div page="intro">
                     <h1 intro-hint x-grow></h1>
                     <button enable-camera-button>Enable Camera</button>
-                    <a secondary use-fallback-button>Continue without camera.</a> 
+                    <a secondary use-fallback-button>Continue without camera</a> 
                 </div>
                 <div page="scanner">
                     <video muted autoplay playsinline width="600" height="600"></video>
                     <div qr-overlay></div>
                     <x-header>
                         <a icon-paste></a>
-                        <input fallback-input type="text" placeholder="Enter Data." spellcheck="false" autocomplete="off">
+                        <input fallback-input type="text" placeholder="Enter Data" spellcheck="false" autocomplete="off">
                         <label icon-upload><input type="file"></label>
                     </x-header>   
                 </div>
@@ -25,13 +25,13 @@ export default class XQrScannerUi extends XElement {
                     <div x-grow class="center relative">
                         <div class="relative">
                             <a icon-paste></a>
-                            <input fallback-input type="text" placeholder="Enter Data." spellcheck="false" autocomplete="off">        
+                            <input fallback-input type="text" placeholder="Enter Data" spellcheck="false" autocomplete="off">        
                         </div>
                         <div error-message></div>
                     </div>
-                    <a secondary enable-camera-button>Use the scanner.</a>
+                    <a secondary enable-camera-button>Use the scanner</a>
                     <label>
-                        <a secondary>Scan from image.</a>
+                        <a secondary>Scan from image</a>
                         <input type="file">
                     </label>
                 </div>

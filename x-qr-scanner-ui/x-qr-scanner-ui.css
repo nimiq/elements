@@ -39,7 +39,7 @@ x-qr-scanner-ui [page="intro"] > button {
 }
 
 x-qr-scanner-ui [page="intro"] > [intro-hint]:after {
-    content: "Scan a QR code.";
+    content: "Scan a QR code";
 }
 
 
@@ -47,7 +47,7 @@ x-qr-scanner-ui [page="intro"] > [intro-hint]:after {
 /* Fallback page */
 
 x-qr-scanner-ui [page="fallback"] > [fallback-hint]:after {
-    content: "Enter data.";
+    content: "Enter data";
 }
 
 x-qr-scanner-ui [page="fallback"] a[secondary] {
