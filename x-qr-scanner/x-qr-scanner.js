@@ -5,15 +5,12 @@ export default class XQrScanner extends XElement {
     html() {
         return `<video muted autoplay playsinline width="600" height="600"></video>
                 <div qr-overlay></div>
-                <label icon-upload><input type="file"></label>`;
+                <div content class="fit has-pointer-events"></div>`;
     }
 
     onCreate() {
         const $video = this.$('video');
         this.$qrOverlay = this.$('[qr-overlay]');
-        this.$fileUpload = this.$('input[type="file"]');
-        this.$fileUpload.addEventListener('change', () => this._onFileSelected());
-        // requires https://github.com/nimiq/qr-scanner
         this._scanner = new QrScanner($video, result => this.fire('x-decoded', result));
 
         this._positionOverlay();
@@ -21,14 +18,12 @@ export default class XQrScanner extends XElement {
     }
 
     set active(active) {
-        this._scanner.active = active;
         if (active) {
+            this._scanner.start();
             this._positionOverlay();
+        } else {
+            this._scanner.stop();
         }
-    }
-
-    set hasFileInputButton(hasFileInputButton) {
-        this.$fileUpload.parentNode.style.display = hasFileInputButton ? 'block' : 'none';
     }
 
     setGrayscaleWeights(red, green, blue) {
@@ -40,15 +35,6 @@ export default class XQrScanner extends XElement {
         return QrScanner.scanImage(image)
             .then(result => this.fire('x-image-decoded', result))
             .catch(e => this.fire('x-image-error', 'No QR code found.'));
-    }
-
-    _onFileSelected() {
-        const file = this.$fileUpload.files[0];
-        this.$fileUpload.value = ''; // reset the file upload
-        if (!file) {
-            return;
-        }
-        this.scanImage(file);
     }
 
     _positionOverlay() {

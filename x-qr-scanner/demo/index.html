@@ -6,6 +6,8 @@
     <meta name="viewport" content="target-densitydpi=device-dpi,user-scalable=0,minimum-scale=1,maximum-scale=1,initial-scale=1">
     <link href="../x-qr-scanner.css" rel="stylesheet">
     <style type="text/css">
+        @import "/library/nimiq-style/nimiq-style.css";
+
         body {
             height: 100vh;
             display: flex;
@@ -55,16 +57,58 @@
                 transform: scale(0.8);
             }
         }
+
+        x-qr-scanner [icon-upload] {
+            background-color: var(--primary-color);
+            position: absolute;
+            right: 32px;
+            bottom: 32px;
+            height: 96px !important;
+            width: 96px !important;
+            background-size: 48px;
+            border-radius: 50%;
+            transition: transform .3s;
+        }
+
+        @media (max-width: 550px) {
+            x-qr-scanner [icon-upload] {
+                right: 24px;
+                bottom: 24px;
+                height: 64px !important;
+                width: 64px !important;
+                background-size: 32px;
+            }
+        }
+
+        x-qr-scanner [icon-upload]:hover {
+            transform: scale(1.1);
+        }
+
+        x-qr-scanner [icon-upload] > input[type="file"] {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
-    <x-qr-scanner></x-qr-scanner>
+    <x-qr-scanner>
+        <label icon-upload><input type="file"></label>
+    </x-qr-scanner>
     <a class="label"></a>
 <script type="module">
     import XQrScanner from "../x-qr-scanner.js";
     const $scanner = new XQrScanner();
-    const label = document.querySelector('.label');
+    const $fileUpload = document.querySelector('input[type="file"]');
+    const $label = document.querySelector('.label');
+
+    $fileUpload.addEventListener('change', () => {
+        const file = $fileUpload.files[0];
+        $fileUpload.value = ''; // reset the file upload
+        if (!file) {
+            return;
+        }
+        $scanner.scanImage(file);
+    });
 
     function setLabel(decoded) {
         let isUrl = false;
@@ -73,11 +117,11 @@
             isUrl = true;
         } catch(e) {}
         if (isUrl) {
-            label.href = decoded;
+            $label.href = decoded;
         } else {
-            label.removeAttribute('href');
+            $label.removeAttribute('href');
         }
-        label.textContent = decoded;
+        $label.textContent = decoded;
     }
 
     let lastDecoded;
@@ -88,9 +132,9 @@
         clearTimeout(lastDecodedTimer);
         lastDecodedTimer = setTimeout(() => lastDecoded = false, 3000);
         lastDecoded = decoded;
-        label.classList.remove('label-active');
-        label.offsetWidth; // force render
-        label.classList.add('label-active');
+        $label.classList.remove('label-active');
+        $label.offsetWidth; // force render
+        $label.classList.add('label-active');
     }
 
     function onQrCodeChanged(event) {
@@ -100,8 +144,9 @@
         resetClass(data);
     }
 
-    $scanner.$el.addEventListener('x-decoded', onQrCodeChanged);
-    $scanner.$el.addEventListener('x-error', onQrCodeChanged);
+    $scanner.addEventListener('x-decoded', onQrCodeChanged);
+    $scanner.addEventListener('x-image-decoded', onQrCodeChanged);
+    $scanner.addEventListener('x-image-error', onQrCodeChanged);
     $scanner.active = true;
 </script>
 </body>

@@ -1,5 +1,3 @@
-@import "/library/nimiq-style/nimiq-style.css";
-
 x-qr-scanner {
     position: absolute;
     left: 0;
@@ -53,36 +51,6 @@ x-qr-scanner [qr-overlay]:after {
     }
 }
 
-/* File Selector */
-
-x-qr-scanner > label {
+x-qr-scanner .has-pointer-events > * {
     pointer-events: all;
-    z-index: 1;
-    background: var(--primary-color);
-    position: absolute;
-    right: 32px;
-    bottom: 32px;
-    height: 96px !important;
-    width: 96px !important;
-    background-size: 48px;
-    border-radius: 50%;
-    transition: transform .3s;
-}
-
-x-qr-scanner > label:hover {
-    transform: scale(1.1);
-}
-
-x-qr-scanner > label > input[type="file"] {
-    display: none;
-}
-
-@media (max-width: 550px) {
-    x-qr-scanner > label {
-        right: 24px;
-        bottom: 24px;
-        height: 64px !important;
-        width: 64px !important;
-        background-size: 32px;
-    }
 }
