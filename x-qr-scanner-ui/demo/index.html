@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Nimiq QR Code Scanner UI</title>
+    <meta name="viewport" content="target-densitydpi=device-dpi,user-scalable=0,minimum-scale=1,maximum-scale=1,initial-scale=1">
+
+    <link href="../x-qr-scanner-ui.css" rel="stylesheet">
+
+    <style type="text/css">
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin: 0;
+            background: var(--primary-background);
+        }
+
+        x-qr-scanner-ui {
+            width: 800px;
+            height: 584px;
+            border-radius: 8px;
+            border: 1px solid white;
+            overflow: hidden;
+        }
+
+        a.label {
+            position: absolute;
+            max-width: 320px;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 24px;
+            background: white;
+            opacity: 0;
+            word-break: break-all;
+            font-size: 16px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        a.label:not([href]) {
+            color: black;
+            text-decoration: none;
+        }
+
+        a.label-active {
+            transform: scale(1);
+            animation: fadeInFadeOut 7s ease-in;
+            pointer-events: all;
+        }
+
+        @keyframes fadeInFadeOut {
+            0% {
+                opacity: 0.3;
+                transform: scale(0.3);
+            }
+            5% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            70% {
+                opacity: 0.9;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+        }
+    </style>
+</head>
+
+<body>
+<x-qr-scanner-ui></x-qr-scanner-ui>
+<a class="label"></a>
+
+<script type="module">
+    import XQrScannerUi from "../x-qr-scanner-ui.js";
+    const $scanner = new XQrScannerUi();
+    const label = document.querySelector('.label');
+
+    function setLabel(decoded) {
+        let isUrl = false;
+        try {
+            new Url(decoded);
+            isUrl = true;
+        } catch(e) {}
+        if (isUrl) {
+            label.href = decoded;
+        } else {
+            label.removeAttribute('href');
+        }
+        label.textContent = decoded;
+    }
+
+    let lastDecoded;
+    let lastDecodedTimer;
+
+    function resetClass(decoded) {
+        if (decoded === lastDecoded) return;
+        clearTimeout(lastDecodedTimer);
+        lastDecodedTimer = setTimeout(() => lastDecoded = false, 3000);
+        lastDecoded = decoded;
+        label.classList.remove('label-active');
+        label.offsetWidth; // force render
+        label.classList.add('label-active');
+        setTimeout(() => label.classList.remove('label-active'), 7000);
+    }
+
+    function onQrCodeChanged(event) {
+        const data = event.detail;
+        console.log(data);
+        setLabel(data);
+        resetClass(data);
+    }
+
+    $scanner.addEventListener('x-decoded', onQrCodeChanged);
+    $scanner.active = true;
+</script>
+</body>
+
+</html>
