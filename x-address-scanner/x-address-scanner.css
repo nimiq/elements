@@ -1,6 +1,7 @@
 @import "/library/nimiq-style/nimiq-style.css";
 @import "../x-pages/x-pages.css";
 
+x-address-scanner,
 x-address-scanner > x-pages {
     width: 100%;
     height: 100%;
@@ -169,7 +170,7 @@ x-address-scanner [page="scanner"] > [qr-overlay]:after {
 
 /* Text input style */
 
-x-address-scanner [fallback-input] {
+x-address-scanner [page] [fallback-input] {
     font-size: 13px;
     width: 100%;
     line-height: 32px;
@@ -181,12 +182,12 @@ x-address-scanner [fallback-input] {
     box-sizing: border-box;
 }
 
-x-address-scanner [fallback-input][invalid] {
+x-address-scanner [page] [fallback-input][invalid] {
     border-bottom: 1px solid var(--error-color);
 }
 
-x-address-scanner [fallback-input]::placeholder,
-x-address-scanner [fallback-input]::-webkit-input-placeholder {
+x-address-scanner [page] [fallback-input]::placeholder,
+x-address-scanner [page] [fallback-input]::-webkit-input-placeholder {
     color: rgba(255, 255, 255, 0.7);
     text-align: left;
 }

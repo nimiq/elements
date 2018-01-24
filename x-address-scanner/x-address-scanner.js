@@ -73,7 +73,10 @@ export default class XAddressScanner extends XElement {
             this._startScanner();
         } else {
             this._scanner.stop();
-            Array.prototype.forEach.call(this._fallbackInputs, textInput => textInput.value = '');
+            Array.prototype.forEach.call(this._fallbackInputs, textInput => {
+                textInput.value = '';
+                textInput.removeAttribute('invalid');
+            });
         }
     }
 
@@ -168,9 +171,11 @@ export default class XAddressScanner extends XElement {
         this.$qrOverlay.style.left = ((scannerWidth - overlaySize) / 2) + 'px';
     }
 }
-XAddressScanner.KEY_USE_CAMERA = 'x-qr-scanner-use-camera';
+XAddressScanner.KEY_USE_CAMERA = 'x-address-scanner-use-camera';
 
 // TODO button animations
 // TODO intro background responsive image sizing
 // TODO page transition animations
 // TODO input size on fallback page
+// Todo: Refactor address input into x-address input?
+// Todo: x-address-input should not be invalid while typing a correct address
