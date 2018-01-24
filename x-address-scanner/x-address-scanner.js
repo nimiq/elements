@@ -2,30 +2,30 @@ import XElement from '/library/x-element/x-element.js';
 import QrScanner from '/library/qr-scanner/qr-scanner.min.js';
 import XPages from '../x-pages/x-pages.js';
 
-export default class XQrScannerUi extends XElement {
+export default class XAddressScanner extends XElement {
     html() {
         return `
             <x-pages selected="scanner">
                 <div page="intro">
-                    <h1 intro-hint x-grow></h1>
+                    <h1 x-grow>Scan Address</h1>
                     <button enable-camera-button>Enable Camera</button>
-                    <a secondary use-fallback-button>Continue without camera</a> 
+                    <a secondary use-fallback-button>Continue without Camera</a>
                 </div>
                 <div page="scanner">
                     <video muted autoplay playsinline width="600" height="600"></video>
                     <div qr-overlay></div>
                     <x-header>
                         <a icon-paste></a>
-                        <input fallback-input type="text" placeholder="Enter Data" spellcheck="false" autocomplete="off">
+                        <input fallback-input type="text" placeholder="Enter Address" spellcheck="false" autocomplete="off">
                         <label icon-upload><input type="file"></label>
                     </x-header>   
                 </div>
                 <div page="fallback">
-                    <h1 fallback-hint></h1>
+                    <h1>Enter Address</h1>
                     <div x-grow class="center relative">
                         <div class="relative">
                             <a icon-paste></a>
-                            <input fallback-input type="text" placeholder="Enter Data" spellcheck="false" autocomplete="off">        
+                            <input fallback-input type="text" placeholder="Enter Address" spellcheck="false" autocomplete="off">
                         </div>
                         <div error-message></div>
                     </div>
@@ -67,7 +67,7 @@ export default class XQrScannerUi extends XElement {
 
     set active(active) {
         if (active) {
-            if (localStorage[XQrScannerUi.KEY_USE_CAMERA] !== 'yes') {
+            if (localStorage[XAddressScanner.KEY_USE_CAMERA] !== 'yes') {
                 return;
             }
             this._startScanner();
@@ -86,7 +86,7 @@ export default class XQrScannerUi extends XElement {
     }
 
     _checkCameraStatus() {
-        const useCamera = localStorage[XQrScannerUi.KEY_USE_CAMERA];
+        const useCamera = localStorage[XAddressScanner.KEY_USE_CAMERA];
         if (useCamera === undefined || useCamera === null) {
             this.$pages.select('intro', false);
         } else if (useCamera === 'yes') {
@@ -101,9 +101,9 @@ export default class XQrScannerUi extends XElement {
         this.$pages.select('scanner');
         this._scanner.start().then(() => {
             // successfully started
-            localStorage[XQrScannerUi.KEY_USE_CAMERA] = 'yes';
+            localStorage[XAddressScanner.KEY_USE_CAMERA] = 'yes';
         }).catch(() => {
-            localStorage[XQrScannerUi.KEY_USE_CAMERA] = 'no';
+            localStorage[XAddressScanner.KEY_USE_CAMERA] = 'no';
             this.$pages.select('fallback');
             this._showErrorMessage('Failed to start the camera. Make sure you gave Nimiq access to your camera in ' +
                 'the browser settings.');
@@ -111,7 +111,7 @@ export default class XQrScannerUi extends XElement {
     }
 
     _useFallback() {
-        localStorage[XQrScannerUi.KEY_USE_CAMERA] = 'no';
+        localStorage[XAddressScanner.KEY_USE_CAMERA] = 'no';
         this.$pages.select('fallback');
     }
 
@@ -168,10 +168,9 @@ export default class XQrScannerUi extends XElement {
         this.$qrOverlay.style.left = ((scannerWidth - overlaySize) / 2) + 'px';
     }
 }
-XQrScannerUi.KEY_USE_CAMERA = 'x-qr-scanner-use-camera';
+XAddressScanner.KEY_USE_CAMERA = 'x-qr-scanner-use-camera';
 
 // TODO button animations
 // TODO intro background responsive image sizing
 // TODO page transition animations
 // TODO input size on fallback page
-// TODO replace x-qr-scanner with x-qr-scanner-ui

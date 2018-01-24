@@ -5,7 +5,7 @@
     <title>Nimiq QR Code Scanner UI</title>
     <meta name="viewport" content="target-densitydpi=device-dpi,user-scalable=0,minimum-scale=1,maximum-scale=1,initial-scale=1">
 
-    <link href="../x-qr-scanner-ui.css" rel="stylesheet">
+    <link href="../x-address-scanner.css" rel="stylesheet">
 
     <style type="text/css">
         body {
@@ -18,7 +18,7 @@
             background: var(--primary-background);
         }
 
-        x-qr-scanner-ui {
+        x-address-scanner {
             width: 800px;
             height: 584px;
             border-radius: 8px;
@@ -72,12 +72,12 @@
 </head>
 
 <body>
-<x-qr-scanner-ui></x-qr-scanner-ui>
+<x-address-scanner></x-address-scanner>
 <a class="label"></a>
 
 <script type="module">
-    import XQrScannerUi from "../x-qr-scanner-ui.js";
-    const $scanner = new XQrScannerUi();
+    import XAddressScanner from "../x-address-scanner.js";
+    const $scanner = new XAddressScanner();
     const label = document.querySelector('.label');
 
     function setLabel(decoded) {
