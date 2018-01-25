@@ -33,3 +33,5 @@ class NimiqApi extends NanoApi {
         this._element.fire('x-transaction', { sender: sender, value: value, fee: fee });
     }
 }
+
+// Todo: throw event if nimiq is already running in a different tab
