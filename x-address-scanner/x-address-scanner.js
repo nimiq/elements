@@ -1,82 +1,39 @@
 import XElement from '/library/x-element/x-element.js';
 import XPages from '../x-pages/x-pages.js';
-import XQrScanner from '../x-qr-scanner/x-qr-scanner.js';
-import NanoApi from '/library/nano-api/nano-api.js';
+import XAddressScannerIntroPage from './x-address-scanner-intro-page.js';
+import XAddressScannerScannerPage from './x-address-scanner-scanner-page.js';
+import XAddressScannerFallbackPage from './x-address-scanner-fallback-page.js';
 
 export default class XAddressScanner extends XElement {
     html() {
         return `
             <x-pages selected="scanner">
-                <div page="intro">
-                    <h1 x-grow>Scan Address</h1>
-                    <button enable-camera-button>Enable Camera</button>
-                    <a secondary use-fallback-button>Continue without Camera</a>
-                </div>
-                <div page="scanner">
-                    <x-qr-scanner></x-qr-scanner>
-                    <x-header>
-                        <a icon-paste></a>
-                        <input fallback-input type="text" placeholder="Enter Address" spellcheck="false" autocomplete="off">
-                        <label icon-upload><input type="file"></label>
-                    </x-header>   
-                </div>
-                <div page="fallback">
-                    <h1>Enter Address</h1>
-                    <div x-grow class="center relative">
-                        <div class="relative">
-                            <a icon-paste></a>
-                            <input fallback-input type="text" placeholder="Enter Address" spellcheck="false" autocomplete="off">
-                        </div>
-                        <div error-message></div>
-                    </div>
-                    <a secondary enable-camera-button>Use the Scanner</a>
-                    <label>
-                        <a secondary>Scan from image</a>
-                        <input type="file">
-                    </label>
-                </div>
+                <x-address-scanner-intro-page page="intro"></x-address-scanner-intro-page>
+                <x-address-scanner-scanner-page page="scanner"></x-address-scanner-scanner-page>
+                <x-address-scanner-fallback-page page="fallback"></x-address-scanner-fallback-page>
             </x-pages>`;
     }
 
     children() {
-        return [XPages, XQrScanner];
+        return [XPages, XAddressScannerIntroPage, XAddressScannerScannerPage, XAddressScannerFallbackPage];
     }
 
     onCreate() {
         this._checkCameraStatus();
-        this.$qrScanner.validator = address => NanoApi.validateAddress(address);
-        this.$qrScanner.addEventListener('x-decoded', event => this.fire('x-address-scanned', event.data));
-
-        this.$$('[enable-camera-button]').forEach(
-            button => button.addEventListener('click', () => this._startScanner()));
-        this.$('[use-fallback-button]').addEventListener('click', () => this._useFallback());
-
-        this.$$('input[type="file"]').forEach(
-            fileInput => fileInput.addEventListener('change', event => this._onFileSelected(event)));
-        this._fallbackInputs = this.$$('[fallback-input]');
-        this._fallbackInputs.forEach(
-            textInput => textInput.addEventListener('change', event => this._onTextInput(event)));
-
-        this.$errorMessage = this.$('[error-message]');
+        this.addEventListener('x-address-scanner-select-page', event => this._onPageSelection(event));
+        this.addEventListener('x-address-scanner-camera-success',
+            () => localStorage[XAddressScanner.KEY_USE_CAMERA] = 'yes');
+        this.addEventListener('x-address-scanner-camera-fail', () => this._onCameraFail());
     }
 
     set active(active) {
-        if (active) {
-            if (localStorage[XAddressScanner.KEY_USE_CAMERA] !== 'yes') {
-                return;
-            }
-            this._startScanner();
-        } else {
-            this.$qrScanner.stop();
-            this._fallbackInputs.forEach(textInput => {
-                textInput.value = '';
-                textInput.removeAttribute('invalid');
-            });
-        }
+        this.$addressScannerIntroPage.active = active;
+        this.$addressScannerFallbackPage.active = active;
+        this.$addressScannerScannerPage.active = active && localStorage[XAddressScanner.KEY_USE_CAMERA] === 'yes';
     }
 
     setGrayscaleWeights(red, green, blue) {
-        this.$qrScanner.setGrayscaleWeights(red, green, blue);
+        this.$addressScannerScannerPage.setGrayscaleWeights(red, green, blue);
     }
 
     _checkCameraStatus() {
@@ -90,60 +47,22 @@ export default class XAddressScanner extends XElement {
         }
     }
 
-    _startScanner() {
-        this.$pages.select('scanner');
-        this.$qrScanner.start().then(() => {
-            // successfully started
-            localStorage[XAddressScanner.KEY_USE_CAMERA] = 'yes';
-        }).catch(() => {
+    _onPageSelection(event) {
+        const page = event.detail;
+        this.$pages.select(page);
+        if (page === 'fallback') {
             localStorage[XAddressScanner.KEY_USE_CAMERA] = 'no';
-            this.$pages.select('fallback');
-            this._showErrorMessage('Failed to start the camera. Make sure you gave Nimiq access to your camera in ' +
-                'the browser settings.');
-        });
+        } else if (page === 'scanner') {
+            localStorage[XAddressScanner.KEY_USE_CAMERA] = 'yes';
+            this.$addressScannerScannerPage.active = true;
+        }
     }
 
-    _useFallback() {
+    _onCameraFail() {
         localStorage[XAddressScanner.KEY_USE_CAMERA] = 'no';
         this.$pages.select('fallback');
-    }
-
-    _onTextInput(event) {
-        const input = event.target;
-        if (NanoApi.validateAddress(input.value)) {
-            input.removeAttribute('invalid');
-            this.fire('x-address-scanned', input.value);
-        } else {
-            input.setAttribute('invalid', '');
-        }
-    }
-
-    _onFileSelected(event) {
-        const fileInput = event.target;
-        const fileInputIcon = fileInput.parentNode;
-        const file = fileInput.files[0];
-        fileInput.value = null; // reset the file selector
-        if (!file) {
-            return;
-        }
-        // Note that this call doesn't use the same qr worker as the webcam scanning and thus doesn't interfere with it.
-        this.$qrScanner.scanImage(file)
-            .then(result => result? this.fire('x-address-scanned', result) : this._onFileScanFailed(fileInputIcon));
-    }
-
-    _onFileScanFailed(fileInputIcon) {
-        if (this.$pages.selected === 'scanner') {
-            fileInputIcon.classList.add('scan-failed');
-            setTimeout(() => fileInputIcon.classList.remove('scan-failed'), 4000);
-        } else {
-            this._showErrorMessage('File scan failed.');
-        }
-    }
-
-    _showErrorMessage(message) {
-        this.$errorMessage.textContent = message;
-        this.$errorMessage.classList.add('show-error');
-        setTimeout(() => this.$errorMessage.classList.remove('show-error'), 6000);
+        this.$addressScannerFallbackPage.showErrorMessage('Failed to start the camera. Make sure you gave Nimiq ' +
+            'access to your camera in the browser settings.');
     }
 }
 XAddressScanner.KEY_USE_CAMERA = 'x-address-scanner-use-camera';
