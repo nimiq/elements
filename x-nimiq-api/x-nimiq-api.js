@@ -18,7 +18,7 @@ class NimiqApi extends NanoApi {
     }
 
     onConsensusEstablished() {
-        this._element.fire('x-consensus-establised', this.address);
+        this._element.fire('x-consensus-established', this.address);
     }
 
     onAddressChanged(address) {
@@ -32,6 +32,10 @@ class NimiqApi extends NanoApi {
     onTransactionReceived(sender, value, fee) {
         this._element.fire('x-transaction', { sender: sender, value: value, fee: fee });
     }
+
+    onDifferentTabError(){
+        this._element.fire('x-different-tab-error');
+    }
 }
 
-// Todo: throw event if nimiq is already running in a different tab
+// Todo: throw event if nimiq is already running in a different tab & build a UI
