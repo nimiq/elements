@@ -108,14 +108,14 @@
         setTimeout(() => label.classList.remove('label-active'), 7000);
     }
 
-    function onQrCodeChanged(event) {
+    function onAddressScanned(event) {
         const data = event.detail;
         console.log(data);
         setLabel(data);
         resetClass(data);
     }
 
-    $scanner.addEventListener('x-decoded', onQrCodeChanged);
+    $scanner.addEventListener('x-address-scanned', onAddressScanned);
     $scanner.active = true;
 </script>
 </body>

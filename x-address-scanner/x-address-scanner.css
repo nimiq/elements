@@ -1,5 +1,6 @@
 @import "/library/nimiq-style/nimiq-style.css";
 @import "../x-pages/x-pages.css";
+@import "../x-qr-scanner/x-qr-scanner.css";
 
 x-address-scanner,
 x-address-scanner > x-pages {
@@ -72,20 +73,6 @@ x-address-scanner [page="fallback"] [error-message].show-error {
 
 /* Scanner page */
 
-x-address-scanner [page="scanner"] {
-    pointer-events: none;
-    background: #333;
-}
-
-x-address-scanner [page="scanner"] > video {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-}
-
 x-address-scanner [page="scanner"] > x-header {
     width: 100%;
     height: 56px;
@@ -107,11 +94,11 @@ x-address-scanner [page="scanner"] > x-header > * {
     }
 }
 
-x-address-scanner [page="scanner"] [fallback-input]:not(:focus) {
+x-address-scanner [page="scanner"] > x-header [fallback-input]:not(:focus) {
     opacity: 0;
 }
 
-x-address-scanner [page="scanner"] [fallback-input]:focus {
+x-address-scanner [page="scanner"] > x-header [fallback-input]:focus {
     cursor: auto;
 }
 
@@ -136,15 +123,11 @@ x-address-scanner [page="scanner"] > x-header > [icon-upload].scan-failed {
 
 /* Scanner Overlay */
 
-x-address-scanner [page="scanner"] > [qr-overlay] {
-    position: absolute;
-    border-radius: 10px;
-    box-shadow: 0 0 0 50vmax rgba(0,0,0,0.7);
-    overflow: hidden;
+x-address-scanner [page="scanner"] [qr-overlay] {
     transform: translateZ(0); /* to avoid rendering issues on iPhone */
 }
 
-x-address-scanner [page="scanner"] > [qr-overlay]:after {
+x-address-scanner [page="scanner"] [qr-overlay]:after {
     content: "";
     position: absolute;
     left: 0;

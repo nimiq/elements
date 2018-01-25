@@ -4,26 +4,30 @@ import QrScanner from '/library/qr-scanner/qr-scanner.min.js';
 export default class XQrScanner extends XElement {
     html() {
         return `<video muted autoplay playsinline width="600" height="600"></video>
-                <div qr-overlay></div>
-                <div content class="fit has-pointer-events"></div>`;
+                <div qr-overlay></div>`;
     }
 
     onCreate() {
         const $video = this.$('video');
-        this.$qrOverlay = this.$('[qr-overlay]');
-        this._scanner = new QrScanner($video, result => this.fire('x-decoded', result));
+        this._validate = () => true;
+        this._scanner = new QrScanner($video, result => this._validate(result) && this.fire('x-decoded', result));
 
+        this.$qrOverlay = this.$('[qr-overlay]');
         this._positionOverlay();
         window.addEventListener('resize', () => this._positionOverlay());
     }
 
-    set active(active) {
-        if (active) {
-            this._scanner.start();
-            this._positionOverlay();
-        } else {
-            this._scanner.stop();
-        }
+    start() {
+        this._positionOverlay();
+        return this._scanner.start();
+    }
+
+    stop() {
+        this._scanner.stop();
+    }
+
+    set validator(validator) {
+        this._validate = validator;
     }
 
     setGrayscaleWeights(red, green, blue) {
@@ -33,8 +37,8 @@ export default class XQrScanner extends XElement {
     scanImage(image) {
         // Note that this call doesn't use the same qr worker as the webcam scanning and thus doesn't interfere with it.
         return QrScanner.scanImage(image)
-            .then(result => this.fire('x-image-decoded', result))
-            .catch(e => this.fire('x-image-error', 'No QR code found.'));
+            .then(result => this._validate(result)? result : null)
+            .catch(() => null);
     }
 
     _positionOverlay() {

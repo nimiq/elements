@@ -1,6 +1,7 @@
 import XElement from '/library/x-element/x-element.js';
-import QrScanner from '/library/qr-scanner/qr-scanner.min.js';
 import XPages from '../x-pages/x-pages.js';
+import XQrScanner from '../x-qr-scanner/x-qr-scanner.js';
+import NanoApi from '/library/nano-api/nano-api.js';
 
 export default class XAddressScanner extends XElement {
     html() {
@@ -12,8 +13,7 @@ export default class XAddressScanner extends XElement {
                     <a secondary use-fallback-button>Continue without Camera</a>
                 </div>
                 <div page="scanner">
-                    <video muted autoplay playsinline width="600" height="600"></video>
-                    <div qr-overlay></div>
+                    <x-qr-scanner></x-qr-scanner>
                     <x-header>
                         <a icon-paste></a>
                         <input fallback-input type="text" placeholder="Enter Address" spellcheck="false" autocomplete="off">
@@ -29,7 +29,7 @@ export default class XAddressScanner extends XElement {
                         </div>
                         <div error-message></div>
                     </div>
-                    <a secondary enable-camera-button>Use the scanner</a>
+                    <a secondary enable-camera-button>Use the Scanner</a>
                     <label>
                         <a secondary>Scan from image</a>
                         <input type="file">
@@ -39,27 +39,22 @@ export default class XAddressScanner extends XElement {
     }
 
     children() {
-        return [XPages];
+        return [XPages, XQrScanner];
     }
 
     onCreate() {
         this._checkCameraStatus();
-        const $video = this.$('video');
-        this._validate = () => true;
-        this._scanner = new QrScanner($video, result => this._validate(result) && this.fire('x-decoded', result));
+        this.$qrScanner.validator = address => NanoApi.validateAddress(address);
+        this.$qrScanner.addEventListener('x-decoded', event => this.fire('x-address-scanned', event.data));
 
-        this.$qrOverlay = this.$('[qr-overlay]');
-        this._positionOverlay();
-        window.addEventListener('resize', () => this._positionOverlay());
-
-        Array.prototype.forEach.call(this.$$('[enable-camera-button]'), button =>
-            button.addEventListener('click', () => this._startScanner()));
+        this.$$('[enable-camera-button]').forEach(
+            button => button.addEventListener('click', () => this._startScanner()));
         this.$('[use-fallback-button]').addEventListener('click', () => this._useFallback());
 
-        Array.prototype.forEach.call(this.$$('input[type="file"]'),
+        this.$$('input[type="file"]').forEach(
             fileInput => fileInput.addEventListener('change', event => this._onFileSelected(event)));
         this._fallbackInputs = this.$$('[fallback-input]');
-        Array.prototype.forEach.call(this._fallbackInputs,
+        this._fallbackInputs.forEach(
             textInput => textInput.addEventListener('change', event => this._onTextInput(event)));
 
         this.$errorMessage = this.$('[error-message]');
@@ -72,20 +67,16 @@ export default class XAddressScanner extends XElement {
             }
             this._startScanner();
         } else {
-            this._scanner.stop();
-            Array.prototype.forEach.call(this._fallbackInputs, textInput => {
+            this.$qrScanner.stop();
+            this._fallbackInputs.forEach(textInput => {
                 textInput.value = '';
                 textInput.removeAttribute('invalid');
             });
         }
     }
 
-    set validator(validator) {
-        this._validate = validator;
-    }
-
     setGrayscaleWeights(red, green, blue) {
-        this._scanner.setGrayscaleWeights(red, green, blue);
+        this.$qrScanner.setGrayscaleWeights(red, green, blue);
     }
 
     _checkCameraStatus() {
@@ -100,9 +91,8 @@ export default class XAddressScanner extends XElement {
     }
 
     _startScanner() {
-        this._positionOverlay();
         this.$pages.select('scanner');
-        this._scanner.start().then(() => {
+        this.$qrScanner.start().then(() => {
             // successfully started
             localStorage[XAddressScanner.KEY_USE_CAMERA] = 'yes';
         }).catch(() => {
@@ -120,9 +110,9 @@ export default class XAddressScanner extends XElement {
 
     _onTextInput(event) {
         const input = event.target;
-        if (this._validate(input.value)) {
+        if (NanoApi.validateAddress(input.value)) {
             input.removeAttribute('invalid');
-            this.fire('x-decoded', input.value);
+            this.fire('x-address-scanned', input.value);
         } else {
             input.setAttribute('invalid', '');
         }
@@ -137,10 +127,8 @@ export default class XAddressScanner extends XElement {
             return;
         }
         // Note that this call doesn't use the same qr worker as the webcam scanning and thus doesn't interfere with it.
-        QrScanner.scanImage(file)
-            .then(result =>
-                this._validate(result)? this.fire('x-decoded', result) : this._onFileScanFailed(fileInputIcon))
-            .catch(() => this._onFileScanFailed(fileInputIcon));
+        this.$qrScanner.scanImage(file)
+            .then(result => result? this.fire('x-address-scanned', result) : this._onFileScanFailed(fileInputIcon));
     }
 
     _onFileScanFailed(fileInputIcon) {
@@ -156,19 +144,6 @@ export default class XAddressScanner extends XElement {
         this.$errorMessage.textContent = message;
         this.$errorMessage.classList.add('show-error');
         setTimeout(() => this.$errorMessage.classList.remove('show-error'), 6000);
-    }
-
-    _positionOverlay() {
-        const scannerHeight = this.$el.offsetHeight;
-        const scannerWidth = this.$el.offsetWidth;
-        const smallerDimension = Math.min(scannerHeight, scannerWidth);
-        const overlaySize = Math.ceil(2 / 3 * smallerDimension);
-        /* not always the accurate size of the sourceRect for QR
-        detection (e.g. if video is landscape and screen portrait) but looks nicer in the UI */
-        this.$qrOverlay.style.width = overlaySize + 'px';
-        this.$qrOverlay.style.height = overlaySize + 'px';
-        this.$qrOverlay.style.top = ((scannerHeight - overlaySize) / 2) + 'px';
-        this.$qrOverlay.style.left = ((scannerWidth - overlaySize) / 2) + 'px';
     }
 }
 XAddressScanner.KEY_USE_CAMERA = 'x-address-scanner-use-camera';

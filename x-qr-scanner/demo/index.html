@@ -58,7 +58,7 @@
             }
         }
 
-        x-qr-scanner [icon-upload] {
+        [icon-upload] {
             background-color: var(--primary-color);
             position: absolute;
             right: 32px;
@@ -71,7 +71,7 @@
         }
 
         @media (max-width: 550px) {
-            x-qr-scanner [icon-upload] {
+            [icon-upload] {
                 right: 24px;
                 bottom: 24px;
                 height: 64px !important;
@@ -80,20 +80,19 @@
             }
         }
 
-        x-qr-scanner [icon-upload]:hover {
+        [icon-upload]:hover {
             transform: scale(1.1);
         }
 
-        x-qr-scanner [icon-upload] > input[type="file"] {
+        [icon-upload] > input[type="file"] {
             display: none;
         }
     </style>
 </head>
 
 <body>
-    <x-qr-scanner>
-        <label icon-upload><input type="file"></label>
-    </x-qr-scanner>
+    <x-qr-scanner></x-qr-scanner>
+    <label icon-upload><input type="file"></label>
     <a class="label"></a>
 <script type="module">
     import XQrScanner from "../x-qr-scanner.js";
@@ -107,7 +106,7 @@
         if (!file) {
             return;
         }
-        $scanner.scanImage(file);
+        $scanner.scanImage(file).then(result => onQrCodeChanged(result || 'No Qr Code found.'));
     });
 
     function setLabel(decoded) {
@@ -137,17 +136,15 @@
         $label.classList.add('label-active');
     }
 
-    function onQrCodeChanged(event) {
-        const data = event.detail;
+    function onQrCodeChanged(eventOrData) {
+        const data = eventOrData.detail || eventOrData;
         console.log(data);
         setLabel(data);
         resetClass(data);
     }
 
     $scanner.addEventListener('x-decoded', onQrCodeChanged);
-    $scanner.addEventListener('x-image-decoded', onQrCodeChanged);
-    $scanner.addEventListener('x-image-error', onQrCodeChanged);
-    $scanner.active = true;
+    $scanner.start();
 </script>
 </body>
 
