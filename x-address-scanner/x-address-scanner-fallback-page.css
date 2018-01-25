@@ -1,5 +1,6 @@
 @import '/library/nimiq-style/nimiq-style.css';
 @import 'x-address-scanner-base-page.css';
+@import '../x-toast/x-toast.css';
 
 x-address-scanner-fallback-page.x-address-scanner-base-page {
     display: flex;
@@ -15,21 +16,4 @@ x-address-scanner-fallback-page a[secondary] {
 x-address-scanner-fallback-page .relative {
     position: relative;
     width: 100%;
-}
-
-x-address-scanner-fallback-page [error-message] {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    display: none;
-    color: var(--error-color);
-    padding-bottom: 16px;
-    font-weight: bold;
-    text-align: center;
-}
-
-x-address-scanner-fallback-page [error-message].show-error {
-    display: block;
-    animation: fade 0.5s 0.5s backwards, shake 0.82s 0.5s cubic-bezier(.36, .07, .19, .97) both, fade reverse 0.5s 5.5s forwards;
 }

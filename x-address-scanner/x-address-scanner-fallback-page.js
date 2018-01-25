@@ -1,4 +1,5 @@
 import XAddressScannerBasePage from "./x-address-scanner-base-page.js";
+import XToast from "../x-toast/x-toast.js";
 
 export default class XAddressScannerFallbackPage extends XAddressScannerBasePage {
     html() {
@@ -9,18 +10,18 @@ export default class XAddressScannerFallbackPage extends XAddressScannerBasePage
                     <a icon-paste></a>
                     <input fallback-input type="text" placeholder="Enter Address" spellcheck="false" autocomplete="off">
                 </div>
-                <div error-message></div>
             </div>
             <a secondary enable-camera-button>Use the Scanner</a>
             <label>
                 <a secondary>Scan from image</a>
-                <input type="file">
+                <input type="file" accept="image/*">
             </label>`;
     }
 
+    children() { return [XToast] }
+
     onCreate() {
         super.onCreate();
-        this.$errorMessage = this.$('[error-message]');
     }
 
     _onFileScanFailed(fileInputIcon) {
@@ -28,8 +29,6 @@ export default class XAddressScannerFallbackPage extends XAddressScannerBasePage
     }
 
     showErrorMessage(message) {
-        this.$errorMessage.textContent = message;
-        this.$errorMessage.classList.add('show-error');
-        setTimeout(() => this.$errorMessage.classList.remove('show-error'), 6000);
+        this.$toast.show(message);
     }
 }

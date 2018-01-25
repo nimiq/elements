@@ -20,16 +20,15 @@ export default class XAddressScanner extends XElement {
 
     onCreate() {
         this._checkCameraStatus();
-        this.addEventListener('x-address-scanner-select-page', event => this._onPageSelection(event));
-        this.addEventListener('x-address-scanner-camera-success',
-            () => localStorage[XAddressScanner.KEY_USE_CAMERA] = 'yes');
-        this.addEventListener('x-address-scanner-camera-fail', () => this._onCameraFail());
+        this.addEventListener('x-address-scanner-select-page', e => this._onPageSelection(e));
+        this.addEventListener('x-address-scanner-camera-success', e => this._onCameraSuccess());
+        this.addEventListener('x-address-scanner-camera-fail', e => this._onCameraFail());
     }
 
     set active(active) {
         this.$addressScannerIntroPage.active = active;
         this.$addressScannerFallbackPage.active = active;
-        this.$addressScannerScannerPage.active = active && localStorage[XAddressScanner.KEY_USE_CAMERA] === 'yes';
+        this.$addressScannerScannerPage.active = active && ScannerSettingsStorage.useCamera;
     }
 
     setGrayscaleWeights(red, green, blue) {
@@ -37,10 +36,13 @@ export default class XAddressScanner extends XElement {
     }
 
     _checkCameraStatus() {
-        const useCamera = localStorage[XAddressScanner.KEY_USE_CAMERA];
-        if (useCamera === undefined || useCamera === null) {
+        const firstUse = ScannerSettingsStorage.firstUse;
+        if (firstUse) {
             this.$pages.select('intro', false);
-        } else if (useCamera === 'yes') {
+            return;
+        }
+        const useCamera = ScannerSettingsStorage.useCamera;
+        if (useCamera) {
             this.$pages.select('scanner', false);
         } else {
             this.$pages.select('fallback', false);
@@ -51,21 +53,44 @@ export default class XAddressScanner extends XElement {
         const page = event.detail;
         this.$pages.select(page);
         if (page === 'fallback') {
-            localStorage[XAddressScanner.KEY_USE_CAMERA] = 'no';
+            ScannerSettingsStorage.useCamera = false;
         } else if (page === 'scanner') {
-            localStorage[XAddressScanner.KEY_USE_CAMERA] = 'yes';
+            ScannerSettingsStorage.useCamera = true;
             this.$addressScannerScannerPage.active = true;
         }
     }
 
+    _onCameraSuccess() {
+        ScannerSettingsStorage.useCamera = true;
+    }
+
     _onCameraFail() {
-        localStorage[XAddressScanner.KEY_USE_CAMERA] = 'no';
+        ScannerSettingsStorage.useCamera = false;
         this.$pages.select('fallback');
         this.$addressScannerFallbackPage.showErrorMessage('Failed to start the camera. Make sure you gave Nimiq ' +
             'access to your camera in the browser settings.');
     }
 }
-XAddressScanner.KEY_USE_CAMERA = 'x-address-scanner-use-camera';
+
+class ScannerSettingsStorage {
+
+    static get KEY_USE_CAMERA() { return 'x-address-scanner-use-camera' }
+
+    static get firstUse() {
+        const value = localStorage[this.KEY_USE_CAMERA];
+        return value === undefined || value === null;
+    }
+
+    static set useCamera(useCamera) {
+        const value = useCamera ? 'yes' : 'no'; // Hack: localstorage can't store booleans
+        localStorage[this.KEY_USE_CAMERA] = value;
+    }
+
+    static get useCamera() {
+        return localStorage[this.KEY_USE_CAMERA] === 'yes';
+    }
+}
+
 
 // TODO button animations
 // TODO intro background responsive image sizing
