@@ -91,6 +91,5 @@ class ScannerSettingsStorage {
     }
 }
 
-// TODO input size on fallback page
 // Todo: Refactor address input into x-address input?
 // Todo: x-address-input should not be invalid while typing a correct address
