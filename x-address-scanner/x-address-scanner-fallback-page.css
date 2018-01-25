@@ -11,6 +11,7 @@ x-address-scanner-fallback-page.x-address-scanner-base-page {
 
 x-address-scanner-fallback-page a[secondary] {
     margin-top:16px;
+    animation: from-bottom 1s;
 }
 
 x-address-scanner-fallback-page .relative {

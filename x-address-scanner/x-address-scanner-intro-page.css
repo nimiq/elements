@@ -18,6 +18,12 @@ x-address-scanner-intro-page > [background] {
     background-repeat: no-repeat;
     background-position: right top;
     position: absolute;
+    animation: from-bottom 1.5s;
+}
+
+x-address-scanner-intro-page > button,
+x-address-scanner-intro-page > a[secondary] {
+    animation: fade 0.7s 1.5s both;
 }
 
 x-address-scanner-intro-page > :not([background]) {

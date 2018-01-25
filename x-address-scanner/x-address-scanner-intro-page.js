@@ -3,7 +3,7 @@ import XAddressScannerBasePage from './x-address-scanner-base-page.js';
 export default class XAddressScannerIntroPage extends XAddressScannerBasePage {
     html() {
         return `
-            <div background></div>
+            <div background class="move-bottom-in"></div>
             <h1 x-grow>Scan Address</h1>
             <button enable-camera-button>Enable Camera</button>
             <a secondary use-fallback-button>Continue without Camera</a>`;

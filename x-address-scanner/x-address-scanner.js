@@ -7,7 +7,7 @@ import XAddressScannerFallbackPage from './x-address-scanner-fallback-page.js';
 export default class XAddressScanner extends XElement {
     html() {
         return `
-            <x-pages selected="scanner">
+            <x-pages selected="scanner" animation-show="from-right-in" animation-hide="from-left-out">
                 <x-address-scanner-intro-page page="intro"></x-address-scanner-intro-page>
                 <x-address-scanner-scanner-page page="scanner"></x-address-scanner-scanner-page>
                 <x-address-scanner-fallback-page page="fallback"></x-address-scanner-fallback-page>
@@ -91,10 +91,6 @@ class ScannerSettingsStorage {
     }
 }
 
-
-// TODO button animations
-// TODO intro background responsive image sizing
-// TODO page transition animations
 // TODO input size on fallback page
 // Todo: Refactor address input into x-address input?
 // Todo: x-address-input should not be invalid while typing a correct address
