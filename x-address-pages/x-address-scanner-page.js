@@ -23,14 +23,13 @@ export default class XAddressScannerPage extends XAddressPage {
     }
 
     set active(active) {
-        super.active = active;
         if (active) 
             this._startScanner();
         else 
             this.$addressScanner.stop();
     }
 
-    _startScanner() {
+    startScanner() {
         this.$addressScanner.start()
             .then(e => this.fire('x-address-scanner-success'))
             .catch(e => this.fire('x-address-scanner-error'));
