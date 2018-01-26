@@ -28,7 +28,8 @@ export default class XQrScanner extends XElement {
 
     _onResult(result) {
         if (!this._validate(result)) return;
-        this.fire('x-decoded', result)
+        const eventName = this.__tagName.replace('scanner', 'scan');
+        this.fire(eventName, result);
     }
 
 

@@ -17,8 +17,8 @@
         import XQrScanner from "../x-qr-scanner.js";
         import XToast from "/elements/x-toast/x-toast.js";
         const $scanner = new XQrScanner();
-        const onDecoded = e => XToast.show(e.detail);
-        $scanner.addEventListener('x-decoded', onDecoded);
+        const onScan = e => XToast.show(e.detail);
+        $scanner.addEventListener('x-qr-scan', onScan);
         $scanner.start();
     </script>
 </body>
