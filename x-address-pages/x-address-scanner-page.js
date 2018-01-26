@@ -30,10 +30,6 @@ export default class XAddressScannerPage extends XAddressPage {
             this.$addressScanner.stop();
     }
 
-    setGrayscaleWeights(red, green, blue) {
-        this.$addressScanner.setGrayscaleWeights(red, green, blue);
-    }
-
     _startScanner() {
         this.$addressScanner.start()
             .then(e => this.fire('x-address-scanner-success'))
