@@ -36,7 +36,7 @@ export default class XAddressScannerPage extends XAddressPage {
 
     _startScanner() {
         this.$addressScanner.start()
-            .then(e => this.fire('x-address-pages-camera-success'))
-            .catch(e => this.fire('x-address-pages-camera-error'));
+            .then(e => this.fire('x-address-scanner-success'))
+            .catch(e => this.fire('x-address-scanner-error'));
     }
 }
