@@ -19,7 +19,7 @@ x-address-scanner-fallback-page .relative {
     width: 100%;
 }
 
-x-address-scanner-fallback-page.x-address-scanner-base-page [fallback-input] {
+x-address-scanner-fallback-page.x-address-scanner-base-page x-address-input input {
     font-size: 20px;
     line-height: 40px;
     border-bottom: 1px solid white;
@@ -30,4 +30,5 @@ x-address-scanner-fallback-page.x-address-scanner-base-page [icon-paste] {
     width: 40px;
     height: 40px;
     background-size: 32px;
+    left: 0;
 }

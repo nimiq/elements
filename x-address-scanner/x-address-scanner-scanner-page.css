@@ -12,27 +12,25 @@ x-address-scanner-scanner-page > x-header {
     position: absolute;
 }
 
-x-address-scanner-scanner-page > x-header > * {
-    pointer-events: all;
-    cursor: pointer;
-}
-
 @media (min-width: 420px) {
     x-address-scanner-scanner-page > x-header {
         padding: 0 16px;
     }
 }
 
-x-address-scanner-scanner-page > x-header [fallback-input]:not(:focus) {
-    opacity: 0;
+x-address-scanner-scanner-page > x-header > x-address-input input {
+    pointer-events: all;
 }
 
-x-address-scanner-scanner-page > x-header [fallback-input]:focus {
-    cursor: auto;
+x-address-scanner-scanner-page > x-header > x-address-input input:not(:focus) {
+    opacity: 0;
+    cursor: pointer;
 }
 
 x-address-scanner-scanner-page > x-header > [icon-upload] {
     position: relative;
+    pointer-events: all;
+    cursor: pointer;
 }
 
 x-address-scanner-scanner-page > x-header > [icon-upload].scan-failed:before {

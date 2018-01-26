@@ -90,6 +90,3 @@ class ScannerSettingsStorage {
         return localStorage[this.KEY_USE_CAMERA] === 'yes';
     }
 }
-
-// Todo: Refactor address input into x-address input?
-// Todo: x-address-input should not be invalid while typing a correct address

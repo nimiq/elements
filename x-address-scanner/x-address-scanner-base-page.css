@@ -1,4 +1,5 @@
 @import "/library/nimiq-style/nimiq-style.css";
+@import '../x-address-input/x-address-input.css';
 
 .x-address-scanner-base-page {
     display: block;
@@ -13,25 +14,24 @@
     display: none;
 }
 
-.x-address-scanner-base-page [fallback-input] {
-    font-size: 13px;
-    width: 100%;
+.x-address-scanner-base-page x-address-input {
+    max-width: 100%;
+    box-sizing: border-box;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.x-address-scanner-base-page x-address-input input {
     line-height: 32px;
     text-align: left;
-    padding-left: 40px;
-    transition: opacity 300ms;
     font-weight: 500;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-    box-sizing: border-box;
+    font-size: 13px;
+    transition: opacity 300ms;
+    padding-left: 40px;
 }
 
-.x-address-scanner-base-page [fallback-input][invalid] {
-    border-bottom: 1px solid var(--error-color);
-}
-
-.x-address-scanner-base-page [fallback-input]::placeholder,
-.x-address-scanner-base-page [fallback-input]::-webkit-input-placeholder {
-    color: rgba(255, 255, 255, 0.7);
+.x-address-scanner-base-page x-address-input input::placeholder,
+.x-address-scanner-base-page x-address-input input::-webkit-input-placeholder {
     text-align: left;
 }
 

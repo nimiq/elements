@@ -8,9 +8,8 @@ export default class XAddressScannerBasePage extends XElement {
             button => button.addEventListener('click', () => this.fire('x-address-scanner-select-page', 'scanner')));
         this.$$('input[type="file"]').forEach(
             fileInput => fileInput.addEventListener('change', event => this._onFileSelected(event)));
-        this._fallbackInputs = this.$$('[fallback-input]');
-        this._fallbackInputs.forEach(
-            textInput => textInput.addEventListener('change', event => this._onTextInput(event)));
+        this._addressInputs = this.$$('x-address-input');
+        this._addressInputs.forEach(input => this._mapEvent(input, 'x-address-input', 'x-address-scanned'));
     }
 
     styles() {
@@ -19,21 +18,20 @@ export default class XAddressScannerBasePage extends XElement {
 
     set active(active) {
         if (!active) {
-            this._fallbackInputs.forEach(textInput => {
-                textInput.value = '';
-                textInput.removeAttribute('invalid');
-            });
+            this._addressInputs.forEach(addressInput => this._resetInput(addressInput));
         }
     }
 
-    _onTextInput(event) {
-        const input = event.target;
-        if (NanoApi.validateAddress(input.value)) {
-            input.removeAttribute('invalid');
-            this.fire('x-address-scanned', input.value);
-        } else {
-            input.setAttribute('invalid', '');
-        }
+    _resetInput(input) {
+        input.value = '';
+    }
+
+    _mapEvent(el, sourceEvent, targetEvent) {
+        el.addEventListener(sourceEvent, event => {
+            event.stopPropagation();
+            event.preventDefault();
+            el.state.fire(targetEvent, event.detail);
+        });
     }
 
     _onFileSelected(event) {

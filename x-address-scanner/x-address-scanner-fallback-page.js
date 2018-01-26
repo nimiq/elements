@@ -1,5 +1,6 @@
 import XAddressScannerBasePage from "./x-address-scanner-base-page.js";
 import XToast from "../x-toast/x-toast.js";
+import XAddressInput from "../x-address-input/x-address-input.js";
 
 export default class XAddressScannerFallbackPage extends XAddressScannerBasePage {
     html() {
@@ -8,7 +9,7 @@ export default class XAddressScannerFallbackPage extends XAddressScannerBasePage
             <div x-grow class="center relative">
                 <div class="relative">
                     <a icon-paste></a>
-                    <input fallback-input type="text" placeholder="Enter Address" spellcheck="false" autocomplete="off">
+                    <x-address-input></x-address-input>
                 </div>
             </div>
             <a secondary enable-camera-button>Use the Scanner</a>
@@ -18,7 +19,7 @@ export default class XAddressScannerFallbackPage extends XAddressScannerBasePage
             </label>`;
     }
 
-    children() { return [XToast] }
+    children() { return [XToast, XAddressInput] }
 
     onCreate() {
         super.onCreate();

@@ -1,5 +1,6 @@
 import XAddressScannerBasePage from './x-address-scanner-base-page.js';
 import XQrScanner from '../x-qr-scanner/x-qr-scanner.js';
+import XAddressInput from '../x-address-input/x-address-input.js';
 
 export default class XAddressScannerScannerPage extends XAddressScannerBasePage {
     html() {
@@ -7,19 +8,19 @@ export default class XAddressScannerScannerPage extends XAddressScannerBasePage 
             <x-qr-scanner></x-qr-scanner>
             <x-header>
                 <a icon-paste></a>
-                <input fallback-input type="text" placeholder="Enter Address" spellcheck="false" autocomplete="off">
-                <label icon-upload><input type="file"></label>
+                <x-address-input></x-address-input>
+                <label icon-upload><input type="file" accept="image/*"></label>
             </x-header>`;
     }
 
     children() {
-        return [XQrScanner];
+        return [XQrScanner, XAddressInput];
     }
 
     onCreate() {
         super.onCreate();
         this.$qrScanner.validator = address => NanoApi.validateAddress(address);
-        this.$qrScanner.addEventListener('x-decoded', event => this.fire('x-address-scanned', event.data));
+        this._mapEvent(this.$qrScanner, 'x-decoded', 'x-address-scanned');
     }
 
     set active(active) {
