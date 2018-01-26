@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>x-qr-file-input demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link href="../x-qr-file-input.css" rel="stylesheet">
+    <link href="../../x-toast/x-toast.css" rel="stylesheet">
+</head>
+
+<body>
+    <main>
+        <section class="center" style="justify-content: space-evenly;">
+            <x-qr-file-input demo1></x-qr-file-input>
+            <x-qr-file-input demo2><a secondary>Custom Input</a></x-qr-file-input>
+        </section>
+    </main>
+    <script type="module">
+        import XQrFileInput from "../x-qr-file-input.js";
+        import XToast from "../../x-toast/x-toast.js";
+        const $input1 = new XQrFileInput(document.querySelector('[demo1]'));
+        const $input2 = new XQrFileInput(document.querySelector('[demo2]'));
+        const callback = e => XToast.show(`${e.type}: ${e.detail}`);
+        $input1.addEventListener('x-qr-file-input', callback);
+        $input2.addEventListener('x-qr-file-input', callback);
+    </script>
+</body>
+
+</html>
+
