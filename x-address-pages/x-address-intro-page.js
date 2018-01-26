@@ -1,28 +1,30 @@
-import XAddressScannerBasePage from './x-address-scanner-base-page.js';
+import XAddressPage from './x-address-page.js';
 
-export default class XAddressScannerIntroPage extends XAddressScannerBasePage {
+export default class XAddressIntroPage extends XAddressPage {
     html() {
         return `
             <div background class="move-bottom-in"></div>
-            <h1 x-grow>Scan Address</h1>
-            <button enable-camera-button>Enable Camera</button>
-            <a secondary use-fallback-button>Continue without Camera</a>`;
+            <h1>Address Scanner</h1>
+            <h2>Use your camera to scan addresses</h2>
+            <x-grow></x-grow>
+            <button enable-camera-button>Enable camera</button>
+            <a secondary use-fallback-button>Continue without camera</a>`;
     }
 
     onCreate() {
         super.onCreate();
-        this._positionBackground = this._positionBackground.bind(this);
         this.$background = this.$('[background]');
-        this.$('[use-fallback-button]').addEventListener('click', () => this.fire('x-address-scanner-select-page', 'fallback'));
+        this.$('[use-fallback-button]').addEventListener('click', e => this.fire('x-address-page-selected', 'fallback'));
+        requestAnimationFrame(e => this._positionBackground())
     }
 
     onShow() {
         this._positionBackground();
-        window.addEventListener('resize', this._positionBackground);
+        window.addEventListener('resize', e => this._positionBackground());
     }
 
     onHide() {
-        window.removeEventListener('resize', this._positionBackground);
+        window.removeEventListener('resize', e => this._positionBackground());
     }
 
     _positionBackground() {
