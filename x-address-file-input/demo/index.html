@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>x-address-file-input demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link href="../x-address-file-input.css" rel="stylesheet">
+    <link href="../../x-toast/x-toast.css" rel="stylesheet">
+</head>
+
+<body>
+    <main>
+        <x-address-file-input></x-address-file-input>
+    </main>
+    <script type="module">
+        import XAddressFileInput from "../x-address-file-input.js";
+        import XToast from "../../x-toast/x-toast.js";
+        const $input = new XAddressFileInput();
+        $input.addEventListener('x-address-file-input', e => XToast.show(`${e.type}: ${e.detail}`));
+    </script>
+</body>
+
+</html>
