@@ -19,7 +19,7 @@ export default class XAddressScannerPage extends XElement {
 
     set active(active) {
         if (active) 
-            this._startScanner();
+            this.startScanner();
         else 
             this.$addressScanner.stop();
     }
