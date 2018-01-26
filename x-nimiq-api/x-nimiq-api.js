@@ -37,5 +37,3 @@ class NimiqApi extends NanoApi {
         this._element.fire('x-different-tab-error');
     }
 }
-
-// Todo: throw event if nimiq is already running in a different tab & build a UI

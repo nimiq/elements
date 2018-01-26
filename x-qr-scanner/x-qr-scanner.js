@@ -54,3 +54,4 @@ export default class XQrScanner extends XElement {
 
 
 // Todo: [Daniel] event should fire only once every 7s for the same result
+// Todo: [Daniel] [low priority] can we detect if camera exists without asking for permission?
