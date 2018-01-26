@@ -1,10 +1,9 @@
-import XAddressPage from './x-address-page.js';
-import XQrScanner from '../x-qr-scanner/x-qr-scanner.js';
-import XAddressScanner from '../x-address-input/x-address-input.js';
+import XElement from '/library/x-element/x-element.js';
 import XAddressInput from '../x-address-scanner/x-address-scanner.js';
+import XAddressScanner from '../x-address-input/x-address-input.js';
 import XAddressFileInput from '../x-address-file-input/x-address-file-input.js';
 
-export default class XAddressScannerPage extends XAddressPage {
+export default class XAddressScannerPage extends XElement {
     html() {
         return `
             <x-address-scanner></x-address-scanner>
@@ -16,10 +15,6 @@ export default class XAddressScannerPage extends XAddressPage {
 
     children() {
         return [XAddressScanner, XAddressInput, XAddressFileInput];
-    }
-
-    onCreate() {
-        super.onCreate();
     }
 
     set active(active) {
