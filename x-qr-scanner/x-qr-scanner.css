@@ -1,4 +1,4 @@
-x-qr-scanner {
+.x-qr-scanner {
     position: absolute;
     left: 0;
     top: 0;
@@ -9,7 +9,7 @@ x-qr-scanner {
     background: #333;
 }
 
-x-qr-scanner video {
+.x-qr-scanner video {
     position: absolute;
     left: 0;
     top: 0;
@@ -21,7 +21,7 @@ x-qr-scanner video {
 
 /* Overlay */
 
-x-qr-scanner [qr-overlay] {
+x-qr-scanner-overlay {
     position: absolute;
     border-radius: 10px;
     box-shadow: 0 0 0 50vmax rgba(0,0,0,0.7);

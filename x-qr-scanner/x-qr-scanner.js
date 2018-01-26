@@ -4,15 +4,15 @@ import QrScanner from '/library/qr-scanner/qr-scanner.min.js';
 export default class XQrScanner extends XElement {
     html() {
         return `<video muted autoplay playsinline width="600" height="600"></video>
-                <div qr-overlay></div>`;
+                <x-qr-scanner-overlay></x-qr-scanner-overlay>`;
     }
+    styles() { return ['x-qr-scanner'] }
 
     onCreate() {
         const $video = this.$('video');
-        this._validate = () => true;
-        this._scanner = new QrScanner($video, result => this._validate(result) && this.fire('x-decoded', result));
+        this._scanner = new QrScanner($video, result => this._onResult(result));
+        this.$qrOverlay = this.$('x-qr-scanner-overlay');
 
-        this.$qrOverlay = this.$('[qr-overlay]');
         this._positionOverlay();
         window.addEventListener('resize', () => this._positionOverlay());
     }
@@ -26,19 +26,14 @@ export default class XQrScanner extends XElement {
         this._scanner.stop();
     }
 
-    set validator(validator) {
-        this._validate = validator;
+    _onResult(result) {
+        if (!this._validate(result)) return;
+        this.fire('x-decoded', result)
     }
+
 
     setGrayscaleWeights(red, green, blue) {
         this._scanner.setGrayscaleWeights(red, green, blue);
-    }
-
-    scanImage(image) {
-        // Note that this call doesn't use the same qr worker as the webcam scanning and thus doesn't interfere with it.
-        return QrScanner.scanImage(image)
-            .then(result => this._validate(result)? result : null)
-            .catch(() => null);
     }
 
     _positionOverlay() {
@@ -53,4 +48,10 @@ export default class XQrScanner extends XElement {
         this.$qrOverlay.style.top = ((scannerHeight - overlaySize) / 2) + 'px';
         this.$qrOverlay.style.left = ((scannerWidth - overlaySize) / 2) + 'px';
     }
+
+    _validate() { return true; /* abstract method */ }
 }
+
+
+
+// Todo: [Daniel] event should fire only once every 7s for the same result

@@ -7,145 +7,20 @@
     <link href="../x-qr-scanner.css" rel="stylesheet">
     <style type="text/css">
         @import "/library/nimiq-style/nimiq-style.css";
-
-        body {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            margin: 0;
-        }
-
-        a.label {
-            position: absolute;
-            max-width: 320px;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 24px;
-            background: white;
-            opacity: 0;
-            word-break: break-all;
-            font-size: 16px;
-            z-index: 1;
-        }
-
-        a.label:not([href]) {
-            color: black;
-            text-decoration: none;
-        }
-
-        a.label-active {
-            transform: scale(1);
-            animation: fadeInFadeOut 7s ease-in;
-        }
-
-        @keyframes fadeInFadeOut {
-            0% {
-                opacity: 0.3;
-                transform: scale(0.3);
-            }
-            5% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            70% {
-                opacity: 0.9;
-            }
-            100% {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-        }
-
-        [icon-upload] {
-            background-color: var(--primary-color);
-            position: absolute;
-            right: 32px;
-            bottom: 32px;
-            height: 96px !important;
-            width: 96px !important;
-            background-size: 48px;
-            border-radius: 50%;
-            transition: transform .3s;
-        }
-
-        @media (max-width: 550px) {
-            [icon-upload] {
-                right: 24px;
-                bottom: 24px;
-                height: 64px !important;
-                width: 64px !important;
-                background-size: 32px;
-            }
-        }
-
-        [icon-upload]:hover {
-            transform: scale(1.1);
-        }
-
-        [icon-upload] > input[type="file"] {
-            display: none;
-        }
+        @import "/elements/x-toast/x-toast.css";
     </style>
 </head>
 
 <body>
     <x-qr-scanner></x-qr-scanner>
-    <label icon-upload><input type="file"></label>
-    <a class="label"></a>
-<script type="module">
-    import XQrScanner from "../x-qr-scanner.js";
-    const $scanner = new XQrScanner();
-    const $fileUpload = document.querySelector('input[type="file"]');
-    const $label = document.querySelector('.label');
-
-    $fileUpload.addEventListener('change', () => {
-        const file = $fileUpload.files[0];
-        $fileUpload.value = ''; // reset the file upload
-        if (!file) {
-            return;
-        }
-        $scanner.scanImage(file).then(result => onQrCodeChanged(result || 'No Qr Code found.'));
-    });
-
-    function setLabel(decoded) {
-        let isUrl = false;
-        try {
-            new Url(decoded);
-            isUrl = true;
-        } catch(e) {}
-        if (isUrl) {
-            $label.href = decoded;
-        } else {
-            $label.removeAttribute('href');
-        }
-        $label.textContent = decoded;
-    }
-
-    let lastDecoded;
-    let lastDecodedTimer;
-
-    function resetClass(decoded) {
-        if (decoded === lastDecoded) return;
-        clearTimeout(lastDecodedTimer);
-        lastDecodedTimer = setTimeout(() => lastDecoded = false, 3000);
-        lastDecoded = decoded;
-        $label.classList.remove('label-active');
-        $label.offsetWidth; // force render
-        $label.classList.add('label-active');
-    }
-
-    function onQrCodeChanged(eventOrData) {
-        const data = eventOrData.detail || eventOrData;
-        console.log(data);
-        setLabel(data);
-        resetClass(data);
-    }
-
-    $scanner.addEventListener('x-decoded', onQrCodeChanged);
-    $scanner.start();
-</script>
+    <script type="module">
+        import XQrScanner from "../x-qr-scanner.js";
+        import XToast from "/elements/x-toast/x-toast.js";
+        const $scanner = new XQrScanner();
+        const onDecoded = e => XToast.show(e.detail);
+        $scanner.addEventListener('x-decoded', onDecoded);
+        $scanner.start();
+    </script>
 </body>
 
 </html>
