@@ -12,14 +12,12 @@ export default class XQrScanner extends XElement {
         const $video = this.$('video');
         this._scanner = new QrScanner($video, result => this._onResult(result));
         this.$qrOverlay = this.$('x-qr-scanner-overlay');
-
-        this._positionOverlay();
         window.addEventListener('resize', () => this._positionOverlay());
     }
 
-    start() {
-        this._positionOverlay();
-        return this._scanner.start();
+    async start() {
+        await this._scanner.start();
+        requestAnimationFrame(e => this._positionOverlay());
     }
 
     stop() {
