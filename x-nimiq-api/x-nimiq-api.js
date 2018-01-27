@@ -3,7 +3,7 @@ import NanoApi from "/library/nano-api/nano-api.js";
 
 export default class XNimiqApi extends XElement {
     onCreate() {
-        const connect = this.$el.getAttribute('connect') === 'true'
+        const connect = this.$el.getAttribute('connect') === 'true';
         this._api = new NimiqApi(connect, this);
     }
 }
