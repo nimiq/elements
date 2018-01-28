@@ -21,6 +21,7 @@ export default class XScreen extends XElement {
     async __onEntry(nextState, prevState, isNavigateBack) {
         if (this._childScreens) return this._onEntryDefault();
         this._show();
+        if (this._onBeforeEntry) this._onBeforeEntry(nextState, prevState, isNavigateBack);
         await this._animateEntry(isNavigateBack);
         if (this._onEntry) this._onEntry(nextState, prevState, isNavigateBack);
     }
@@ -46,6 +47,7 @@ export default class XScreen extends XElement {
     }
 
     async __onExit(nextState, prevState, isNavigateBack) {
+        if (this._onBeforeExit) this._onBeforeExit(nextState, prevState, isNavigateBack);
         await this._animateExit(isNavigateBack);
         if (this._onExit) this._onExit(nextState, prevState, isNavigateBack);
         this._hide();

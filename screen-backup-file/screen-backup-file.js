@@ -1,10 +1,10 @@
-import XView from '../../library/x-element/x-view.js';
+import XScreen from '../x-screen/x-screen.js';
 import XSlides from '../x-slides/x-slides.js';
 import XSuccessMark from '../x-success-mark/x-success-mark.js';
 import XWalletBackup from '../x-wallet-backup/x-wallet-backup.js';
 import XPasswordSetter from '../x-password-setter/x-password-setter.js';
 
-export default class ViewBackupFile extends XView {
+export default class ScreenBackupFile extends XScreen {
     html() {
         return `
             <h1>Backup your Recovery File</h1>
@@ -34,6 +34,8 @@ export default class ViewBackupFile extends XView {
 
     children() { return [XSlides, XWalletBackup, XSuccessMark, XPasswordSetter] }
 
+    styles() { return ['x-screen'] }
+
     onCreate() {
         this.$button = this.$('button');
         this.$button.addEventListener('click', e => this._onPasswordInput());
@@ -50,15 +52,17 @@ export default class ViewBackupFile extends XView {
         }
     }
 
-    onShow() {
-        this.reset();
+    _onBeforeEntry() {
+        this.$slides._onResize();
     }
 
-    async reset() {
+    _onEntry() {
+        this.$slides.jumpTo(0);
         this.$passwordSetter.value = '';
-        await this.$slides.slideTo(0);
         this.$passwordSetter.focus();
     }
+
+    async reset() {}
 
     _onPasswordInput() {
         const password = this.$passwordSetter.value;
