@@ -1,4 +1,4 @@
-@import '/library/nimiq-style/nimiq-style.css';
+@import '../x-screen/x-screen.css';
 @import '../x-slides/x-slides.css';
 @import '../x-success-mark/x-success-mark.css';
 @import '../x-wallet-backup-import/x-wallet-backup-import.css';

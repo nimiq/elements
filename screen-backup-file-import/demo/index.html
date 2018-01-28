@@ -2,25 +2,23 @@
 <html>
 
 <head>
-    <title>view-backup-file-import</title>
+    <title>screen-backup-file-import</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <link href="../view-backup-file-import.css" rel="stylesheet">
+    <link href="../screen-backup-file-import.css" rel="stylesheet">
 </head>
 
 <body>
-    <main>
-        <view-backup-file-import></view-backup-file-import>
-    </main>
+    <screen-backup-file-import></screen-backup-file-import>
     <script type="module">
-    import ViewBackupFileImport from '../view-backup-file-import.js';
-    const $view = new ViewBackupFileImport();
+    import ScreenBackupFileImport from '../screen-backup-file-import.js';
+    const $screen = new ScreenBackupFileImport();
     document.body.addEventListener('x-decrypt-backup', e => {
         const wallet = e.detail;
         setTimeout(() => {
             if (wallet.password === '111111') {
-                $view.onSuccess();
+                $screen.onSuccess();
             } else {
-                $view.onPasswordIncorrect();
+                $screen.onPasswordIncorrect();
             }
         }, 3000);
     });

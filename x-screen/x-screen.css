@@ -12,7 +12,15 @@ body {
     background: var(--primary-background);
 }
 
-.x-screen, .x-parent-screen {
+body {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.x-screen,
+.x-parent-screen {
     position: absolute;
     display: none;
     justify-content: center;
@@ -56,8 +64,8 @@ body {
     animation-name: from-right;
 }
 
-.x-exit-animation, 
-.x-entry-animation-reverse{
+.x-exit-animation,
+.x-entry-animation-reverse {
     animation-direction: reverse;
     animation-duration: 300ms;
 }

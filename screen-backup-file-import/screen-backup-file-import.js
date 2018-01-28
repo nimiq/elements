@@ -1,10 +1,10 @@
-import XView from '/library/x-element/x-view.js';
+import XScreen from '../x-screen/x-screen.js';
 import XSlides from '../x-slides/x-slides.js';
 import XWalletBackupImport from '../x-wallet-backup-import/x-wallet-backup-import.js';
 import XSuccessMark from '../x-success-mark/x-success-mark.js';
 import XPasswordInput from '../x-password-input/x-password-input.js';
 
-export default class ViewBackupFileImport extends XView {
+export default class ScreenBackupFileImport extends XScreen {
     html() {
         return `
         <h1>Import Backup File</h1>
@@ -31,6 +31,8 @@ export default class ViewBackupFileImport extends XView {
         `;
     }
 
+    styles() { return ['x-screen'] }
+
     children() { return [XSlides, XWalletBackupImport, XSuccessMark, XPasswordInput] }
 
     onCreate() {
@@ -42,13 +44,14 @@ export default class ViewBackupFileImport extends XView {
     }
 
     _validityChanged(valid) {
-        if (valid) 
+        if (valid)
             this.$button.removeAttribute('disabled');
-        else 
+        else
             this.$button.setAttribute('disabled', true);
     }
 
-    onShow() {
+    _onBeforeEntry() {
+        this.$slides._onResize();
         this.$slides.jumpTo(0);
     }
 
