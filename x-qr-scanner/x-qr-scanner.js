@@ -3,8 +3,10 @@ import QrScanner from '/library/qr-scanner/qr-scanner.min.js';
 
 export default class XQrScanner extends XElement {
     html() {
-        return `<video muted autoplay playsinline width="600" height="600"></video>
-                <x-qr-scanner-overlay></x-qr-scanner-overlay>`;
+        return `
+            <video muted autoplay playsinline width="600" height="600"></video>
+            <x-qr-scanner-overlay></x-qr-scanner-overlay>
+        `;
     }
     styles() { return ['x-qr-scanner'] }
 
@@ -36,8 +38,9 @@ export default class XQrScanner extends XElement {
     }
 
     _positionOverlay() {
-        const scannerHeight = this.$el.offsetHeight;
-        const scannerWidth = this.$el.offsetWidth;
+        const $parent = this.$el;
+        const scannerHeight = $parent.offsetHeight;
+        const scannerWidth = $parent.offsetWidth;
         const smallerDimension = Math.min(scannerHeight, scannerWidth);
         const overlaySize = Math.ceil(2 / 3 * smallerDimension);
         /* not always the accurate size of the sourceRect for QR

@@ -33,7 +33,7 @@ class NimiqApi extends NanoApi {
         this._element.fire('x-transaction', { sender: sender, value: value, fee: fee });
     }
 
-    onDifferentTabError(){
+    onDifferentTabError() {
         this._element.fire('x-different-tab-error');
     }
 }
