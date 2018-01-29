@@ -1,6 +1,5 @@
 @import '../x-screen/x-screen.css';
-@import '../x-slides/x-slides.css';
-@import '../x-success-mark/x-success-mark.css';
-@import '../x-wallet-backup-import/x-wallet-backup-import.css';
+@import '../screen-success/screen-success.css';
 @import '../x-loading-animation/x-loading-animation.css';
+@import '../x-wallet-backup-import/x-wallet-backup-import.css';
 @import '../x-password-input/x-password-input.css';
