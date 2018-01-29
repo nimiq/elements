@@ -1,5 +1,5 @@
-import XElement from '/library/x-element/x-element.js';
-export default class XAddressIntroPage extends XElement {
+import XScreen from '../x-screen/x-screen.js';
+export default class ScreenRecipientIntro extends XScreen {
     html() {
         return `
             <div background class="move-bottom-in"></div>
@@ -14,4 +14,6 @@ export default class XAddressIntroPage extends XElement {
         this.$('[use-camera]').addEventListener('click', e => this.fire('x-address-page-select', 'scanner'));
         this.$('[use-fallback]').addEventListener('click', e => this.fire('x-address-page-select', 'fallback'));
     }
+
+    get route() { return 'intro' }
 }

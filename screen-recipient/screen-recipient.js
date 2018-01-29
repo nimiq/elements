@@ -1,22 +1,20 @@
-import XElement from '/library/x-element/x-element.js';
-import XPages from '../x-pages/x-pages.js';
+import XScreenFit from '../x-screen/x-screen-fit.js';
 import XToast from '../x-toast/x-toast.js';
-import XAddressIntroPage from './x-address-intro-page.js';
-import XAddressScannerPage from './x-address-scanner-page.js';
-import XAddressFallbackPage from './x-address-fallback-page.js';
+import ScreenRecipientIntro from './screen-recipient-intro.js';
+import ScreenRecipientScanner from './screen-recipient-scanner.js';
+import ScreenRecipientFallback from './screen-recipient-fallback.js';
 
-export default class XAddressPages extends XElement {
+export default class ScreenRecipient extends XScreenFit {
     html() {
         return `
-            <x-pages selected="scanner" animation-show="from-right-in" animation-hide="from-left-out">
-                <x-address-intro-page page="intro"></x-address-intro-page>
-                <x-address-scanner-page page="scanner"></x-address-scanner-page>
-                <x-address-fallback-page page="fallback"></x-address-fallback-page>
-            </x-pages>`;
+                <screen-recipient-intro></screen-recipient-intro>
+                <screen-recipient-scanner></screen-recipient-scanner>
+                <screen-recipient-fallback></screen-recipient-fallback>
+            `;
     }
 
     children() {
-        return [XPages, XAddressIntroPage, XAddressScannerPage, XAddressFallbackPage, XToast];
+        return [ScreenRecipientIntro, ScreenRecipientScanner, ScreenRecipientFallback, XToast];
     }
 
     onCreate() {
@@ -38,7 +36,7 @@ export default class XAddressPages extends XElement {
     }
 
     set active(active) {
-        this.$addressScannerPage.active = active && ScannerSettingsStorage.useScanner;
+        this.$screenRecipientScanner.active = active && ScannerSettingsStorage.useScanner;
     }
 
     _checkCameraStatus() {
@@ -55,21 +53,20 @@ export default class XAddressPages extends XElement {
         this.fire('x-address-page-select', page);
     }
 
-
     _onPageSelect(event) {
         const page = event.detail;
-        if (page === 'scanner') return this.$addressScannerPage.startScanner();
-        this.$pages.select(page);
+        if(page === 'scanner') return this.$screenRecipientScanner.startScanner();
+        this.goTo(page);
     }
 
 
     _onCameraSuccess() {
-        this.$pages.select('scanner');
+        this.goTo('scanner');
         ScannerSettingsStorage.useScanner = true;
     }
 
     _onCameraError() {
-        this.$pages.select('fallback');
+        this.goTo('fallback');
         ScannerSettingsStorage.useScanner = false;
         this.$toast.show('Failed to start scanner. Make sure nimiq.com is allowed to access your camera.');
     }
@@ -93,3 +90,5 @@ class ScannerSettingsStorage {
         return localStorage[this.KEY_USE_CAMERA] === 'yes';
     }
 }
+
+// Todo: refactor _pageSelect to use x-screen state changes

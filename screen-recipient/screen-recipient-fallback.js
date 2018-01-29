@@ -1,8 +1,8 @@
-import XElement from '/library/x-element/x-element.js';
+import XScreen from '../x-screen/x-screen.js';
 import XAddressInput from "../x-address-input/x-address-input.js";
 import XAddressFileInput from '../x-address-file-input/x-address-file-input.js';
 
-export default class XAddressFallbackPage extends XElement {
+export default class ScreenRecipientFallback extends XScreen {
     html() {
         return `
             <h1>Transaction Recipient</h1>
@@ -20,4 +20,6 @@ export default class XAddressFallbackPage extends XElement {
     onCreate() {
         this.$('[use-camera]').addEventListener('click', e => this.fire('x-address-page-select', 'scanner'));
     }
+
+    get route() { return 'fallback' }
 }

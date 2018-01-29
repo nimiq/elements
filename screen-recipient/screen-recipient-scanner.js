@@ -1,9 +1,9 @@
-import XElement from '/library/x-element/x-element.js';
+import XScreenFit from '../x-screen/x-screen-fit.js';
 import XAddressInput from '../x-address-scanner/x-address-scanner.js';
 import XAddressScanner from '../x-address-input/x-address-input.js';
 import XAddressFileInput from '../x-address-file-input/x-address-file-input.js';
 
-export default class XAddressScannerPage extends XElement {
+export default class ScreenRecipientScanner extends XScreenFit {
     html() {
         return `
             <x-address-scanner></x-address-scanner>
@@ -16,6 +16,8 @@ export default class XAddressScannerPage extends XElement {
     children() {
         return [XAddressScanner, XAddressInput, XAddressFileInput];
     }
+
+    get route() { return 'scanner' }
 
     set active(active) {
         if (active) 
