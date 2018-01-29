@@ -1,7 +1,7 @@
-import XView from '/library/x-element/x-view.js';
+import XScreen from '../x-screen/x-screen.js';
 import XIdenticon from '../x-identicon/x-identicon.js';
 
-export default class ViewIdenticons extends XView {
+export default class ScreenIdenticons extends XScreen {
 
     html() {
         return `
@@ -24,12 +24,12 @@ export default class ViewIdenticons extends XView {
         this.$('x-backdrop').addEventListener('click', e => this._clearSelection());
     }
 
-    onShow() {
+    _onEntry() {
         if (this._generated) return;
         this._generateIdenticons();
     }
 
-    onHide() {
+    _onExit() {
         setTimeout(_ => this._clearIdenticons(), 1000); // We wait to clear our dom to not disturb other animations
     }
 

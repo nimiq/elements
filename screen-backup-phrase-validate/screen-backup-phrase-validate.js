@@ -1,8 +1,7 @@
-import XView from '/library/x-element/x-view.js';
+import XScreen from '../x-screen/x-screen.js';
 import XMnemonicValidate from '../x-mnemonic-validate/x-mnemonic-validate.js';
 
-export default class ViewBackupPhraseValidate extends XView {
-
+export default class ScreenBackupPhraseValidate extends XScreen {
     html() {
         return `
             <h1>Validate Recovery Phrase</h1>
@@ -15,9 +14,13 @@ export default class ViewBackupPhraseValidate extends XView {
         this.$mnemonicValidate.privateKey = privateKey
     }
 
-    onHide(){
+    onHide() {
         this.$mnemonicValidate.reset();
+    }
+
+    _onBeforeEntry() {
+        this.$mnemonicValidate.$slides._resize();
     }
 }
 
-// Todo: [high priority] Add back button (where is the back button in default views?)
+// Todo: [high priority] Add back button (where is the back button in default Screens?)

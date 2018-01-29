@@ -1,9 +1,9 @@
-import XView from '/library/x-element/x-view.js';
+import XScreen from '../x-screen/x-screen.js';
 import XSlides from '../x-slides/x-slides.js';
 import XPrivacyAgent from '../x-privacy-agent/x-privacy-agent.js';
 import XMnemonicInput from '../x-mnemonic-input/x-mnemonic-input.js';
 
-export default class ViewBackupPhraseImport extends XView {
+export default class ScreenBackupPhraseImport extends XScreen {
     html() {
         return `
             <h1>Enter Recovery Phrase</h1>
@@ -32,5 +32,8 @@ export default class ViewBackupPhraseImport extends XView {
         this.$slides.next()
         this.$mnemonicInput.animateEntry();
     }
-}
 
+    _onBeforeEntry() {
+        this.$slides._resize();
+    }
+}

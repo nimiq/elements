@@ -1,17 +1,17 @@
-@import '/library/nimiq-style/nimiq-style.css';
+@import '../x-screen/x-screen.css';
 @import '../x-address/x-address.css';
 
-view-identicons {
+screen-identicons {
     -webkit-user-select: none;
     user-select: none;
     padding-bottom: 16px;
 }
 
-view-identicons x-header {
+screen-identicons x-header {
     z-index: 2;
 }
 
-view-identicons x-identicon {
+screen-identicons x-identicon {
     width: 128px;
     height: 128px;
     position: absolute;
@@ -21,7 +21,7 @@ view-identicons x-identicon {
     transform: scale(0.6);
 }
 
-view-identicons x-container {
+screen-identicons x-container {
     display: flex;
     flex-grow: 1;
     justify-content: center;
@@ -29,36 +29,36 @@ view-identicons x-container {
     margin-bottom:  64px;
 }
 
-view-identicons x-identicon:nth-child(1) {
+screen-identicons x-identicon:nth-child(1) {
     transform: translate(0, 0);
 }
 
-view-identicons x-identicon:nth-child(2) {
+screen-identicons x-identicon:nth-child(2) {
     transform: translate(0, -128px);
 }
 
-view-identicons x-identicon:nth-child(3) {
+screen-identicons x-identicon:nth-child(3) {
     transform: translate(110px, -64px);
 }
 
-view-identicons x-identicon:nth-child(4) {
+screen-identicons x-identicon:nth-child(4) {
     transform: translate(-110px, -64px);
 }
 
-view-identicons x-identicon:nth-child(5) {
+screen-identicons x-identicon:nth-child(5) {
     transform: translate(110px, 64px);
 }
 
-view-identicons x-identicon:nth-child(6) {
+screen-identicons x-identicon:nth-child(6) {
     transform: translate(-110px, 64px);
 }
 
-view-identicons x-identicon:nth-child(7) {
+screen-identicons x-identicon:nth-child(7) {
     transform: translate(0, 128px);
 }
 
 
-view-identicons [button] {
+screen-identicons [button] {
     opacity: 0;
     /* transform: translate(0, 480px); */
     transition: transform 500ms;
@@ -71,7 +71,7 @@ view-identicons [button] {
 }
 
 
-view-identicons x-backdrop {
+screen-identicons x-backdrop {
     content: '';
     position: fixed;
     bottom: 0;
@@ -85,7 +85,7 @@ view-identicons x-backdrop {
 }
 
 
-view-identicons [secondary] {
+screen-identicons [secondary] {
     position: absolute;
     bottom: 40px;
     margin-bottom: 20px;
@@ -93,7 +93,7 @@ view-identicons [secondary] {
 }
 
 
-view-identicons x-address:before {
+screen-identicons x-address:before {
     display: block;
     content: 'Avatar Address';
     line-height: 24px;
@@ -101,34 +101,34 @@ view-identicons x-address:before {
     font-size: 13px;
 }
 
-view-identicons x-address {
+screen-identicons x-address {
     opacity: 0;
     position: absolute;
     transition: opacity 300ms, transform 500ms;
     transform: scale(0.3);
 }
 
-view-identicons[selected] [button] {
+screen-identicons[selected] [button] {
     opacity: 1;
     z-index: 2;
     transform: translate(0, 0);
     pointer-events: all;
 }
 
-view-identicons[selected] x-address {
+screen-identicons[selected] x-address {
     opacity: 1;
     z-index: 2;
     transform: translate(0, 56px);
     margin-top: 32px;
 }
 
-view-identicons[selected] x-backdrop {
+screen-identicons[selected] x-backdrop {
     pointer-events: all;
     opacity: 1;
     /* border: 100vmax solid rgb(21, 20, 51); */
 }
 
-view-identicons x-identicon[selected] {
+screen-identicons x-identicon[selected] {
     z-index: 3;
     transform: scale(1.5) translateY(-40px);
 }
@@ -136,50 +136,50 @@ view-identicons x-identicon[selected] {
 
 
 @media (max-width: 380px) {
-    view-identicons x-identicon {
+    screen-identicons x-identicon {
         width: 30vw;
         height: 30vw;
     }
 
-    view-identicons x-identicon:nth-child(2) {
+    screen-identicons x-identicon:nth-child(2) {
         transform: translate(0, -100%);
     }
 
-    view-identicons x-identicon:nth-child(3) {
+    screen-identicons x-identicon:nth-child(3) {
         transform: translate(84%, -50%);
     }
 
-    view-identicons x-identicon:nth-child(4) {
+    screen-identicons x-identicon:nth-child(4) {
         transform: translate(-84%, -50%);
     }
 
-    view-identicons x-identicon:nth-child(5) {
+    screen-identicons x-identicon:nth-child(5) {
         transform: translate(84%, 50%);
     }
 
-    view-identicons x-identicon:nth-child(6) {
+    screen-identicons x-identicon:nth-child(6) {
         transform: translate(-84%, 50%);
     }
 
-    view-identicons x-identicon:nth-child(7) {
+    screen-identicons x-identicon:nth-child(7) {
         transform: translate(0, 100%);
     }
 
-    view-identicons x-identicon[selected] {
+    screen-identicons x-identicon[selected] {
         transform: scale(1.5) translateY(-32px);
     }
 }
 
-view-identicons:not([active]) x-identicon {
+screen-identicons:not([active]) x-identicon {
     transform: translate(0, 0);
 }
 
-view-identicons x-identicon:nth-child(3),
-view-identicons x-identicon:nth-child(4),
-view-identicons x-identicon:nth-child(7) {
+screen-identicons x-identicon:nth-child(3),
+screen-identicons x-identicon:nth-child(4),
+screen-identicons x-identicon:nth-child(7) {
     transition-delay: 300ms;
 }
 
-view-identicons x-identicon[selected] {
+screen-identicons x-identicon[selected] {
     transition-delay: 0s !important;
 }

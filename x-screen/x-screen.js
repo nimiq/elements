@@ -5,6 +5,7 @@ export default class XScreen extends XElement {
     constructor(root) {
         super(root);
         if (!root) this._registerRootElement();
+        this._bindListeners();
     }
 
     _registerRootElement() {
@@ -107,6 +108,14 @@ export default class XScreen extends XElement {
         // Todo: should return promise
     }
 
+    _bindListeners() {
+        if (!this.listeners) return;
+        const listeners = this.listeners();
+        for (const key in listeners) {
+            this.addEventListener(key, e => this[listeners[key]](e.detail !== undefined ? e.detail : e));
+        }
+    }
+
     _getChildScreen(id) {
         if (!this._childScreens) return;
         return this._childScreens[id];
@@ -146,6 +155,8 @@ export default class XScreen extends XElement {
         this.currState = nextState;
         callback(nextState, this.prevState, isNavigateBack);
     }
+
+    static launch() { window.addEventListener('load', () => new this()); }
 }
 
 
