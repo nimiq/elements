@@ -18,9 +18,25 @@ export default class XScreen extends XElement {
         this.__onChildEntry(nextState, prevState, isNavigateBack);
     }
 
+    _onChildStateChanged(nextState, prevState, isNavigateBack) {
+        const childScreen = this._getChildScreen(nextState.id);
+        if (!childScreen) return console.error(nextState.id, 'doesn\'t exist');;
+        childScreen._onStateChange(nextState.child, prevState.child, isNavigateBack);
+    }
+
+    async __onChildEntry(nextState, prevState, isNavigateBack) {
+        if (!this.isVisible) await this.__onEntry(nextState, prevState, isNavigateBack);
+        if (!nextState.id) return this.__onEntry(nextState, prevState, isNavigateBack);
+        const nextChild = this._getChildScreen(nextState.id);
+        if (!nextChild) return console.error(nextState.id, 'doesn\'t exist');
+        if (nextState.isLeaf) return nextChild.__onEntry(nextState, prevState, isNavigateBack);
+        nextChild.__onChildEntry(nextState.child, prevState, isNavigateBack);
+    }
+
     async __onEntry(nextState, prevState, isNavigateBack) {
-        if (this._childScreens) return this._onEntryDefault();
+        if(this.isVisible) return;
         this._show();
+        if (this._childScreens) return this._onEntryDefault();
         if (this._onBeforeEntry) this._onBeforeEntry(nextState, prevState, isNavigateBack);
         await this._animateEntry(isNavigateBack);
         if (this._onEntry) this._onEntry(nextState, prevState, isNavigateBack);
@@ -33,17 +49,17 @@ export default class XScreen extends XElement {
             return this.animate('x-exit-animation-reverse');
     }
 
-    __onChildEntry(nextState, prevState, isNavigateBack) {
-        if (!nextState.id) return this.__onEntry(nextState, prevState, isNavigateBack);
-        const nextChild = this._getChildScreen(nextState.id);
-        if (!nextChild) return console.error(nextState.id, 'doesn\'t exist');
-        if (nextState.isLeaf) return nextChild.__onEntry(nextState, prevState, isNavigateBack);
-        nextChild.__onChildEntry(nextState.child, prevState, isNavigateBack);
-    }
-
     _onEntryDefault(prevState, isNavigateBack) {
         const defaultScreenId = Object.keys(this._childScreens)[0];
         location = this._childScreens[defaultScreenId]._location;
+    }
+
+    __onChildExit(nextState, prevState, isNavigateBack) {
+        if (!prevState) return;
+        const prevChild = this._getChildScreen(prevState.id);
+        if (!prevChild) return;
+        if (prevState.isLeaf) return prevChild.__onExit(nextState, prevState, isNavigateBack);
+        prevChild.__onChildExit(nextState, prevState.child, isNavigateBack);
     }
 
     async __onExit(nextState, prevState, isNavigateBack) {
@@ -60,19 +76,17 @@ export default class XScreen extends XElement {
             return this.animate('x-entry-animation-reverse');
     }
 
-    __onChildExit(nextState, prevState, isNavigateBack) {
-        if (!prevState) return;
-        const prevChild = this._getChildScreen(prevState.id);
-        if (!prevChild) return;
-        if (prevState.isLeaf) return prevChild.__onExit(nextState, prevState, isNavigateBack);
-        prevChild.__onChildExit(nextState, prevState.child, isNavigateBack);
+    _show() {
+        this.$el.style.display = 'flex';
+        this._isVisible = true;
     }
 
-    _onChildStateChanged(nextState, prevState, isNavigateBack) {
-        const childScreen = this._getChildScreen(nextState.id);
-        if (!childScreen) return console.error(nextState.id, 'doesn\'t exist');;
-        childScreen._onStateChange(nextState.child, prevState.child, isNavigateBack);
+    _hide() {
+        this.$el.style.display = 'none';
+        this._isVisible = false;
     }
+
+    get isVisible() { return this._isVisible; }
 
     get route() {
         return this._route || this.__tagName.replace('screen-', '');
@@ -83,7 +97,10 @@ export default class XScreen extends XElement {
         return this._parent._location + this.route + '/';
     }
 
-    _validateState(nextState, prevState, isNavigateBack) { return true /* Abstract Method */ }
+    _getChildScreen(id) {
+        if (!this._childScreens) return;
+        return this._childScreens[id];
+    }
 
     __createChild(child) {
         super.__createChild(child);
@@ -97,18 +114,13 @@ export default class XScreen extends XElement {
         child._parent = this;
     }
 
-    _getChildScreen(id) {
-        if (!this._childScreens) return;
-        return this._childScreens[id];
+    __bindStyles(styles) {
+        super.__bindStyles(styles);
+        if (!this.styles) this.addStyle('x-screen');
     }
 
-    _show(){
-        this.$el.style.display = 'flex';
-    }
+    _validateState(nextState, prevState, isNavigateBack) { return true /* Abstract Method */ }
 
-    _hide(){
-        this.$el.style.display = 'none';
-    }
 
     static _registerGlobalStateListener(callback) {
         if (this._stateListener) return; // We register only the first screen calling. All other screens get notified by their parent
