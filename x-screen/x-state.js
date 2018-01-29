@@ -26,12 +26,36 @@ export default class XState {
     }
 
     static fromLocation() {
-        const fragment = decodeURIComponent(location.hash.substr(1))
+        const fragment = this._currFragment();
         return this.fromString(fragment);
     }
 
     static fromString(string) {
         const path = string.split('/');
         return new XState(path);
+    }
+
+    static locationFromRoute(route) {
+        if (!route) return;
+        if (route[0] === '/')
+            return this._locationFromAbsoluteRoute(route);
+        else
+            return this._locationFromRelativeRoute(route);
+    }
+
+    static _locationFromRelativeRoute(route) {
+        const fragment = this._currFragment();
+        const path = fragment.split('/').filter(e => e);
+        path.pop();
+        path.push(route);
+        return '#' + path.join('/');
+    }
+
+    static _locationFromAbsoluteRoute(route) {
+        return '#' + route.slice(1);
+    }
+
+    static _currFragment() {
+        return decodeURIComponent(location.hash.substr(1));
     }
 }

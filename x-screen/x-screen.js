@@ -34,7 +34,7 @@ export default class XScreen extends XElement {
     }
 
     async __onEntry(nextState, prevState, isNavigateBack) {
-        if(this.isVisible) return;
+        if (this.isVisible) return;
         this._show();
         if (this._childScreens) return this._onEntryDefault();
         if (this._onBeforeEntry) this._onBeforeEntry(nextState, prevState, isNavigateBack);
@@ -95,6 +95,16 @@ export default class XScreen extends XElement {
     get _location() {
         if (!this._parent) return '#';
         return this._parent._location + this.route + '/';
+    }
+
+    goTo(route) {
+        document.location = XState.locationFromRoute(route);
+        // Todo: should return promise
+    }
+
+    back() {
+        history.back();
+        // Todo: should return promise
     }
 
     _getChildScreen(id) {

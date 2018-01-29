@@ -7,9 +7,8 @@ body {
     display: flex;
     flex-grow: 1;
     margin: 0;
-    background: #EEEEEE;
-    color: white;
     background: var(--primary-background);
+    color: white;
 }
 
 body {
@@ -18,8 +17,6 @@ body {
     flex-direction: column;
     text-align: center;
 }
-
-
 
 .x-screen,
 .x-screen-fit {
@@ -35,22 +32,10 @@ body {
     animation-duration: 600ms;
 }
 
-.x-parent-fit {
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    pointer-events: none;
-}
-
 .x-screen {
     padding: 24px 16px;
     box-sizing: border-box;
     pointer-events: all;
-}
-
-.x-slides{
-    position: relative;
 }
 
 .x-entry-animation {
@@ -75,6 +60,11 @@ body {
     animation-duration: 300ms;
 }
 
+x-slides{
+    flex-grow: 1;
+    width: 100%;
+    position: relative;
+}
 
 @media (min-width: 420px) {
     .x-screen,
