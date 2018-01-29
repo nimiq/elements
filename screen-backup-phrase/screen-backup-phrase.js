@@ -1,9 +1,9 @@
-import XView from '/library/x-element/x-view.js';
+import XScreen from '../x-screen/x-screen.js';
 import XSlides from '../x-slides/x-slides.js';
 import XPrivacyAgent from '../x-privacy-agent/x-privacy-agent.js';
 import XMnemonicPhrase from '../x-mnemonic-phrase/x-mnemonic-phrase.js';
 
-export default class ViewBackupPhrase extends XView {
+export default class ScreenBackupPhrase extends XScreen {
     html() {
         return `
             <h1>Backup your Recovery Phrase</h1>
@@ -40,6 +40,10 @@ export default class ViewBackupPhrase extends XView {
     set privateKey(privateKey) {
         this.$slides.jumpTo(0);
         this.$mnemonicPhrase.privateKey = privateKey;
+    }
+
+    _onBeforeEntry(){
+        this.$slides._resize();
     }
 }
 

@@ -3,21 +3,19 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <link href="../view-backup-phrase.css" rel="stylesheet">
+    <link href="../screen-backup-phrase.css" rel="stylesheet">
 </head>
 
 <body>
-    <main>
-        <view-backup-phrase></view-backup-phrase>
-    </main>
+    <screen-backup-phrase></screen-backup-phrase>
     <script type="module">
-    import ViewBackupPhrase from '../view-backup-phrase.js'; 
+    import ScreenBackupPhrase from '../screen-backup-phrase.js'; 
     import MnemonicPhrase from '/library/mnemonic-phrase/mnemonic-phrase.es6.min.js';
 
-    const $view = new ViewBackupPhrase();
+    const $screen = new ScreenBackupPhrase();
 
     const randomKey = window.crypto.getRandomValues(new Uint8Array(32));
-    $view.privateKey = MnemonicPhrase._arrayToHex(randomKey);
+    $screen.privateKey = MnemonicPhrase._arrayToHex(randomKey);
     </script>
 </body>
 
