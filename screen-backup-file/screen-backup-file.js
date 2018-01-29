@@ -34,8 +34,6 @@ export default class ScreenBackupFile extends XScreen {
 
     children() { return [XSlides, XWalletBackup, XSuccessMark, XPasswordSetter] }
 
-    styles() { return ['x-screen'] }
-
     onCreate() {
         this.$button = this.$('button');
         this.$button.addEventListener('click', e => this._onPasswordInput());
@@ -82,4 +80,3 @@ export default class ScreenBackupFile extends XScreen {
     }
 }
 
-// Todo: [Max] Fix box sizing on next button
