@@ -26,11 +26,11 @@ export default class ScreenIdenticons extends XScreen {
 
     _onEntry() {
         if (this._generated) return;
-        this._generateIdenticons();
+        return this._generateIdenticons();
     }
 
-    _onExit() {
-        setTimeout(_ => this._clearIdenticons(), 1000); // We wait to clear our dom to not disturb other animations
+    _onExit(){
+        this._clearIdenticons();
     }
 
     onApiReady(api) {

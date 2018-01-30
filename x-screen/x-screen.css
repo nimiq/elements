@@ -34,7 +34,7 @@ body {
 
 .x-screen {
     padding: 24px 16px;
-    pointer-events: all;
+    box-sizing: border-box;
 }
 
 .x-entry-animation {

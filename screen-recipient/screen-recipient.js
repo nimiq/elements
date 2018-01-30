@@ -17,21 +17,21 @@ export default class ScreenRecipient extends XScreenFit {
         return [ScreenRecipientIntro, ScreenRecipientScanner, ScreenRecipientFallback, XToast];
     }
 
-    onCreate() {
-        this.addEventListener('x-address-page-select', e => this._onPageSelect(e));
-
-        this.addEventListener('x-address-scanner-success', e => this._onCameraSuccess());
-        this.addEventListener('x-address-scanner-error', e => this._onCameraError());
-
-        this.addEventListener('x-address-input', e => this._onAddressInput(e));
-        this.addEventListener('x-address-file-input', e => this._onAddressInput(e));
-        this.addEventListener('x-address-scan', e => this._onAddressInput(e));
-        requestAnimationFrame(e => this._checkCameraStatus());
+    listeners() {
+        return {
+            'x-address-page-select': '_onPageSelect',
+            'x-address-scanner-success': '_onCameraSuccess',
+            'x-address-scanner-error': '_onCameraError',
+            'x-address-input': '_onAddressInput',
+            'x-address-file-input': '_onAddressInput',
+            'x-address-scan': '_onAddressInput'
+        }
     }
 
     _onAddressInput(e) {
         e.stopPropagation();
         const address = e.detail;
+        navigator.vibrate && navigator.vibrate([100, 100, 100]);
         this.fire('x-recipient', address);
     }
 
@@ -55,7 +55,7 @@ export default class ScreenRecipient extends XScreenFit {
 
     _onPageSelect(event) {
         const page = event.detail;
-        if(page === 'scanner') return this.$screenRecipientScanner.startScanner();
+        if (page === 'scanner') return this.$screenRecipientScanner.startScanner();
         this.goTo(page);
     }
 

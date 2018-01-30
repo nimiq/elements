@@ -13,6 +13,7 @@ export default class XScreen extends XElement {
     }
 
     _onStateChange(nextState, prevState, isNavigateBack) {
+        console.log(`next: ${nextState}, prev: ${prevState}, isBack: ${isNavigateBack}`)
         if (!this._validateState(nextState, prevState, isNavigateBack)) return;
         if (nextState && nextState.isRootEqual(prevState)) return this._onChildStateChanged(nextState, prevState, isNavigateBack);
         this.__onChildExit(nextState, prevState, isNavigateBack);
@@ -40,7 +41,7 @@ export default class XScreen extends XElement {
         if (this._childScreens) return this._onEntryDefault();
         if (this._onBeforeEntry) this._onBeforeEntry(nextState, prevState, isNavigateBack);
         await this._animateEntry(isNavigateBack);
-        if (this._onEntry) this._onEntry(nextState, prevState, isNavigateBack);
+        if (this._onEntry) await this._onEntry(nextState, prevState, isNavigateBack);
     }
 
     _animateEntry(isNavigateBack) {
@@ -62,15 +63,15 @@ export default class XScreen extends XElement {
         if (!prevChild) return;
         if (prevState.isLeaf) return prevChild.__onExit(nextState, prevState, isNavigateBack);
         prevChild.__onChildExit(nextState, prevState.child, isNavigateBack);
-        if (this.isVisible) await this.__onExit(nextState, prevState, isNavigateBack);
+        // if (this.isVisible) await this.__onExit(nextState, prevState, isNavigateBack);
     }
 
     async __onExit(nextState, prevState, isNavigateBack) {
         if (!this.isVisible) return;
         if (this._onBeforeExit) this._onBeforeExit(nextState, prevState, isNavigateBack);
         await this._animateExit(isNavigateBack);
-        if (this._onExit) this._onExit(nextState, prevState, isNavigateBack);
-        //this._hide();
+        if (this._onExit) await this._onExit(nextState, prevState, isNavigateBack);
+        this._hide();
     }
 
     _animateExit(isNavigateBack) {
