@@ -2,7 +2,7 @@ import XScreen from '../x-screen/x-screen.js';
 import XSuccessMark from '../x-success-mark/x-success-mark.js';
 import XWalletBackup from '../x-wallet-backup/x-wallet-backup.js';
 import XPasswordSetter from '../x-password-setter/x-password-setter.js';
-import XScreenFit from '../x-screen/x-screen-fit';
+import XScreenFit from '../x-screen/x-screen-fit.js';
 import ScreenNoPasswordWarning from '../screen-no-password-warning/screen-no-password-warning.js';
 
 export default class ScreenBackupFile extends XScreen {
