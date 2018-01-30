@@ -26,6 +26,10 @@ export default class ScreenRecipientScanner extends XScreenFit {
             this.$addressScanner.stop();
     }
 
+    _onBeforeEntry(){
+        this.$addressScanner.start();
+    }
+
     startScanner() {
         this.$addressScanner.start()
             .then(e => this.fire('x-address-scanner-success'))

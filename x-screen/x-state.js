@@ -11,6 +11,8 @@ export default class XState {
 
     get id() { return this._id; }
 
+    get isRoot() { return this.id === '' }
+
     get child() { return this._child; }
 
     isEqual(otherState) {
@@ -64,7 +66,7 @@ export default class XState {
 
     static _currFragment() {
         let fragment = decodeURIComponent(location.hash.substr(1));
-        fragment = fragment.replace('#/','#');
+        fragment = fragment.replace('#/', '#');
         return fragment;
     }
 }

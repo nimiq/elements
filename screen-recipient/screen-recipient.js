@@ -53,20 +53,19 @@ export default class ScreenRecipient extends XScreenFit {
         this.fire('x-address-page-select', page);
     }
 
-    _onPageSelect(event) {
-        const page = event.detail;
+    _onPageSelect(page) {
         if (page === 'scanner') return this.$screenRecipientScanner.startScanner();
         this.goTo(page);
     }
 
 
     _onCameraSuccess() {
-        this.goTo('scanner');
+        this.goToChild('scanner');
         ScannerSettingsStorage.useScanner = true;
     }
 
     _onCameraError() {
-        this.goTo('fallback');
+        this.goToChild('fallback');
         ScannerSettingsStorage.useScanner = false;
         this.$toast.show('Failed to start scanner. Make sure nimiq.com is allowed to access your camera.');
     }

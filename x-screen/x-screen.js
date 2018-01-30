@@ -28,17 +28,17 @@ export default class XScreen extends XElement {
 
     async __onChildEntry(nextState, prevState, isNavigateBack) {
         if (!this.isVisible) await this.__onEntry(nextState, prevState, isNavigateBack);
-        if (!nextState.id) return this.__onEntry(nextState, prevState, isNavigateBack);
+        if (!nextState) return;
         const nextChild = this._getChildScreen(nextState.id);
         if (!nextChild) return console.error(nextState.id, 'doesn\'t exist');
-        if (nextState.isLeaf) return nextChild.__onEntry(nextState, prevState, isNavigateBack);
+        // if (nextState.isLeaf) return nextChild.__onEntry(nextState.child, prevState, isNavigateBack);
         nextChild.__onChildEntry(nextState.child, prevState, isNavigateBack);
     }
 
     async __onEntry(nextState, prevState, isNavigateBack) {
         if (this.isVisible) return;
         this._show();
-        if (this._childScreens && !nextState.isLeaf) return this._onEntryDefault();
+        if ((!nextState || nextState.isRoot) && this._childScreens) return this._onEntryDefault();
         if (this._onBeforeEntry) this._onBeforeEntry(nextState, prevState, isNavigateBack);
         await this._animateEntry(isNavigateBack);
         if (this._onEntry) await this._onEntry(nextState, prevState, isNavigateBack);
@@ -105,6 +105,10 @@ export default class XScreen extends XElement {
     goTo(route) {
         document.location = XState.locationFromRoute(route);
         // Todo: should return promise
+    }
+
+    goToChild(route) {
+        document.location = this._location + route;
     }
 
     back() {
