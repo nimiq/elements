@@ -34,7 +34,6 @@ body {
 
 .x-screen {
     padding: 24px 16px;
-    box-sizing: border-box;
     pointer-events: all;
 }
 
