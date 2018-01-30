@@ -52,22 +52,25 @@ export default class XScreen extends XElement {
 
     _onEntryDefault(prevState, isNavigateBack) {
         const defaultScreenId = Object.keys(this._childScreens)[0];
-        location = this._childScreens[defaultScreenId]._location;
+        const route = this._childScreens[defaultScreenId].route;
+        this.goTo('./' + route);
     }
 
-    __onChildExit(nextState, prevState, isNavigateBack) {
+    async __onChildExit(nextState, prevState, isNavigateBack) {
         if (!prevState) return;
         const prevChild = this._getChildScreen(prevState.id);
         if (!prevChild) return;
         if (prevState.isLeaf) return prevChild.__onExit(nextState, prevState, isNavigateBack);
         prevChild.__onChildExit(nextState, prevState.child, isNavigateBack);
+        if (this.isVisible) await this.__onExit(nextState, prevState, isNavigateBack);
     }
 
     async __onExit(nextState, prevState, isNavigateBack) {
+        if (!this.isVisible) return;
         if (this._onBeforeExit) this._onBeforeExit(nextState, prevState, isNavigateBack);
         await this._animateExit(isNavigateBack);
         if (this._onExit) this._onExit(nextState, prevState, isNavigateBack);
-        this._hide();
+        //this._hide();
     }
 
     _animateExit(isNavigateBack) {
