@@ -37,10 +37,9 @@ export default class XState {
 
     static locationFromRoute(route) {
         if (!route) return;
-        if (route[0] === '/')
-            return this._locationFromAbsoluteRoute(route);
-        else
-            return this._locationFromRelativeRoute(route);
+        if (route[0] === '/') return this._locationFromAbsoluteRoute(route);
+        if (route.indexOf('./') === 0) return this._locationFromSubroute(route);
+        return this._locationFromRelativeRoute(route);
     }
 
     static _locationFromRelativeRoute(route) {
@@ -49,6 +48,14 @@ export default class XState {
         path.pop();
         path.push(route);
         return '#' + path.join('/');
+    }
+
+    static _locationFromSubroute(route) {
+        route = route.slice(2);
+        let fragment = this._currFragment();
+        let lastChar = fragment[fragment.length - 1];
+        if (lastChar !== '/') fragment += '/';
+        return '#' + fragment + route;
     }
 
     static _locationFromAbsoluteRoute(route) {
