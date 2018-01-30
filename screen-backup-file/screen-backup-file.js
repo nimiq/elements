@@ -1,5 +1,4 @@
 import XScreen from '../x-screen/x-screen.js';
-import XSlides from '../x-slides/x-slides.js';
 import XSuccessMark from '../x-success-mark/x-success-mark.js';
 import XWalletBackup from '../x-wallet-backup/x-wallet-backup.js';
 import XPasswordSetter from '../x-password-setter/x-password-setter.js';
@@ -22,7 +21,6 @@ export default class ScreenBackupFile extends XScreen {
 
     children() {
         return [
-            XSlides,
             ScreenCreatePassword,
             ScreenEncrypting,
             ScreenDownloadRecovery,
@@ -31,26 +29,16 @@ export default class ScreenBackupFile extends XScreen {
         ]
     }
 
-    onCreate() {
-    }
-
-    _onBeforeEntry() {
-        this.$slides._onResize();
-    }
-
     _onEntry() {
         this.goTo('password');
     }
 
     async reset() { }
 
-    
-
     async backup(address, privateKey) {
-        await this.ScreenDownloadRecovery.$walletBackup.backup(address, privateKey);
-        this.$slides.next();
+        await this.$screenDownloadRecovery.$walletBackup.backup(address, privateKey);
+        this.goTo('download')
     }
-
 }
 
 class ScreenCreatePassword extends XScreenFit {
@@ -72,8 +60,8 @@ class ScreenCreatePassword extends XScreenFit {
         this.$nextButton = this.$('button');
         this.$noPasswordLink = this.$('a');
         this.$nextButton.addEventListener('click', e => this._onPasswordInput());
-        this.$noPasswordLink.addEventListener('click', e => this.goto('no-password'));
-        this.addEventListener('x-password-setter', e => this._onPasswordInput());
+        this.$noPasswordLink.addEventListener('click', e => this.goTo('no-password'));
+        this.addEventListener('x-password-input', e => this._onPasswordInput());
         this.addEventListener('x-password-setter-valid', e => this._validityChanged(e.detail));
     }
 
@@ -85,7 +73,7 @@ class ScreenCreatePassword extends XScreenFit {
     _onPasswordInput() {
         const password = this.$passwordSetter.value;
         this.fire('x-encrypt-backup', password);
-        this.goTo('encrypting');
+        this.goTo('encrypt');
     }
 
     _validityChanged(valid) {
@@ -105,7 +93,7 @@ class ScreenEncrypting extends XScreenFit {
       `
     }
 
-    get route() { return 'encrypting' }
+    get route() { return 'encrypt' }
 }
 
 class ScreenDownloadRecovery extends XScreenFit {
@@ -147,7 +135,6 @@ class ScreenComplete extends XScreenFit {
     }
 }
 
-// Todo: [Max] possibility to not use a password, show heavy warning that it's not for real usage
-// Todo: [Max] [low] Show encrypt screen long enoguh to be noticed.
-// Todo: Bug: goTo can lead to urls such as /#/password/password/password (added e.g. after reload)
-// Todo: Change location from subscreen?
+// Todo: Bug: Two screens are shown overlapping when opening with #[screen]
+// Todo: Bug: Encrypt animation stays after changing to another subscreen
+// Todo: Bug: x-slides dots missing
