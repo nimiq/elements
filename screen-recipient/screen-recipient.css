@@ -37,7 +37,7 @@ screen-recipient-scanner x-address-input.x-address{
 }
 
 /* Hide address-input if not focused */
-x-address-scanner x-address-input input:not(:focus) {
+screen-recipient-scanner x-address-input input:not(:focus) {
     opacity: 0;
     cursor: pointer;
 }
