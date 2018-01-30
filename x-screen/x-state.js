@@ -54,7 +54,7 @@ export default class XState {
         route = route.slice(2);
         let fragment = this._currFragment();
         let lastChar = fragment[fragment.length - 1];
-        if (lastChar !== '/') fragment += '/';
+        if (!!fragment && lastChar !== '/') fragment += '/';
         return '#' + fragment + route;
     }
 
@@ -63,6 +63,8 @@ export default class XState {
     }
 
     static _currFragment() {
-        return decodeURIComponent(location.hash.substr(1));
+        let fragment = decodeURIComponent(location.hash.substr(1));
+        fragment = fragment.replace('#/','#');
+        return fragment;
     }
 }
