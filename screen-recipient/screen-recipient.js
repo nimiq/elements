@@ -40,13 +40,13 @@ export default class ScreenRecipient extends XScreenFit {
     }
 
     _checkCameraStatus() {
-        const isFirstUse = ScannerSettingsStorage.isFirstUse;
-        if (isFirstUse) return this._select('intro');
-        const useScanner = ScannerSettingsStorage.useScanner;
-        if (useScanner)
-            this._select('scanner');
-        else
-            this._select('fallback');
+        // const isFirstUse = ScannerSettingsStorage.isFirstUse;
+        // if (isFirstUse) return this._select('intro');
+        // const useScanner = ScannerSettingsStorage.useScanner;
+        // if (useScanner)
+        //     this._select('scanner');
+        // else
+        //     this._select('fallback');
     }
 
     _select(page) {
@@ -58,7 +58,6 @@ export default class ScreenRecipient extends XScreenFit {
         this.goTo(page);
     }
 
-
     _onCameraSuccess() {
         this.goToChild('scanner');
         ScannerSettingsStorage.useScanner = true;
@@ -68,6 +67,16 @@ export default class ScreenRecipient extends XScreenFit {
         this.goToChild('fallback');
         ScannerSettingsStorage.useScanner = false;
         this.$toast.show('Failed to start scanner. Make sure nimiq.com is allowed to access your camera.');
+    }
+
+    _getDefaultScreen() {
+        const isFirstUse = ScannerSettingsStorage.isFirstUse;
+        if (isFirstUse) return this._childScreens['intro'];
+        const useScanner = ScannerSettingsStorage.useScanner;
+        if (useScanner)
+            return this._childScreens['scanner'];
+        else
+            return this._childScreens['fallback'];
     }
 }
 

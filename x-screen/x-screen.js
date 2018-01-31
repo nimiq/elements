@@ -10,35 +10,66 @@ export default class XScreen extends XElement {
 
     _registerRootElement() {
         XScreen._registerGlobalStateListener(this._onStateChange.bind(this));
+        this._show();
     }
 
     async _onStateChange(nextState, prevState, isNavigateBack) {
-        console.log(`next: ${nextState}, prev: ${prevState}, isBack: ${isNavigateBack}`)
-        if (!this._validateState(nextState, prevState, isNavigateBack)) return;
-        if (nextState && nextState.isRootEqual(prevState)) return this._onChildStateChanged(nextState, prevState, isNavigateBack);
-        await this.__onChildExit(nextState, prevState, isNavigateBack);
-        this.__onChildEntry(nextState, prevState, isNavigateBack);
+        nextState = this._sanitizeState(nextState);
+        console.log(nextState);
+        const intersection = nextState.intersection(prevState); // calc intersection common parent path
+        const nextStateDiff = nextState.difference(prevState);
+        const prevStateDiff = prevState && prevState.difference(nextState);
+        let parent = this;
+        intersection.forEach(childId => parent = parent._getChildScreen(childId)); // decent common path
+        let exitParent = prevStateDiff && parent._getChildScreen(prevStateDiff[0]);
+        if (exitParent) exitParent._exitScreens(prevStateDiff, nextState, prevState, isNavigateBack);
+        parent._entryScreens(nextStateDiff, nextState, prevState, isNavigateBack);
     }
 
-    _onChildStateChanged(nextState, prevState, isNavigateBack) {
-        const childScreen = this._getChildScreen(nextState.id);
-        if (!childScreen) return console.error(nextState.id, 'doesn\'t exist');;
-        childScreen._onStateChange(nextState.child, prevState.child, isNavigateBack);
+    _exitScreens(prevStateDiff, nextState, prevState, isNavigateBack) {
+        if (prevStateDiff && prevStateDiff.length > 1) {
+            const childScreen = this._getChildScreen(prevStateDiff[1]);
+            prevStateDiff = prevStateDiff.slice(1);
+            childScreen._exitScreens(prevStateDiff, nextState, prevState, isNavigateBack);
+        }
+        this.__onExit(nextState, prevState, isNavigateBack);
     }
 
-    async __onChildEntry(nextState, prevState, isNavigateBack) {
-        if (!this.isVisible) await this.__onEntry(nextState, prevState, isNavigateBack);
-        if (!nextState) return;
-        const nextChild = this._getChildScreen(nextState.id);
-        if (!nextChild) return console.error(nextState.id, 'doesn\'t exist');
-        // if (nextState.isLeaf) return nextChild.__onEntry(nextState.child, prevState, isNavigateBack);
-        nextChild.__onChildEntry(nextState.child, prevState, isNavigateBack);
+    _entryScreens(nextStateDiff, nextState, prevState, isNavigateBack) {
+        this.__onEntry(nextState, prevState, isNavigateBack);
+        if (!nextStateDiff || !nextStateDiff.length) return;
+        const childScreen = this._getChildScreen(nextStateDiff[0]);
+        if (!childScreen) return;
+        const nextChildStateDiff = nextStateDiff.slice(1);
+        childScreen._entryScreens(nextChildStateDiff, nextState, prevState, isNavigateBack);
+    }
+
+    _sanitizeState(nextState) {
+        let parent = this;
+        const state = nextState;
+        while (nextState && !nextState.isRoot) {
+            parent = parent._getChildScreen(nextState.id);
+            nextState = nextState.child;
+        }
+        let child = parent;
+        while (child && child._getDefaultScreen()) {
+            child = child._getDefaultScreen();
+        }
+        const cleanState = XState.fromLocation(child._location);
+        history.replaceState(history.state, history.state, child._location);
+        XScreen.currState = cleanState;
+        return cleanState;
+    }
+
+    _getDefaultScreen() {
+        if (!this._childScreens) return;
+        const defaultScreenId = Object.keys(this._childScreens)[0];
+        return this._childScreens[defaultScreenId];
     }
 
     async __onEntry(nextState, prevState, isNavigateBack) {
         if (this.isVisible) return;
         this._show();
-        if ((!nextState || nextState.isRoot) && this._childScreens) return this._onEntryDefault();
         if (this._onBeforeEntry) this._onBeforeEntry(nextState, prevState, isNavigateBack);
         await this._animateEntry(isNavigateBack);
         if (this._onEntry) await this._onEntry(nextState, prevState, isNavigateBack);
@@ -49,21 +80,6 @@ export default class XScreen extends XElement {
             return this.animate('x-entry-animation');
         else
             return this.animate('x-exit-animation-reverse');
-    }
-
-    _onEntryDefault(prevState, isNavigateBack) {
-        const defaultScreenId = Object.keys(this._childScreens)[0];
-        const route = this._childScreens[defaultScreenId].route;
-        this.goTo('./' + route);
-    }
-
-    async __onChildExit(nextState, prevState, isNavigateBack) {
-        if (!prevState) return;
-        const prevChild = this._getChildScreen(prevState.id);
-        if (!prevChild) return;
-        if (prevState.isLeaf) return prevChild.__onExit(nextState, prevState, isNavigateBack);
-        prevChild.__onChildExit(nextState, prevState.child, isNavigateBack);
-        if (this.isVisible) await this.__onExit(nextState, prevState, isNavigateBack);
     }
 
     async __onExit(nextState, prevState, isNavigateBack) {
@@ -98,8 +114,9 @@ export default class XScreen extends XElement {
     }
 
     get _location() {
-        if (!this._parent) return '#';
-        return this._parent._location + this.route + '/';
+        if (!this._parent) return;
+        if (!this._parent._location) return '#' + this.route;
+        return this._parent._location + '/' + this.route;
     }
 
     goTo(route) {
@@ -108,7 +125,7 @@ export default class XScreen extends XElement {
     }
 
     goToChild(route) {
-        document.location = this._location + route;
+        document.location = this._location + '/' + route;
     }
 
     back() {

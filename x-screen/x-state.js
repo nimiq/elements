@@ -5,6 +5,7 @@ export default class XState {
         const child = path.slice(1);
         if (child.length && child[0]) this._child = new XState(child);
         this._isLeaf = !this._child;
+        this._path = path;
     }
 
     get isLeaf() { return this._isLeaf; }
@@ -14,6 +15,8 @@ export default class XState {
     get isRoot() { return this.id === '' }
 
     get child() { return this._child; }
+
+    get path() { return JSON.parse(JSON.stringify(this._path)) }
 
     isEqual(otherState) {
         return otherState && this.toString() === otherState.toString();
@@ -27,8 +30,34 @@ export default class XState {
         return this._toString;
     }
 
-    static fromLocation() {
-        const fragment = this._currFragment();
+    intersection(otherState) {
+        const intersection = [];
+        let state1 = this;
+        let state2 = otherState;
+        while (state1 && state2 && state1.id === state2.id) {
+            intersection.push(state1.id);
+            state1 = state1.child;
+            state2 = state2.child;
+        }
+        return intersection;
+    }
+
+    difference(otherState) {
+        if (!otherState) return this.path;
+        const difference = [];
+        let state1 = this;
+        let state2 = otherState;
+        while (state1) {
+            if (!state2 || state1.id !== state2.id) difference.push(state1.id);
+            state1 = state1.child;
+            if (state2) state2 = state2.child;
+        }
+        return difference;
+    }
+
+    static fromLocation(fragment) {
+        fragment = fragment || this._currFragment();
+        fragment = fragment[0] === '#' ? fragment.slice(1) : fragment;
         return this.fromString(fragment);
     }
 
@@ -65,7 +94,7 @@ export default class XState {
     }
 
     static _currFragment() {
-        let fragment = decodeURIComponent(location.hash.substr(1));
+        let fragment = decodeURIComponent(location.hash.slice(1));
         fragment = fragment.replace('#/', '#');
         return fragment;
     }
