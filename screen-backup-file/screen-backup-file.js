@@ -78,8 +78,11 @@ class ScreenCreatePassword extends XScreenFit {
         this.addEventListener('x-password-setter-valid', e => this._validityChanged(e.detail));
     }
 
-    _onEntry() {
+    _onBeforeEntry() {
         this.$passwordSetter.value = '';
+    }
+
+    _onEntry() {
         this.$passwordSetter.focus();
     }
 
@@ -117,7 +120,7 @@ class ScreenDownloadRecovery extends XScreenFit {
     }
 
     async _onWalletBackupComplete() {
-        this.goTo('complete')
+        this.goTo('success')
     }
 }
 
