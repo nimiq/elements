@@ -120,7 +120,8 @@ class ScreenDownloadRecovery extends XScreenFit {
     }
 
     async _onWalletBackupComplete() {
-        this.goTo('success')
+        await this.goTo('success');
+        this.fire('x-backup-file-complete');
     }
 }
 

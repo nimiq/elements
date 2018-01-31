@@ -67,7 +67,7 @@ screen-identicons [button] {
     position: absolute;
     top: calc( 50% + 240px);
     pointer-events: none;
-    width: calc(100% - 32px);
+    width: calc(100% - 64px);
 }
 
 

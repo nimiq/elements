@@ -14,6 +14,7 @@ export default class XScreen extends XElement {
     }
 
     async _onStateChange(nextState, prevState, isNavigateBack) {
+        XScreen._goToResolve && XScreen._goToResolve();
         nextState = this._sanitizeState(nextState);
         console.log(nextState);
         const intersection = nextState.intersection(prevState); // calc intersection common parent path
@@ -120,7 +121,10 @@ export default class XScreen extends XElement {
     }
 
     goTo(route) {
-        document.location = XState.locationFromRoute(route);
+        return new Promise(resolve =>{
+            XScreen._goToResolve = resolve;
+            document.location = XState.locationFromRoute(route);
+        })
         // Todo: should return promise
     }
 
