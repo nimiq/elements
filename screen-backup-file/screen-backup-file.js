@@ -3,6 +3,8 @@ import XSuccessMark from '../x-success-mark/x-success-mark.js';
 import XWalletBackup from '../x-wallet-backup/x-wallet-backup.js';
 import XPasswordSetter from '../x-password-setter/x-password-setter.js';
 import XScreenFit from '../x-screen/x-screen-fit.js';
+import ScreenSuccess from '../screen-success/screen-success.js';
+import ScreenLoading from '../screen-loading/screen-loading.js';
 import ScreenNoPasswordWarning from '../screen-no-password-warning/screen-no-password-warning.js';
 
 export default class ScreenBackupFile extends XScreen {
@@ -11,9 +13,9 @@ export default class ScreenBackupFile extends XScreen {
             <h1>Backup your Recovery File</h1>
             <x-slides>
                 <screen-create-password></screen-create-password>
-                <screen-encrypting></screen-encrypting>
+                <screen-loading>Encrypting Backup</screen-loading>
                 <screen-download-recovery></screen-download-recovery>
-                <screen-complete></screen-complete>
+                <screen-success></screen-success>
             </x-slides>
             <x-indicator></x-indicator>
             <screen-no-password-warning></screen-no-password-warning>
@@ -23,9 +25,9 @@ export default class ScreenBackupFile extends XScreen {
     children() {
         return [
             ScreenCreatePassword,
-            ScreenEncrypting,
+            ScreenLoading,
             ScreenDownloadRecovery,
-            ScreenComplete,
+            ScreenSuccess,
             ScreenNoPasswordWarning
         ]
     }
@@ -59,7 +61,7 @@ class ScreenCreatePassword extends XScreenFit {
           <x-password-setter></x-password-setter>
           <x-grow></x-grow>
           <button disabled="1">Next</button>
-          <a secondary>No password</button>
+          <a secondary>Continue without password</button>
       `
     }
 
@@ -84,7 +86,7 @@ class ScreenCreatePassword extends XScreenFit {
     _onPasswordInput() {
         const password = this.$passwordSetter.value;
         this.fire('x-encrypt-backup', password);
-        this.goTo('encrypt');
+        this.goTo('loading');
     }
 
     _validityChanged(valid) {
@@ -96,16 +98,6 @@ class ScreenCreatePassword extends XScreenFit {
     }
 }
 
-class ScreenEncrypting extends XScreenFit {
-    html() {
-        return `
-          <x-loading-animation></x-loading-animation>
-          <h2>Encrypting Backup</h2>
-      `
-    }
-
-    get route() { return 'encrypt' }
-}
 
 class ScreenDownloadRecovery extends XScreenFit {
     html() {
@@ -129,22 +121,6 @@ class ScreenDownloadRecovery extends XScreenFit {
     }
 }
 
-class ScreenComplete extends XScreenFit {
-    html() {
-        return `
-          <x-success-mark></x-success-mark>
-          <h2>Backup Complete</h2>
-      `
-    }
-
-    get route() { return 'complete' }
-
-    children() { return [XSuccessMark] }
-
-    async _onEntry() {
-        await this.$successMark.animate();
-    }
-}
 
 // Todo: Bug: Two screens are shown overlapping when opening with #[screen]
 // Todo: Bug: Encrypt animation stays after changing to another subscreen
