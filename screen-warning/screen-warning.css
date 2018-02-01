@@ -19,6 +19,7 @@ x-warning i[icon-warning] {
     margin: 16px;
     width: 64px;
     height: 64px;
+    background-size: contain;
 }
 
 x-warning h2 {

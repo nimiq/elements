@@ -28,9 +28,7 @@ export default class ScreenRecipient extends XScreenFit {
         }
     }
 
-    _onAddressInput(e) {
-        e.stopPropagation();
-        const address = e.detail;
+    _onAddressInput(address) {
         navigator.vibrate && navigator.vibrate([100, 100, 100]);
         this.fire('x-recipient', address);
     }

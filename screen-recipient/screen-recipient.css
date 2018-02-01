@@ -4,13 +4,13 @@
 @import '../x-address-file-input/x-address-file-input.css';
 @import "../x-address-scanner/x-address-scanner.css";
 
-screen-recipient{
+screen-recipient {
     width: 100%;
     height: 100%;
     overflow: hidden;
 }
 
-screen-recipient-intro > [background] {
+screen-recipient-intro>[background] {
     background-image: url('/elements/screen-recipient/recipient-intro.svg');
     background-size: contain;
     background-repeat: no-repeat;
@@ -19,28 +19,39 @@ screen-recipient-intro > [background] {
     animation: from-bottom 1.5s;
     top: 128px;
     bottom: -42px;
-    width:  100%;
+    width: 100%;
 }
 
-screen-recipient-intro > button,
-screen-recipient-intro > a[secondary] {
+screen-recipient-intro>button,
+screen-recipient-intro>a[secondary] {
     animation: fade 0.7s 1.5s both;
 }
 
 
-screen-recipient-intro > :not([background]) {
+screen-recipient-intro> :not([background]) {
     z-index: 1;
 }
 
-screen-recipient-scanner x-address-input.x-address{
+screen-recipient-scanner x-address-input.x-address {
     max-width: 100%;
 }
 
+
 /* Hide address-input if not focused */
+
 screen-recipient-scanner x-address-input input:not(:focus) {
     opacity: 0;
     cursor: pointer;
 }
+
+screen-recipient-scanner x-address-input .prefix {
+    transition: opacity 300ms;
+}
+
+screen-recipient-scanner x-address-input input:not(:focus)~.prefix {
+    opacity: 0;
+}
+
 
 
 screen-recipient-fallback a[secondary] {
