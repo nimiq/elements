@@ -100,3 +100,4 @@ class ScannerSettingsStorage {
 }
 
 // Todo: refactor _pageSelect to use x-screen state changes
+// Todo: Bug: Page layout defect in Firefox
