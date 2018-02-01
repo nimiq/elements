@@ -14,7 +14,6 @@ export default class XScreen extends XElement {
     }
 
     async _onStateChange(nextState, prevState, isNavigateBack) {
-        XScreen._goToResolve && XScreen._goToResolve();
         nextState = this._sanitizeState(nextState);
         console.log(nextState);
         const intersection = nextState.intersection(prevState); // calc intersection common parent path
@@ -73,6 +72,7 @@ export default class XScreen extends XElement {
         this._show();
         if (this._onBeforeEntry) this._onBeforeEntry(nextState, prevState, isNavigateBack);
         await this._animateEntry(isNavigateBack);
+        this._resolveGoTo();
         if (this._onEntry) await this._onEntry(nextState, prevState, isNavigateBack);
     }
 
@@ -121,11 +121,10 @@ export default class XScreen extends XElement {
     }
 
     goTo(route) {
-        return new Promise(resolve =>{
+        return new Promise(resolve => {
             XScreen._goToResolve = resolve;
             document.location = XState.locationFromRoute(route);
         })
-        // Todo: should return promise
     }
 
     goToChild(route) {
@@ -133,8 +132,10 @@ export default class XScreen extends XElement {
     }
 
     back() {
-        history.back();
-        // Todo: should return promise
+        return new Promise(resolve => {
+            XScreen._goToResolve = resolve;
+            history.back();
+        });
     }
 
     _bindListeners() {
@@ -167,6 +168,12 @@ export default class XScreen extends XElement {
         if (!this.styles) this.addStyle('x-screen');
     }
 
+    _resolveGoTo() {
+        if (!XScreen._goToResolve) return;
+        XScreen._goToResolve();
+        XScreen._goToResolve = null;
+    }
+
     _validateState(nextState, prevState, isNavigateBack) { return true /* Abstract Method */ }
 
 
@@ -187,6 +194,3 @@ export default class XScreen extends XElement {
 
     static launch() { window.addEventListener('load', () => new this()); }
 }
-
-
-// Todo: use history.replaceState to fix bug when navigating back after redirecting to default
