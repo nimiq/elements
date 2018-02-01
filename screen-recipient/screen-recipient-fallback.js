@@ -21,6 +21,10 @@ export default class ScreenRecipientFallback extends XScreen {
         this.$('[use-camera]').addEventListener('click', e => this.fire('x-address-page-select', 'scanner'));
     }
 
+    _onEntry() {
+        this.$addressInput._onEntry();
+    }
+
     get route() { return 'fallback' }
 }
 // Todo: [Max] if user starts typing or pasting auto focus address input
