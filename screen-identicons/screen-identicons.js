@@ -6,7 +6,7 @@ export default class ScreenIdenticons extends XScreen {
     html() {
         return `
             <h1>Choose Your Avatar</h1>
-            <h2>Your Avatar will be unique to your Account. You can not change it later.</h2>
+            <h2>Your Avatar will be unique to this Account. You can not change it later.</h2>
             <x-container></x-container>
             <a secondary>Generate More</a>
             <x-backdrop class="center">
