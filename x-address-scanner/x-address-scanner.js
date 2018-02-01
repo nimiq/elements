@@ -10,4 +10,3 @@ export default class XAddressScanner extends XQrScanner {
         return NanoApi.validateAddress(address);
     }
 }
-// Todo: [low] refactor setGrayscaleWeights into global config file

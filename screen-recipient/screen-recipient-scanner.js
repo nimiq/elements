@@ -34,3 +34,4 @@ export default class ScreenRecipientScanner extends XScreenFit {
             .catch(e => this.fire('x-address-scanner-error'));
     }
 }
+// Todo: [Max] if user starts typing or pasting auto focus address input

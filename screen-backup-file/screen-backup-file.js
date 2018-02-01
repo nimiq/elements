@@ -15,7 +15,7 @@ export default class ScreenBackupFile extends XScreen {
                 <screen-create-password></screen-create-password>
                 <screen-loading>Encrypting Backup</screen-loading>
                 <screen-download-recovery></screen-download-recovery>
-                <screen-success></screen-success>
+                <screen-success>Backup Complete</screen-success>
             </x-slides>
             <x-indicator></x-indicator>
             <screen-no-password-warning></screen-no-password-warning>
@@ -125,7 +125,4 @@ class ScreenDownloadRecovery extends XScreenFit {
     }
 }
 
-
-// Todo: Bug: Two screens are shown overlapping when opening with #[screen]
-// Todo: Bug: Encrypt animation stays after changing to another subscreen
 // Todo: Bug: x-slides dots missing

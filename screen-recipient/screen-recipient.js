@@ -37,16 +37,6 @@ export default class ScreenRecipient extends XScreenFit {
         this.$screenRecipientScanner.active = active && ScannerSettingsStorage.useScanner;
     }
 
-    _checkCameraStatus() {
-        // const isFirstUse = ScannerSettingsStorage.isFirstUse;
-        // if (isFirstUse) return this._select('intro');
-        // const useScanner = ScannerSettingsStorage.useScanner;
-        // if (useScanner)
-        //     this._select('scanner');
-        // else
-        //     this._select('fallback');
-    }
-
     _select(page) {
         this.fire('x-address-page-select', page);
     }
@@ -97,5 +87,4 @@ class ScannerSettingsStorage {
     }
 }
 
-// Todo: refactor _pageSelect to use x-screen state changes
 // Todo: Bug: Page layout defect in Firefox
