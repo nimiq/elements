@@ -1,0 +1,38 @@
+x-warning {
+    background: white;
+    padding: 0 16px;
+    margin: 16px 0;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 6px;
+    box-shadow: var(--box-shadow);
+    line-height: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: var(--max-width);
+    color: #333;
+}
+
+x-warning i[icon-warning] {
+    margin: 16px;
+    width: 64px;
+    height: 64px;
+}
+
+x-warning h2 {
+    margin-bottom: 16px;
+    font-weight: 500;
+    color: var(--error-color);
+}
+
+x-warning ul{
+    padding-left: 24px;
+}
+
+@media (min-width:400px) {
+    x-warning{
+        padding: 8px 16px 24px;
+    }
+}
