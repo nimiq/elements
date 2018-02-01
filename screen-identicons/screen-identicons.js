@@ -35,7 +35,7 @@ export default class ScreenIdenticons extends XScreen {
 
     onApiReady(api) {
         this._api = api;
-        if (this._generated || !this.visible) return;
+        if (this._generated || !this.isVisible) return;
         this._generateIdenticons();
     }
 
