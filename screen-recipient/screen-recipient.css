@@ -16,7 +16,7 @@ screen-recipient-intro>[background] {
     background-repeat: no-repeat;
     background-position: center;
     position: absolute;
-    animation: from-bottom 1.5s;
+    animation: from-bottom 1500ms;
     top: 128px;
     bottom: -42px;
     width: 100%;
@@ -24,7 +24,7 @@ screen-recipient-intro>[background] {
 
 screen-recipient-intro>button,
 screen-recipient-intro>a[secondary] {
-    animation: fade 0.7s 1.5s both;
+    animation: fade 0.7s 1s both;
 }
 
 

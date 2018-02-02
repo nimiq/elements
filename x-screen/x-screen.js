@@ -85,6 +85,7 @@ export default class XScreen extends XElement {
 
     async __onExit(nextState, prevState, isNavigateBack) {
         if (!this.isVisible) return;
+        document.activeElement.blur();
         if (this._onBeforeExit) this._onBeforeExit(nextState, prevState, isNavigateBack);
         await this._animateExit(isNavigateBack);
         if (this._onExit) await this._onExit(nextState, prevState, isNavigateBack);
@@ -111,7 +112,7 @@ export default class XScreen extends XElement {
     get isVisible() { return this._isVisible; }
 
     get route() {
-        return this._route || this.__tagName.replace('screen-', '');
+        return this._route || this.$el.getAttribute('route') || this.__tagName.replace('screen-', '');
     }
 
     get _location() {
