@@ -39,6 +39,10 @@ export default class ScreenBackupFileImport extends XScreen {
         this.goTo('loading');
     }
 
+    async onPasswordCorrect(){
+        return this.goTo('success');
+    }
+
     async onPasswordIncorrect() {
         await this.back();
         this.$screenBackupFileImportPassword.$passwordInput._onInvalid();
