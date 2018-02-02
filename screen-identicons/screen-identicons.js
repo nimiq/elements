@@ -90,3 +90,5 @@ export default class ScreenIdenticons extends XScreen {
 // Todo: show loading screen while waiting for api to start
 // Todo: refactor api such that addresses can be generated before full api is loaded
 // Todo: [low priority] remove hack for overlay and find a general solution
+// Todo: [Max] Bug: Overlay broken on Android. But is to be refactored anyway
+// Todo: [Max] Bug: Totally broken on iOs

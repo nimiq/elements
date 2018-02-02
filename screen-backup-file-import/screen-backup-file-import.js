@@ -53,9 +53,9 @@ class ScreenBackupFileImportIntro extends XScreenFit {
         `
     }
 
-    children() { return [XWalletBackupImport] }
-
     get route() { return 'intro' }
+
+    children() { return [XWalletBackupImport] }
 }
 
 class ScreenBackupFileImportPassword extends XScreenFit {
