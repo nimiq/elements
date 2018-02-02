@@ -9,12 +9,12 @@
 </head>
 
 <body>
-    <main>
-        <section class="center" style="justify-content: space-evenly;">
-            <x-qr-file-input demo1></x-qr-file-input>
-            <x-qr-file-input demo2><a secondary>Custom Input</a></x-qr-file-input>
-        </section>
-    </main>
+    <section class="center" style="justify-content: space-evenly;">
+        <x-qr-file-input demo1></x-qr-file-input>
+        <x-qr-file-input demo2>
+            <a secondary>Custom Input</a>
+        </x-qr-file-input>
+    </section>
     <script type="module">
         import XQrFileInput from "../x-qr-file-input.js";
         import XToast from "../../x-toast/x-toast.js";
@@ -27,4 +27,3 @@
 </body>
 
 </html>
-
