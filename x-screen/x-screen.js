@@ -72,8 +72,8 @@ export default class XScreen extends XElement {
         this._show();
         if (this._onBeforeEntry) this._onBeforeEntry(nextState, prevState, isNavigateBack);
         await this._animateEntry(isNavigateBack);
-        this._resolveGoTo();
         if (this._onEntry) await this._onEntry(nextState, prevState, isNavigateBack);
+        this._resolveGoTo();
     }
 
     _animateEntry(isNavigateBack) {
