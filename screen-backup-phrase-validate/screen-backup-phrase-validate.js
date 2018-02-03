@@ -7,9 +7,9 @@ export default class ScreenBackupPhraseValidate extends XScreen {
         return `
             <h1>Validate Recovery Phrase</h1>
             <x-slides>
-                <screen-1></screen-1>
-                <screen-2></screen-2>
-                <screen-3></screen-3>
+                <screen-mnemonic-validate route="1"></screen-mnemonic-validate>
+                <screen-mnemonic-validate route="2"></screen-mnemonic-validate>
+                <screen-mnemonic-validate route="3"></screen-mnemonic-validate>
                 <screen-success>
                     Phrase validated
                 </screen-success>
@@ -22,7 +22,7 @@ export default class ScreenBackupPhraseValidate extends XScreen {
     }
 
     children() {
-        return [ScreenSuccess, Screen1, Screen2, Screen3];
+        return [ScreenSuccess, [ScreenMnemonicValidate]];
     }
 
     _getDefaultScreen() { return this._childScreens['screen1']; }
@@ -40,15 +40,16 @@ export default class ScreenBackupPhraseValidate extends XScreen {
     set mnemonic(mnemonic) {
         if (!mnemonic) return;
         this._mnemonic = mnemonic.split(/\s+/g);
-        this.init();
+        //this.init();
     }
 
+    /*
     init() {
-        this._activeSlide = 0;
+        this._activeSlide = this._childScreens[0];
         this._generateIndices();
-        this._setSlideContent(this._activeSlide);
+        //this._setSlideContent(this._activeSlide);
         this._showActiveSlide();
-    }
+    }*/
 
     reset() {
         if (!this._mnemonic) return;
@@ -64,7 +65,7 @@ export default class ScreenBackupPhraseValidate extends XScreen {
         this._activeSlide += 1;
         if (this._activeSlide < 3) this._setSlideContent(this._activeSlide);
         else setTimeout(() => this.$successMark.animate(), 300);
-        this._showActiveSlide();
+        //this._showActiveSlide();
     }
 
     _onSlideEvent(valid) {
@@ -110,7 +111,7 @@ export default class ScreenBackupPhraseValidate extends XScreen {
     }
 
     _showActiveSlide() {
-        this.$slides.slideTo(this._activeSlide);
+        this.goTo(this._activeSlide.route);
     }
 }
 

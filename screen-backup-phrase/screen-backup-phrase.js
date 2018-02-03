@@ -32,8 +32,6 @@ class ScreenPrivacy extends XScreen {
 
     children() { return [XPrivacyAgent] }
 
-    get route() { return 'privacy' }
-
     onCreate() {
         this.addEventListener('x-surrounding-checked', e => this.goTo('phrase'));
     }
@@ -50,8 +48,6 @@ class ScreenPhrase extends XScreen {
     }
 
     children() { return [XMnemonicPhrase] }
-
-    get route() { return 'phrase' }
 
     /*_animateButton() {
         this.$('[button]').classList.add('fade-in');
