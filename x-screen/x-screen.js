@@ -154,9 +154,11 @@ export default class XScreen extends XElement {
 
     __createChild(child) {
         super.__createChild(child);
-        const childScreen = this[child.__toChildName()];
-        if (childScreen instanceof XScreen) this.__createChildScreen(childScreen);
         if (child instanceof Array) this.__createChildScreens(child[0]);
+        else {
+            const childScreen = this[child.__toChildName()];
+            if (childScreen instanceof XScreen) this.__createChildScreen(childScreen);
+        }
     }
 
     __createChildScreen(child) {
