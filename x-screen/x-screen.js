@@ -2,9 +2,9 @@ import XElement from '/library/x-element/x-element.js';
 import XState from './x-state.js';
 export default class XScreen extends XElement {
 
-    constructor(root) {
-        super(root);
-        if (!root) this._registerRootElement();
+    constructor(parent) {
+        super(parent);
+        if (!parent) this._registerRootElement();
         this._bindListeners();
     }
 
