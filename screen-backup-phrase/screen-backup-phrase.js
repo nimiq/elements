@@ -1,5 +1,6 @@
 import XScreen from '../x-screen/x-screen.js';
-import XPrivacyAgent from '../x-privacy-agent/x-privacy-agent.js';
+import XScreenFit from '../x-screen/x-screen-fit.js';
+import ScreenPrivacy from '../screen-privacy/screen-privacy.js';
 import XMnemonicPhrase from '../x-mnemonic-phrase/x-mnemonic-phrase.js';
 
 export default class ScreenBackupPhrase extends XScreen {
@@ -21,23 +22,9 @@ export default class ScreenBackupPhrase extends XScreen {
     }
 }
 
-class ScreenPrivacy extends XScreen {
-    html() {
-        return `
-            <h2 secondary>First make sure your enviroment is safe.</h2>
-            <x-privacy-agent></x-privacy-agent>
-            <x-grow></x-grow>
-            `;
-    }
 
-    children() { return [XPrivacyAgent] }
 
-    onCreate() {
-        this.addEventListener('x-surrounding-checked', e => this.goTo('phrase'));
-    }
-}
-
-class ScreenPhrase extends XScreen {
+class ScreenPhrase extends XScreenFit {
     html() {
         return `
             <h2 secondary>Write down the following 24 words to recover your account later</h2>
