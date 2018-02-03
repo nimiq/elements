@@ -10,8 +10,4 @@ export default class ScreenPrivacy extends XScreenFit {
     }
 
     children() { return [XPrivacyAgent] }
-
-    onCreate() {
-        this.addEventListener('x-surrounding-checked', e => this.goTo('phrase'));
-    }
 }

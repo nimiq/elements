@@ -15,6 +15,10 @@ export default class ScreenBackupPhrase extends XScreen {
     }
     children() { return [ScreenPrivacy, ScreenPhrase] }
     
+    onCreate(){
+        this.addEventListener('x-surrounding-checked', e => this.goTo('phrase'));
+    }
+
     _getDefaultScreen() { return this._childScreens['privacy']; }
 
     set privateKey(privateKey) {
