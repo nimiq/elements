@@ -48,7 +48,8 @@ export default class XScreen extends XElement {
         let parent = this;
         const state = nextState;
         while (nextState && !nextState.isRoot) {
-            parent = parent._getChildScreen(nextState.id);
+            const id = nextState.id;
+            parent = parent._getChildScreen(id);
             nextState = nextState.child;
         }
         let child = parent;
@@ -168,7 +169,6 @@ export default class XScreen extends XElement {
     }
 
     __createChildScreens(child) {
-        if (!(child instanceof XScreen)) return;
         const name = child.__toChildName() + 's';
         this[name].forEach(c => this.__createChildScreen(c));
     }

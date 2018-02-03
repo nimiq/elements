@@ -18,20 +18,20 @@ export default class ScreenBackupPhraseValidate extends XScreen {
     }
 
     onHide() {
-        this.$mnemonicValidate.reset();
+        this.reset();
     }
 
     children() {
         return [ScreenSuccess, [ScreenMnemonicValidate]];
     }
 
-    _getDefaultScreen() { return this._childScreens['screen1']; }
+    _getDefaultScreen() { return this._childScreens['1']; }
 
-    /*onCreate() {
-        this.children.forEach(slide => {
-            slide.addEventListener('x-mnemonic-validate-slide', e => this._onSlideEvent(e.detail));
+    onCreate() {
+        this.$screenMnemonicValidates.forEach(slide => {
+            slide.addEventListener('screen-mnemonic-validate', e => this._onSlideEvent(e.detail));
         });
-    }*/
+    }
 
     set privateKey(privateKey) {
         this.mnemonic = MnemonicPhrase.keyToMnemonic(privateKey);
@@ -40,16 +40,15 @@ export default class ScreenBackupPhraseValidate extends XScreen {
     set mnemonic(mnemonic) {
         if (!mnemonic) return;
         this._mnemonic = mnemonic.split(/\s+/g);
-        //this.init();
+        this.init();
     }
 
-    /*
     init() {
-        this._activeSlide = this._childScreens[0];
+        this._activeSlideIndex = 0;
         this._generateIndices();
-        //this._setSlideContent(this._activeSlide);
+        this._setSlideContent(this._activeSlideIndex);
         this._showActiveSlide();
-    }*/
+    }
 
     reset() {
         if (!this._mnemonic) return;
@@ -57,21 +56,20 @@ export default class ScreenBackupPhraseValidate extends XScreen {
     }
 
     resetSlide() {
-        this.requiredWords[this._activeSlide] = this._generateIndex(this._activeSlide);
-        this._setSlideContent(this._activeSlide);
+        this.requiredWords[this._activeSlideIndex] = this._generateIndex(this._activeSlideIndex);
+        this._setSlideContent(this._activeSlideIndex);
     }
 
     _next() {
-        this._activeSlide += 1;
-        if (this._activeSlide < 3) this._setSlideContent(this._activeSlide);
-        else setTimeout(() => this.$successMark.animate(), 300);
-        //this._showActiveSlide();
+        this._activeSlideIndex += 1;
+        if (this._activeSlideIndex < 3) this._setSlideContent(this._activeSlideIndex);
+        this._showActiveSlide();
     }
 
     _onSlideEvent(valid) {
         if (!valid) setTimeout(() => this.resetSlide(), 820);
         else {
-            if (this._activeSlide === 2) this._success();
+            if (this._activeSlideIndex === 2) this._success();
             setTimeout(() => this._next(), 500);
         }
     }
@@ -89,7 +87,7 @@ export default class ScreenBackupPhraseValidate extends XScreen {
     }
 
     _setSlideContent(slideIndex) {
-        this.$mnemonicValidateSlides[slideIndex].set(
+        this.$screenMnemonicValidates[slideIndex].set(
             this._generateWords(this.requiredWords[slideIndex]), // wordlist
             this.requiredWords[slideIndex] + 1, // targetIndex
             this._mnemonic[this.requiredWords[slideIndex]] // targetWord
@@ -111,7 +109,10 @@ export default class ScreenBackupPhraseValidate extends XScreen {
     }
 
     _showActiveSlide() {
-        this.goTo(this._activeSlide.route);
+        const activeSlide = this._activeSlideIndex < 3
+            ? this.$screenMnemonicValidates[this._activeSlideIndex]
+            : this.$screenSuccess;
+        this.goTo(activeSlide.route);
     }
 }
 
@@ -132,7 +133,7 @@ class ScreenMnemonicValidate extends XScreen {
             </x-wordlist>`;
     }
 
-    styles() { return ['x-grow'] }
+    styles() { return ['x-grow', 'x-screen'] }
 
     onCreate() {
         this.$buttons = this.$$('button');
@@ -140,6 +141,11 @@ class ScreenMnemonicValidate extends XScreen {
         this.addEventListener('click', e => this._onClick(e));
     }
 
+    /**
+    * @param {string[]} wordlist
+    * @param {number} targetIndex
+    * @param {string} targetWord
+    */
     set(wordlist, targetIndex, targetWord) {
         this.$$('.correct').forEach(button => button.classList.remove('correct'));
         this.$$('.wrong').forEach(button => button.classList.remove('wrong'));
@@ -170,12 +176,12 @@ class ScreenMnemonicValidate extends XScreen {
             this._showAsWrong($button);
             const correctButtonIndex = this._wordlist.indexOf(this._targetWord);
             this._showAsCorrect(this.$buttons[correctButtonIndex]);
-            this.fire('x-mnemonic-validate-slide', false);
+            this.fire('screen-mnemonic-validate', false);
             return;
         }
 
         this._showAsCorrect($button);
-        this.fire('x-mnemonic-validate-slide', true);
+        this.fire('screen-mnemonic-validate', true);
     }
 
     _showAsWrong($el) {
@@ -186,18 +192,6 @@ class ScreenMnemonicValidate extends XScreen {
     _showAsCorrect($el) {
         $el.classList.add('correct');
     }
-}
-
-class Screen1 extends ScreenMnemonicValidate {
-    get route() { return '1'; }
-}
-
-class Screen2 extends ScreenMnemonicValidate {
-    get route() { return '2'; }
-}
-
-class Screen3 extends ScreenMnemonicValidate {
-    get route() { return '3'; }
 }
 
 // Todo: [high priority] Add back button (where is the back button in default Screens?)

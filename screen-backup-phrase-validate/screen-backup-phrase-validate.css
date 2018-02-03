@@ -3,7 +3,7 @@
 @import '../x-privacy-agent/x-privacy-agent.css';
 @import '../x-success-mark/x-success-mark.css';
 
-x-mnemonic-validate {
+screen-mnemonic-validate {
     width: 100%;
     color: white;
     text-align: center;
@@ -14,11 +14,11 @@ x-mnemonic-validate {
     flex-grow: 1;
 }
 
-x-mnemonic-validate p{
+screen-mnemonic-validate p{
     margin-bottom: 32px;
 }
 
-x-mnemonic-validate x-target-index {
+screen-mnemonic-validate x-target-index {
     display: block;
     font-size: 64px;
     line-height: 80px;
@@ -26,24 +26,24 @@ x-mnemonic-validate x-target-index {
     font-weight: 200;
 }
 
-x-mnemonic-validate x-target-index::before {
+screen-mnemonic-validate x-target-index::before {
     content: '#';
     font-size: 52px;
 }
 
-x-mnemonic-validate button {
+screen-mnemonic-validate button {
     margin: 4px;
     transform: translate3d(0, 0, 0);
     will-change: transform;
 }
 
-x-mnemonic-validate button.correct {
+screen-mnemonic-validate button.correct {
     background-color: var(--success-color);
     border-color: var(--success-color);
     color: var(--secondary-text-color);
 }
 
-x-mnemonic-validate button.wrong {
+screen-mnemonic-validate button.wrong {
     background-color: var(--error-color);
     border-color: var(--error-color);
     color: var(--secondary-cta-color);
@@ -56,6 +56,6 @@ x-wordlist {
     margin: 0 auto;
 }
 
-x-mnemonic-validate x-indicator x-dot:last-child {
+screen-mnemonic-validate x-indicator x-dot:last-child {
     display: none;
 }
