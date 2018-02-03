@@ -156,7 +156,7 @@ export default class XScreen extends XElement {
         super.__createChild(child);
         const childScreen = this[child.__toChildName()];
         if (childScreen instanceof XScreen) this.__createChildScreen(childScreen);
-        if (childScreen instanceof Array) this.__createChildScreens(childScreen[0]);
+        if (child instanceof Array) this.__createChildScreens(child[0]);
     }
 
     __createChildScreen(child) {
@@ -166,7 +166,7 @@ export default class XScreen extends XElement {
     }
 
     __createChildScreens(child) {
-        if (!(childScreen[0] instanceof XScreen)) return;
+        if (!(child instanceof XScreen)) return;
         const name = child.__toChildName() + 's';
         this[name].forEach(c => this.__createChildScreen(c));
     }
