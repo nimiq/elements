@@ -86,7 +86,6 @@ export default class ScreenIdenticons extends XScreen {
     }
 }
 
-// Todo: [Max] [high priority] why are the identicons just white when used in wallet but not in demo or exchange tool? 
 // Todo: show loading screen while waiting for api to start
 // Todo: refactor api such that addresses can be generated before full api is loaded
 // Todo: [low priority] remove hack for overlay and find a general solution

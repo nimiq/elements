@@ -40,10 +40,9 @@ export default class ScreenBackupPhraseValidate extends XScreen {
     set mnemonic(mnemonic) {
         if (!mnemonic) return;
         this._mnemonic = mnemonic.split(/\s+/g);
-        this.init();
     }
 
-    init() {
+    _onEntry() {
         this._activeSlideIndex = 0;
         this._generateIndices();
         this._setSlideContent(this._activeSlideIndex);
