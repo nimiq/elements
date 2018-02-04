@@ -11,3 +11,5 @@ export default class ScreenPrivacy extends XScreenFit {
 
     children() { return [XPrivacyAgent] }
 }
+
+
