@@ -4,3 +4,9 @@
 @import '../x-success-mark/x-success-mark.css';
 @import '../x-password-setter/x-password-setter.css';
 @import '../x-indicator/x-indicator.css';
+
+@media (max-height: 480px){
+	screen-create-password button{
+		display: none;
+	}
+}
