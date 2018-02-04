@@ -18,7 +18,7 @@
     import ScreenAccounts from '../screen-accounts.js'; 
     import XToast from '../../x-toast/x-toast.js'; 
     const $screen = new ScreenAccounts();
-    $screen.accounts = [
+    const demoAccounts = [
         'NQ57 2CTN 72AK GR4K P6FC 46HS SRPU MTF3 0AXF',
         'NQ77 X5GR VCE5 AQYB J3YJ VE7V 15L2 8EXY ECYU',
         'NQ02 2Q42 7BVN F9NN RJE7 JLMP FKVC B00J THFD',
@@ -27,8 +27,17 @@
         'NQ25 D5PV 2N4H MBA0 1NNJ 46VQ 1FSV 9QT7 YL52',
         'NQ25 LL4U QTYX R48H 597P 29DH HV20 3C67 66CQ'
     ];
-    window.addEventListener('x-create-account', e => XToast.show('Clicked "Create Account"'));
+    
+    const createAccount = () => {
+        XToast.show('Clicked "Create Account"');
+        const demoAccount = demoAccounts.pop();
+        $screen.addAccount(demoAccount);
+    }
+
+    window.addEventListener('x-create-account', e => createAccount());
     window.addEventListener('x-account-selected', e => XToast.show('Selected Account: ' + e.detail));
+
+
     </script>
 </body>
 

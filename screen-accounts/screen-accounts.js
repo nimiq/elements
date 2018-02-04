@@ -19,6 +19,10 @@ export default class ScreenAccounts extends XScreenFit {
         accounts.forEach(account => this._createAccount(account));
     }
 
+    addAccount(account){
+        this._createAccount(account);
+    }
+
     _createAccount(account) {
         const xAccount = XAccount.createElement();
         xAccount.address = account;

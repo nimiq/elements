@@ -7,12 +7,14 @@ x-accounts-list {
     overflow: scroll;
     margin-bottom: 24px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    flex-direction:  column;
 }
 
 x-account {
     display: flex;
     padding: 8px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    animation: from-right 500ms;
 }
 
 x-account:hover {
@@ -41,6 +43,7 @@ x-account .x-address {
     min-width: auto;
 }
 
+/* Responsiveness */
 @media (min-width: 480px) {
     x-account {
         justify-content: center;
@@ -50,4 +53,19 @@ x-account .x-address {
     x-accounts-list {
         width: 480px;
     }
+}
+
+/* Empty Accounts List */
+x-accounts-list:empty{
+	display: flex;
+}
+
+x-accounts-list:empty:before {
+	display: flex;
+	flex-grow: 1;
+	content: 'Click below to add an account';
+	font-size: 20px;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
 }
