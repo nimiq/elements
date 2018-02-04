@@ -46,8 +46,6 @@ export default class ScreenBackupFile extends XScreen {
         this.$indicator = this.$indicator.childNodes;
     }
 
-    async reset() { }
-
     async backup(address, privateKey) {
         await this.$screenDownloadRecovery.$walletBackup.backup(address, privateKey);
         this.goTo('download')
