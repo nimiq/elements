@@ -126,4 +126,4 @@ class ScreenDownloadRecovery extends XScreenFit {
 }
 
 // Todo: Bug: x-slides dots missing
-// Todo: Bug: Mobile layout problems with open keyboard (next overlapping)
+// Todo: Bug: Not proceeding after download, user has to click somewhere
