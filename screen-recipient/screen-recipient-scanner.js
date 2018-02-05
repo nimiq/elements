@@ -18,23 +18,17 @@ export default class ScreenRecipientScanner extends XScreenFit {
     get route() { return 'scanner' }
 
     set active(active) {
-        if (active) 
-            this.startScanner();
-        else 
+        if (!active) 
             this.$addressScanner.stop();
     }
 
     _onBeforeEntry(){
-        this.$addressScanner.start();
+        this.$addressScanner.start()
+            .then(e => this.fire('x-address-scanner-success'))
+            .catch(e => this.fire('x-address-scanner-error'));
     }
 
     _onEntry() {
         this.$addressInput._onEntry();
-    }
-
-    startScanner() {
-        this.$addressScanner.start()
-            .then(e => this.fire('x-address-scanner-success'))
-            .catch(e => this.fire('x-address-scanner-error'));
     }
 }
