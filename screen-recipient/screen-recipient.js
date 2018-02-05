@@ -22,6 +22,7 @@ export default class ScreenRecipient extends XScreenFit {
             'x-address-page-select': '_onPageSelect',
             'x-address-scanner-success': '_onCameraSuccess',
             'x-address-scanner-error': '_onCameraError',
+            'x-qr-scanner-error': '_onCameraError',
             'x-address-input': '_onAddressInput',
             'x-address-file-input': '_onAddressInput',
             'x-address-scan': '_onAddressInput'
@@ -42,17 +43,16 @@ export default class ScreenRecipient extends XScreenFit {
     }
 
     _onPageSelect(page) {
-        if (page === 'scanner') return this.$screenRecipientScanner.startScanner();
         this.goTo(page);
     }
 
     _onCameraSuccess() {
-        this.goToChild('scanner');
+        this.goTo('scanner');
         ScannerSettingsStorage.useScanner = true;
     }
 
     _onCameraError() {
-        this.goToChild('fallback');
+        this.goTo('fallback');
         ScannerSettingsStorage.useScanner = false;
         this.$toast.show('Failed to start scanner. Make sure nimiq.com is allowed to access your camera.');
     }
@@ -88,4 +88,4 @@ class ScannerSettingsStorage {
 }
 
 // Todo: Bug: Page layout defect in Firefox
-// Todo: Bug: links to scanner page don't work
+// Todo: Bug: redirect to fallback after camera error does not work 

@@ -25,8 +25,13 @@ export default class XQrScanner extends XElement {
     }
 
     async start() {
-        await this._scanner.start();
-        requestAnimationFrame(e => this._positionOverlay());
+        try {
+            await this._scanner.start();
+            requestAnimationFrame(e => this._positionOverlay());
+        }
+        catch(e) {
+            this.fire('x-qr-scanner-error');
+        };
     }
 
     stop() {
