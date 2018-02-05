@@ -88,3 +88,4 @@ class ScannerSettingsStorage {
 }
 
 // Todo: Bug: Page layout defect in Firefox
+// Todo: Bug: links to scanner page don't work

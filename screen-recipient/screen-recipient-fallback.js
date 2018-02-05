@@ -27,4 +27,3 @@ export default class ScreenRecipientFallback extends XScreen {
 
     get route() { return 'fallback' }
 }
-// Todo: [Max] if user starts typing or pasting auto focus address input
