@@ -15,7 +15,6 @@ export default class XScreen extends XElement {
 
     async _onStateChange(nextState, prevState, isNavigateBack) {
         nextState = this._sanitizeState(nextState);
-        console.log(nextState);
         const intersection = nextState.intersection(prevState); // calc intersection common parent path
         const nextStateDiff = nextState.difference(prevState);
         const prevStateDiff = prevState && prevState.difference(nextState);
