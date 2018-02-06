@@ -1,7 +1,8 @@
 import XScreenFit from '../x-screen/x-screen-fit.js';
-import XElement from '/library/x-element/x-element.js';
 import XIdenticon from '../x-identicon/x-identicon.js';
 import XAddress from '../x-address/x-address.js';
+import XAccount from './x-account/x-account.js';
+import ActivationUtils from '../../library/nimiq-utils/activation-utils/activation-utils';
 export default class ScreenAccounts extends XScreenFit {
     html() {
         return `
@@ -16,44 +17,21 @@ export default class ScreenAccounts extends XScreenFit {
     }
 
     set accounts(accounts) {
-        accounts.forEach(account => this._createAccount(account));
+        accounts.forEach(async account => await this._createAccount(account));
     }
 
-    addAccount(account){
-        this._createAccount(account);
+    async addAccount(account){
+        await this._createAccount(account);
     }
 
-    _createAccount(account) {
+    async _createAccount(account) {
         const xAccount = XAccount.createElement();
         xAccount.address = account;
+        //xAccount.balance = await ActivationUtils.fetchBalance(account);
         this.$accountsList.appendChild(xAccount.$el);
     }
 
     _onCreateAccount() {
         this.fire('x-create-account');
-    }
-}
-
-class XAccount extends XElement {
-    html() {
-        return `
-            <x-identicon></x-identicon>
-            <x-address></x-address>
-        `
-    }
-    children() { return [XIdenticon, XAddress] }
-
-    onCreate() {
-        this.$el.addEventListener('click', e => this._onAccountSelected())
-    }
-
-    set address(address) {
-        this.$identicon.address = address;
-        this.$address.address = address;
-        this._address = address;
-    }
-
-    _onAccountSelected() {
-        this.fire('x-account-selected', this._address);
     }
 }
