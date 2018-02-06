@@ -1,6 +1,4 @@
 import XScreenFit from '../x-screen/x-screen-fit.js';
-import XIdenticon from '../x-identicon/x-identicon.js';
-import XAddress from '../x-address/x-address.js';
 import XAccount from './x-account/x-account.js';
 import ActivationUtils from '../../library/nimiq-utils/activation-utils/activation-utils';
 export default class ScreenAccounts extends XScreenFit {

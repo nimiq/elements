@@ -1,4 +1,6 @@
 import XElement from '/library/x-element/x-element.js';
+import XIdenticon from '../../x-identicon/x-identicon.js';
+import XAddress from '../../x-address/x-address.js';
 
 export default class XAccount extends XElement {
     html() {
