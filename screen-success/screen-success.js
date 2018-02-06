@@ -13,4 +13,12 @@ export default class ScreenSuccess extends XScreenFit {
     _onEntry() {
         return this.$successMark.animate();
     }
+
+    onCreate() {
+        this.$h2 = this.$('h2');
+    }
+
+    show(message) {
+        this.$h2.textContent = message;
+    }
 }

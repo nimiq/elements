@@ -25,7 +25,9 @@ export default class ScreenAccounts extends XScreenFit {
     async _createAccount(account) {
         const xAccount = XAccount.createElement();
         xAccount.address = account;
-        //xAccount.balance = await ActivationUtils.fetchBalance(account);
+        const nimAddress = ActivationUtils.getUnfriendlyAddress(account);
+        const ethAddress = await ActivationUtils.nim2ethAddress(nimAddress);
+        xAccount.balance = await ActivationUtils.fetchBalance(ethAddress);
         this.$accountsList.appendChild(xAccount.$el);
     }
 
@@ -33,3 +35,5 @@ export default class ScreenAccounts extends XScreenFit {
         this.fire('x-create-account');
     }
 }
+
+// Todo: balance getter as parameter, so we can use this component for both net and nim balances
