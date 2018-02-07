@@ -14,6 +14,7 @@ class NimiqApi extends NanoApi {
         this._element = element;
     }
     onInitialized() {
+        this.initialized = true;
         this._element.fire('x-api-ready', this);
     }
 

@@ -7,7 +7,6 @@ export default class XAccount extends XElement {
         return `
             <x-identicon></x-identicon>
             <x-address></x-address>
-            <x-balance></x-balance>
         `
     }
     children() { return [XIdenticon, XAddress] }
@@ -20,10 +19,6 @@ export default class XAccount extends XElement {
         this.$identicon.address = address;
         this.$address.address = address;
         this._address = address;
-    }
-
-    set balance(balance) {
-        this.$('x-balance').innerHTML = balance;
     }
 
     _onAccountSelected() {

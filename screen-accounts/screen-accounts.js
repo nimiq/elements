@@ -1,6 +1,7 @@
 import XScreenFit from '../x-screen/x-screen-fit.js';
 import XAccount from './x-account/x-account.js';
-import ActivationUtils from '../../library/nimiq-utils/activation-utils/activation-utils';
+import ActivationUtils from '../../library/nimiq-utils/activation-utils/activation-utils.js';
+
 export default class ScreenAccounts extends XScreenFit {
     html() {
         return `
@@ -25,9 +26,6 @@ export default class ScreenAccounts extends XScreenFit {
     async _createAccount(account) {
         const xAccount = XAccount.createElement();
         xAccount.address = account;
-        const nimAddress = ActivationUtils.getUnfriendlyAddress(account);
-        const ethAddress = await ActivationUtils.nim2ethAddress(nimAddress);
-        xAccount.balance = await ActivationUtils.fetchBalance(ethAddress);
         this.$accountsList.appendChild(xAccount.$el);
     }
 
