@@ -69,7 +69,6 @@ export default class XScreen extends XElement {
 
     async __onEntry(nextState, prevState, isNavigateBack) {
         if (this.isVisible) return;
-        this._show();
         if (this._onBeforeEntry) this._onBeforeEntry(nextState, prevState, isNavigateBack);
         await this._animateEntry(isNavigateBack);
         if (this._onEntry) await this._onEntry(nextState, prevState, isNavigateBack);
@@ -77,10 +76,11 @@ export default class XScreen extends XElement {
     }
 
     _animateEntry(isNavigateBack) {
+        const afterStartCallback = () => { this._show(); };
         if (!isNavigateBack)
-            return this.animate('x-entry-animation');
+            return this.animate('x-entry-animation', null, afterStartCallback);
         else
-            return this.animate('x-exit-animation-reverse');
+            return this.animate('x-exit-animation-reverse', null, afterStartCallback);
     }
 
     async __onExit(nextState, prevState, isNavigateBack) {
@@ -89,14 +89,14 @@ export default class XScreen extends XElement {
         if (this._onBeforeExit) this._onBeforeExit(nextState, prevState, isNavigateBack);
         await this._animateExit(isNavigateBack);
         if (this._onExit) await this._onExit(nextState, prevState, isNavigateBack);
-        this._hide();
     }
 
     _animateExit(isNavigateBack) {
+        const beforeEndCallback = () => { this._hide(); };
         if (!isNavigateBack)
-            return this.animate('x-exit-animation');
+            return this.animate('x-exit-animation', null, null, beforeEndCallback);
         else
-            return this.animate('x-entry-animation-reverse');
+            return this.animate('x-entry-animation-reverse', null, null, beforeEndCallback);
     }
 
     _show() {
