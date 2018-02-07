@@ -38,3 +38,5 @@ class NimiqApi extends NanoApi {
         this._element.fire('x-different-tab-error');
     }
 }
+
+// Todo: [low] Make api a singleton, so we can wait more fine-grained for api-ready, but load it right after starting the app
