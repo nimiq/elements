@@ -10,6 +10,10 @@ export default class ScreenError extends XScreen {
 
     onCreate() {
         this.$h2 = this.$('h2');
+        const message = this.$el.getAttribute('message');
+        if (message !== undefined) {
+            this.show(message);
+        }
     }
 
     show(message) {

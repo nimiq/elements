@@ -1,4 +1,5 @@
 import XScreenFit from '../x-screen/x-screen-fit.js';
+
 export default class ScreenLoading extends XScreenFit {
     html() {
         return `
