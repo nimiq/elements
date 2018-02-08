@@ -16,10 +16,15 @@ body {
     align-items: center;
     flex-direction: column;
     text-align: center;
+    display: flex !important;
+    will-change: unset !important;
+    transform-origin: unset !important;
 }
 
 .x-screen,
 .x-screen-fit {
+    will-change: transform;
+    transform-origin: center;
     position: absolute;
     display: none;
     justify-content: center;
