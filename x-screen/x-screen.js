@@ -207,3 +207,6 @@ export default class XScreen extends XElement {
 
     static launch() { window.addEventListener('load', () => new this()); }
 }
+
+// Todo: Fix kind of animations when using back and forward buttons in whatever order
+// Todo Fix general page layout (Firefox bugs, absolute positioning)

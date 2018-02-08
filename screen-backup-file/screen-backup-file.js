@@ -1,5 +1,4 @@
 import XScreen from '../x-screen/x-screen.js';
-import XSuccessMark from '../x-success-mark/x-success-mark.js';
 import XWalletBackup from '../x-wallet-backup/x-wallet-backup.js';
 import XPasswordSetter from '../x-password-setter/x-password-setter.js';
 import XScreenFit from '../x-screen/x-screen-fit.js';
@@ -124,4 +123,3 @@ class ScreenDownloadRecovery extends XScreenFit {
 }
 
 // Todo: Bug: x-slides dots missing
-// Todo: Bug: Not proceeding after download, user has to click somewhere
