@@ -14,7 +14,15 @@ export default class ScreenBackupPhraseValidate extends XScreen {
                     Phrase validated
                 </screen-success>
             </x-slides>
+            <a secondary href="../#backup-phrase">Back to phrase</a>
         `
+    }
+
+    types() {
+        /** @type {ScreenSuccess} */
+        this.$screenSuccess = null
+        /** @type {ScreenMnemonicValidate[]} */
+        this.$screenMnemonicValidates = null;
     }
 
     onHide() {

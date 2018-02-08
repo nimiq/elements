@@ -1,7 +1,6 @@
 import XScreen from '../x-screen/x-screen.js';
-import XScreenFit from '../x-screen/x-screen-fit.js';
 import ScreenPrivacy from '../screen-privacy/screen-privacy.js';
-import XMnemonicInput from '../x-mnemonic-input/x-mnemonic-input.js';
+import ScreenBackupPhraseImportEnter from './screen-backup-phrase-import-enter/screen-backup-phrase-import-enter';
 
 export default class ScreenBackupPhraseImport extends XScreen {
     html() {
@@ -14,6 +13,13 @@ export default class ScreenBackupPhraseImport extends XScreen {
         `
     }
 
+    types() {
+        /** @type {ScreenPrivacy} */
+        this.$screenPrivacy = null;
+        /** @type {ScreenBackupPhraseImportEnter} */
+        this.$screenBackupPhraseImportEnter = null;
+    }
+
     children() { return [ScreenPrivacy, ScreenBackupPhraseImportEnter] }
 
     onCreate() {
@@ -22,22 +28,5 @@ export default class ScreenBackupPhraseImport extends XScreen {
 
     _onSurrondingChecked() {
         this.goTo('enter');
-    }
-}
-
-class ScreenBackupPhraseImportEnter extends XScreenFit {
-    html() {
-        return `
-            <h2 secondary>Enter the 24 words of your backup phrase to recover your account</h2>
-            <x-mnemonic-input></x-mnemonic-input>
-            <x-grow></x-grow>   
-        `
-    }
-    children() { return [XMnemonicInput] }
-
-    get route() { return 'enter' }
-
-    _onEntry() {
-        this.$mnemonicInput.animateEntry();
     }
 }
