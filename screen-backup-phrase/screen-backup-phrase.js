@@ -1,5 +1,4 @@
 import XScreen from '../x-screen/x-screen.js';
-import XScreenFit from '../x-screen/x-screen-fit.js';
 import ScreenPrivacy from '../screen-privacy/screen-privacy.js';
 import ScreenPhrase from './screen-phrase/screen-phrase.js';
 

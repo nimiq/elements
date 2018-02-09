@@ -38,10 +38,6 @@ export default class ScreenRecipient extends XScreenFit {
         this.$screenRecipientScanner.active = active && ScannerSettingsStorage.useScanner;
     }
 
-    _select(page) {
-        this.fire('x-address-page-select', page);
-    }
-
     _onPageSelect(page) {
         this.goTo(page);
     }

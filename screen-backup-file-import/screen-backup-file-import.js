@@ -1,9 +1,8 @@
 import XScreen from '../x-screen/x-screen.js';
-import XScreenFit from '../x-screen/x-screen-fit.js';
-import XWalletBackupImport from '../x-wallet-backup-import/x-wallet-backup-import.js';
-import XPasswordInput from '../x-password-input/x-password-input.js';
 import ScreenSuccess from '../screen-success/screen-success.js';
 import ScreenLoading from '../screen-loading/screen-loading.js';
+import ScreenBackupFileImportIntro from './screen-backup-file-import-intro/screen-backup-file-import-intro.js';
+import ScreenBackupFileImportPassword from './screen-backup-file-import-password/screen-backup-file-import-password.js';
 
 export default class ScreenBackupFileImport extends XScreen {
     html() {
@@ -48,57 +47,6 @@ export default class ScreenBackupFileImport extends XScreen {
         this.$screenBackupFileImportPassword.$passwordInput._onInvalid();
     }
 }
-
-class ScreenBackupFileImportIntro extends XScreenFit {
-    html() {
-        return `
-            <h2 secondary>Select a backup file to import an account</h2>
-            <x-wallet-backup-import></x-wallet-backup-import>
-        `
-    }
-
-    get route() { return 'intro' }
-
-    children() { return [XWalletBackupImport] }
-}
-
-class ScreenBackupFileImportPassword extends XScreenFit {
-    html() {
-        return `
-            <h2 secondary>Enter the password to unlock this backup</h2>
-            <x-password-input></x-password-input>
-            <x-grow></x-grow>
-            <button disabled="yes">Unlock</button>
-        `
-    }
-
-    get route() { return 'password' }
-
-    children() { return [XPasswordInput] }
-
-    onCreate() {
-        this.addEventListener('x-password-input-valid', e => this._validityChanged(e.detail));
-        this.$button = this.$('button');
-        this.$button.addEventListener('click', e => this._onPasswordInput(e));
-    }
-
-    _validityChanged(valid) {
-        if (valid)
-            this.$button.removeAttribute('disabled');
-        else
-            this.$button.setAttribute('disabled', true);
-    }
-
-    _onEntry() {
-        this.$passwordInput.focus();
-    }
-
-    _onPasswordInput(e) {
-        this.fire('x-password-input', this.$passwordInput.value);
-    }
-}
-
-
 
 // Todo: warn user upfront that importing a different account deletes the current account
 // Todo: [low priority] support multiple accounts at once
