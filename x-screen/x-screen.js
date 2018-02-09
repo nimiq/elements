@@ -2,10 +2,18 @@ import XElement from '/library/x-element/x-element.js';
 import XState from './x-state.js';
 export default class XScreen extends XElement {
 
+    types() {
+        /** @type {Map<string,XScreen>} */
+        this._childScreens = new Map();
+    }
+
     constructor(parent) {
         super(parent);
         if (!parent) this._registerRootElement();
         this._bindListeners();
+        if (this.$slideIndicator) {
+            this.$slideIndicator.init(this._filteredChildScreens.length);
+        }
     }
 
     _registerRootElement() {
@@ -13,6 +21,14 @@ export default class XScreen extends XElement {
         this._show();
     }
 
+    /**
+     *
+     * @param {XState} nextState
+     * @param {XState} prevState
+     * @param {boolean} isNavigateBack
+     * @returns {Promise<void>}
+     * @private
+     */
     async _onStateChange(nextState, prevState, isNavigateBack) {
         nextState = this._sanitizeState(nextState);
         const intersection = nextState.intersection(prevState); // calc intersection common parent path
@@ -23,7 +39,41 @@ export default class XScreen extends XElement {
         let exitParent = prevStateDiff && parent._getChildScreen(prevStateDiff[0]);
         if (exitParent) exitParent._exitScreens(prevStateDiff, nextState, prevState, isNavigateBack);
         parent._entryScreens(nextStateDiff, nextState, prevState, isNavigateBack);
+
+        // update slide indicator
+        if (this.$slideIndicator) {
+            if (this._filteredSlides.includes(nextState.id)) {
+                this.$slideIndicator.hide();
+            }
+            else {
+                this.$slideIndicator.show(this._getSlideIndex(nextState.id));
+            }
+        }
     }
+
+    get _filteredChildScreens() {
+        return Array.from(this._childScreens.entries())
+            .filter(x => !this._filteredSlides.includes(x[0]));
+    }
+
+    /** @param {string} childId
+     *  @returns {number}
+     */
+    _getSlideIndex(childId) {
+        /*
+        const filteredKeys = Array.from(this._childScreens.keys())
+            .filter(x => !this._filteredSlides.includes(x));
+
+        const withIndices = filteredKeys.map((x,i) => ({ id: x, index: i }))*/
+
+        return this._filteredChildScreens.findIndex(x => x[1] === childId);
+
+        //return withIndices.find()
+    }
+
+    /** Those childScreens will not count for indicator
+     * @return {string[]} */
+    get _filteredSlides() { return ['success', 'error', 'loading'] }
 
     _exitScreens(prevStateDiff, nextState, prevState, isNavigateBack) {
         if (prevStateDiff && prevStateDiff.length > 1) {
@@ -45,7 +95,6 @@ export default class XScreen extends XElement {
 
     _sanitizeState(nextState) {
         let parent = this;
-        const state = nextState;
         while (nextState && !nextState.isRoot) {
             const id = nextState.id;
             parent = parent._getChildScreen(id);
@@ -63,8 +112,7 @@ export default class XScreen extends XElement {
 
     _getDefaultScreen() {
         if (!this._childScreens) return;
-        const defaultScreenId = Object.keys(this._childScreens)[0];
-        return this._childScreens[defaultScreenId];
+        return this._childScreens.values().next().value;
     }
 
     async __onEntry(nextState, prevState, isNavigateBack) {
@@ -149,7 +197,7 @@ export default class XScreen extends XElement {
 
     _getChildScreen(id) {
         if (!this._childScreens) return;
-        return this._childScreens[id];
+        return this._childScreens.get(id);
     }
 
     __createChild(child) {
@@ -165,8 +213,8 @@ export default class XScreen extends XElement {
     }
 
     __createChildScreen(child) {
-        if (!this._childScreens) this._childScreens = {};
-        this._childScreens[child.route] = child;
+        if (!this._childScreens) this._childScreens = new Map();
+        this._childScreens.set(child.route, child);
         child._parent = this;
     }
 
@@ -190,12 +238,14 @@ export default class XScreen extends XElement {
     _validateState(nextState, prevState, isNavigateBack) { return true /* Abstract Method */ }
 
 
+    /** @param {function} callback */
     static _registerGlobalStateListener(callback) {
         if (this._stateListener) return; // We register only the first screen calling. All other screens get notified by their parent
         this._stateListener = window.addEventListener('popstate', e => this._onHistoryChange(callback));
         this._onHistoryChange(callback);
     }
 
+    /** @param {function} callback */
     static _onHistoryChange(callback) {
         const nextState = XState.fromLocation();
         if (nextState.isEqual(this.currState)) return;

@@ -1,4 +1,4 @@
-x-indicator {
+x-slide-indicator {
     margin: auto;
     width: 100%;
     max-width: 350px;
@@ -9,7 +9,7 @@ x-indicator {
     min-height: 16px;
 }
 
-x-indicator x-dot {
+x-slide-indicator x-dot {
     display: block;
     width: 6px;
     height: 6px;
@@ -20,6 +20,6 @@ x-indicator x-dot {
     will-change: background-color;
 }
 
-x-indicator x-dot[on] {
+x-slide-indicator x-dot[on] {
     background: white;
 }
