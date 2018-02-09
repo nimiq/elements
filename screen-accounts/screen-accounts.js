@@ -33,5 +33,3 @@ export default class ScreenAccounts extends XScreenFit {
         this.fire('x-create-account');
     }
 }
-
-// Todo: balance getter as parameter, so we can use this component for both net and nim balances
