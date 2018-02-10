@@ -11,9 +11,6 @@ export default class XScreen extends XElement {
         super(parent);
         if (!parent) this._registerRootElement();
         this._bindListeners();
-        if (this.$slideIndicator) {
-            this.$slideIndicator.init(this._filteredChildScreens.length);
-        }
     }
 
     _registerRootElement() {
@@ -30,6 +27,9 @@ export default class XScreen extends XElement {
      * @private
      */
     async _onStateChange(nextState, prevState, isNavigateBack) {
+        if (this.$slideIndicator && !this.$slideIndicator.isInitialized) {
+            this.$slideIndicator.init(this._filteredChildScreens.length);
+        }
         nextState = this._sanitizeState(nextState);
         const intersection = nextState.intersection(prevState); // calc intersection common parent path
         const nextStateDiff = nextState.difference(prevState);
@@ -42,7 +42,7 @@ export default class XScreen extends XElement {
 
         // update slide indicator
         if (this.$slideIndicator) {
-            if (this._filteredSlides.includes(nextState.id)) {
+            if (this._childScreenFilter.includes(nextState.id)) {
                 this.$slideIndicator.hide();
             }
             else {
@@ -51,29 +51,27 @@ export default class XScreen extends XElement {
         }
     }
 
+    /** ChildScreens with those ids will not count for indicator
+     * @returns {string[]}
+     */
+    get _childScreenFilter() { return ['success', 'error', 'loading'].concat(this.__childScreenFilter); }
+
+    /** Overwrite for additionally filtered childScreens
+     * @returns {string[]}
+     */
+    get __childScreenFilter() { return []; }
+
     get _filteredChildScreens() {
         return Array.from(this._childScreens.entries())
-            .filter(x => !this._filteredSlides.includes(x[0]));
+            .filter(x => !this._childScreenFilter.includes(x[0]));
     }
 
     /** @param {string} childId
      *  @returns {number}
      */
     _getSlideIndex(childId) {
-        /*
-        const filteredKeys = Array.from(this._childScreens.keys())
-            .filter(x => !this._filteredSlides.includes(x));
-
-        const withIndices = filteredKeys.map((x,i) => ({ id: x, index: i }))*/
-
         return this._filteredChildScreens.findIndex(x => x[0] === childId);
-
-        //return withIndices.find()
     }
-
-    /** Those childScreens will not count for indicator
-     * @return {string[]} */
-    get _filteredSlides() { return ['success', 'error', 'loading'] }
 
     _exitScreens(prevStateDiff, nextState, prevState, isNavigateBack) {
         if (prevStateDiff && prevStateDiff.length > 1) {

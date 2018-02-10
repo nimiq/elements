@@ -6,6 +6,7 @@ export default class XSlideIndicator extends XElement {
         for (let i = 0; i < nrOfSlides; i++) {
             this.$el.appendChild(document.createElement('x-dot'));
         }
+        this.isInitialized = true;
     }
 
     /** @param {number} state */
