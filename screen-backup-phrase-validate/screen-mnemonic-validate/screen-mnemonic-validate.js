@@ -1,4 +1,4 @@
-import XScreen from "../../x-screen/x-screen";
+import XScreen from '../../x-screen/x-screen.js';
 
 export default class ScreenMnemonicValidate extends XScreen {
     html() {

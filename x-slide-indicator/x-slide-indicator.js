@@ -11,6 +11,15 @@ export default class XSlideIndicator extends XElement {
     /** @param {number} state */
     show(state) {
         this.$el.style.display = 'flex';
+
+        const dots = Array.from(this.$$('x-dot'));
+
+        const onDots = dots.filter((x,i) => i <= state);
+
+        const offDots = dots.filter((x,i) => i > state);
+
+        onDots.forEach(x => x.setAttribute('on', ''));
+        offDots.forEach(x => x.removeAttribute('on'));
     }
 
     hide() {
@@ -19,5 +28,4 @@ export default class XSlideIndicator extends XElement {
 }
 
 // Todo: [Max] Fix positioning
-// Todo: [Max] Fix state calculation (in x-screen.js)
 // Todo: [Max] Use state => dots

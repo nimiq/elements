@@ -66,7 +66,7 @@ export default class XScreen extends XElement {
 
         const withIndices = filteredKeys.map((x,i) => ({ id: x, index: i }))*/
 
-        return this._filteredChildScreens.findIndex(x => x[1] === childId);
+        return this._filteredChildScreens.findIndex(x => x[0] === childId);
 
         //return withIndices.find()
     }
