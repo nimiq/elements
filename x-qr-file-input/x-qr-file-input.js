@@ -1,5 +1,5 @@
-import XElement from '/library/x-element/x-element.js';
-import QrScanner from '/library/qr-scanner/qr-scanner.min.js';
+import XElement from '/libraries/x-element/x-element.js';
+import QrScanner from '/libraries/qr-scanner/qr-scanner.min.js';
 import XToast from "../x-toast/x-toast.js";
 
 export default class XQrFileInput extends XElement {

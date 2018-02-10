@@ -1,5 +1,5 @@
 import XQrFileInput from '../x-qr-file-input/x-qr-file-input.js';
-import Nimiq from '/library/nano-api/nano-api.js';
+import Nimiq from '/libraries/nano-api/nano-api.js';
 
 export default class XAddressFileInput extends XQrFileInput {
     _validate(address) {
