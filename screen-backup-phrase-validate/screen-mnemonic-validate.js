@@ -1,6 +1,6 @@
-import XScreen from '../../x-screen/x-screen.js';
+import XScreenFit from '../x-screen/x-screen-fit.js';
 
-export default class ScreenMnemonicValidate extends XScreen {
+export default class ScreenMnemonicValidate extends XScreenFit {
     html() {
         return `
             <p>Please select the following word from your phrase:</p>
@@ -14,10 +14,10 @@ export default class ScreenMnemonicValidate extends XScreen {
                 <button class="small"></button>
                 <button class="small"></button>
                 <button class="small"></button>
-            </x-wordlist>`;
+            </x-wordlist>
+            <x-grow>
+            `;
     }
-
-    styles() { return ['x-grow', 'x-screen'] }
 
     onCreate() {
         this.$buttons = this.$$('button');

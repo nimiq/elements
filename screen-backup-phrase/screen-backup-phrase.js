@@ -1,6 +1,6 @@
 import XScreen from '../x-screen/x-screen.js';
 import ScreenPrivacy from '../screen-privacy/screen-privacy.js';
-import ScreenPhrase from './screen-phrase/screen-phrase.js';
+import ScreenPhrase from './screen-phrase.js';
 
 export default class ScreenBackupPhrase extends XScreen {
     html() {
@@ -25,8 +25,6 @@ export default class ScreenBackupPhrase extends XScreen {
     onCreate(){
         this.addEventListener('x-surrounding-checked', e => this.goTo('phrase'));
     }
-
-    _getDefaultScreen() { return this._childScreens['privacy']; }
 
     set privateKey(privateKey) {
         this.$screenPhrase.$mnemonicPhrase.privateKey = privateKey;

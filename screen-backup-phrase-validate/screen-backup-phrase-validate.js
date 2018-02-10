@@ -1,7 +1,7 @@
 import XScreen from '../x-screen/x-screen.js';
 import ScreenSuccess from '../screen-success/screen-success.js'
 import MnemonicPhrase from '/libraries/mnemonic-phrase/mnemonic-phrase.min.js';
-import ScreenMnemonicValidate from './screen-mnemonic-validate/screen-mnemonic-validate.js';
+import ScreenMnemonicValidate from './screen-mnemonic-validate.js';
 
 export default class ScreenBackupPhraseValidate extends XScreen {
     html() {
@@ -19,22 +19,11 @@ export default class ScreenBackupPhraseValidate extends XScreen {
         `
     }
 
-    types() {
-        /** @type {ScreenSuccess} */
-        this.$screenSuccess = null
-        /** @type {ScreenMnemonicValidate[]} */
-        this.$screenMnemonicValidates = null;
-    }
-
     onHide() {
         this.reset();
     }
 
-    children() {
-        return [ScreenSuccess, [ScreenMnemonicValidate]];
-    }
-
-    _getDefaultScreen() { return this._childScreens['1']; }
+    children() { return [ [ScreenMnemonicValidate], ScreenSuccess ] }
 
     onCreate() {
         this.$screenMnemonicValidates.forEach(slide => {
@@ -50,6 +39,7 @@ export default class ScreenBackupPhraseValidate extends XScreen {
         if (!mnemonic) return;
         this._mnemonic = mnemonic.split(/\s+/g);
     }
+
 
     _onEntry() {
         this._activeSlideIndex = 0;
@@ -117,9 +107,9 @@ export default class ScreenBackupPhraseValidate extends XScreen {
     }
 
     _showActiveSlide() {
-        const activeSlide = this._activeSlideIndex < 3
-            ? this.$screenMnemonicValidates[this._activeSlideIndex]
-            : this.$screenSuccess;
+        const activeSlide = this._activeSlideIndex < 3 ?
+            this.$screenMnemonicValidates[this._activeSlideIndex] :
+            this.$screenSuccess;
         this.goTo(activeSlide.route);
     }
 }
