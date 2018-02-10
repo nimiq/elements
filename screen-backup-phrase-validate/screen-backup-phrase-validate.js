@@ -1,6 +1,6 @@
 import XScreen from '../x-screen/x-screen.js';
 import ScreenSuccess from '../screen-success/screen-success.js'
-import MnemonicPhrase from '/libraries/mnemonic-phrase/mnemonic-phrase.es6.min.js';
+import MnemonicPhrase from '/libraries/mnemonic-phrase/mnemonic-phrase.min.js';
 import ScreenMnemonicValidate from './screen-mnemonic-validate/screen-mnemonic-validate.js';
 
 export default class ScreenBackupPhraseValidate extends XScreen {

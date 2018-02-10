@@ -1,5 +1,5 @@
-import XScreenFit from "../../x-screen/x-screen-fit";
-import XMnemonicPhrase from "../../x-mnemonic-phrase/x-mnemonic-phrase";
+import XScreenFit from '../../x-screen/x-screen-fit.js';
+import XMnemonicPhrase from '../../x-mnemonic-phrase/x-mnemonic-phrase.js';
 
 export  default class ScreenPhrase extends XScreenFit {
     html() {
@@ -9,11 +9,6 @@ export  default class ScreenPhrase extends XScreenFit {
             <x-grow></x-grow>
             <a href="#backup-phrase-validate" button>Validate</a>
             `;
-    }
-
-    types() {
-        /** @type {XMnemonicPhrase} */
-        this.$mnemonicPhrase = null;
     }
 
     children() { return [XMnemonicPhrase] }
