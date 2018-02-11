@@ -7,6 +7,8 @@ x-slide-indicator {
     box-sizing: border-box;
     padding: 24px 16px 0;
     min-height: 16px;
+    position: absolute;
+    bottom: 20px;
 }
 
 x-slide-indicator x-dot {

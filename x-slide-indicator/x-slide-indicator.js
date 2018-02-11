@@ -29,4 +29,3 @@ export default class XSlideIndicator extends XElement {
 }
 
 // Todo: [Max] Fix positioning
-// Todo: [Max] Use state => dots

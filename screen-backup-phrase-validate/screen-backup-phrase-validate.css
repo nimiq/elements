@@ -55,6 +55,3 @@ x-wordlist {
     margin: 0 auto;
 }
 
-screen-mnemonic-validate x-indicator x-dot:last-child {
-    display: none;
-}
