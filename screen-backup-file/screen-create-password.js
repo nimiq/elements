@@ -12,8 +12,6 @@ export default class ScreenCreatePassword extends XScreenFit {
       `
     }
 
-    get route() { return 'password' }
-
     types() {
         /** @type {XPasswordSetter} */
         this.$passwordSetter = null;

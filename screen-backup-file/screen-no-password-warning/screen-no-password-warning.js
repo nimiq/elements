@@ -1,4 +1,4 @@
-import XScreen from '../x-screen/x-screen.js';
+import XScreen from '../../x-screen/x-screen.js';
 export default class ScreenNoPasswordWarning extends XScreen {
     html() {
         return `
@@ -11,13 +11,11 @@ export default class ScreenNoPasswordWarning extends XScreen {
         `
     }
 
-    get route() { return ['no-password']; }
-
     onCreate() {
         this.$button = this.$('button');
         this.$a = this.$('a');
         this.$button.addEventListener('click', e => this._onConfirm());
-        this.$a.addEventListener('click', e => this.goTo('password'));
+        this.$a.addEventListener('click', e => this.goTo('create-password'));
     }
 
     _onConfirm() {

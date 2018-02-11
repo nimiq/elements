@@ -2,6 +2,7 @@ import XScreen from '../x-screen/x-screen.js';
 import ScreenSuccess from '../screen-success/screen-success.js'
 import MnemonicPhrase from '/libraries/mnemonic-phrase/mnemonic-phrase.min.js';
 import ScreenMnemonicValidate from './screen-mnemonic-validate.js';
+import XSlideIndicator from '../x-slide-indicator/x-slide-indicator.js';
 
 export default class ScreenBackupPhraseValidate extends XScreen {
     html() {
@@ -15,6 +16,7 @@ export default class ScreenBackupPhraseValidate extends XScreen {
                     Phrase validated
                 </screen-success>
             </x-slides>
+            <x-slide-indicator></x-slide-indicator>
             <a secondary href="../#backup-phrase">Back to phrase</a>
         `
     }
@@ -23,7 +25,7 @@ export default class ScreenBackupPhraseValidate extends XScreen {
         this.reset();
     }
 
-    children() { return [ [ScreenMnemonicValidate], ScreenSuccess ] }
+    children() { return [ [ScreenMnemonicValidate], ScreenSuccess, XSlideIndicator ] }
 
     onCreate() {
         this.$screenMnemonicValidates.forEach(slide => {

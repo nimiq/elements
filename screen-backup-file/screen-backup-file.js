@@ -1,9 +1,10 @@
 import XScreen from '../x-screen/x-screen.js';
 import ScreenSuccess from '../screen-success/screen-success.js';
 import ScreenLoading from '../screen-loading/screen-loading.js';
-import ScreenNoPasswordWarning from '../screen-no-password-warning/screen-no-password-warning.js';
+import ScreenNoPasswordWarning from './screen-no-password-warning/screen-no-password-warning.js';
 import ScreenCreatePassword from './screen-create-password.js';
 import ScreenDownloadRecovery from './screen-download-recovery.js';
+import XSlideIndicator from '/elements/x-slide-indicator/x-slide-indicator.js';
 
 export default class ScreenBackupFile extends XScreen {
     html() {
@@ -15,8 +16,8 @@ export default class ScreenBackupFile extends XScreen {
                 <screen-download-recovery></screen-download-recovery>
                 <screen-success>Backup Complete</screen-success>
             </x-slides>
-            <x-indicator></x-indicator>
-            <screen-no-password-warning></screen-no-password-warning>
+            <x-slide-indicator></x-slide-indicator>
+            <screen-no-password-warning route="no-password"></screen-no-password-warning>
             `
     }
 
@@ -39,28 +40,16 @@ export default class ScreenBackupFile extends XScreen {
             ScreenLoading,
             ScreenDownloadRecovery,
             ScreenSuccess,
-            ScreenNoPasswordWarning
+            ScreenNoPasswordWarning,
+            XSlideIndicator
         ]
     }
 
-    _onEntry() {
-        this._prepareIndicators();
-        this.goTo('password');
-    }
-
-    _prepareIndicators() {
-        this.$indicator = this.$('x-indicator');
-        this.$slides = this.$('x-slides');
-        for (let i = 0; i < this.$slides.children.length; i++) {
-            this.$indicator.appendChild(document.createElement('x-dot'));
-        }
-        this.$indicator = this.$indicator.childNodes;
-    }
+    /** Do not use those for slide indicator */
+    get __childScreenFilter() { return ['no-password']; }
 
     async backup(address, privateKey) {
         await this.$screenDownloadRecovery.$walletBackup.backup(address, privateKey);
         this.goTo('download')
     }
 }
-
-// Todo: Bug: x-slides dots missing
