@@ -1,5 +1,5 @@
-import XScreenFit from 'elements/x-screen/x-screen-fit';
-import XMnemonicInput from 'elements/x-mnemonic-input/x-mnemonic-input.js';
+import XScreenFit from '../x-screen/x-screen-fit.js';
+import XMnemonicInput from '../x-mnemonic-input/x-mnemonic-input.js';
 
 export default class ScreenBackupPhraseImportEnter extends XScreenFit {
     html() {
@@ -15,15 +15,9 @@ export default class ScreenBackupPhraseImportEnter extends XScreenFit {
         this.$mnemonicInput = null;
     }
 
-    children() {
-        return [XMnemonicInput]
-    }
+    children() { return [XMnemonicInput] }
 
-    get route() {
-        return 'enter'
-    }
+    get route() { return 'enter' }
 
-    _onEntry() {
-        this.$mnemonicInput.animateEntry();
-    }
+    _onEntry() { this.$mnemonicInput.animateEntry(); }
 }

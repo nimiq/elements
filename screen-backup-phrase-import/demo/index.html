@@ -11,15 +11,14 @@
     <script type="module">
     import ScreenBackupPhraseImport from '../screen-backup-phrase-import.js';
     import MnemonicPhrase from '/libraries/mnemonic-phrase/mnemonic-phrase.min.js';
+    import XToast from '/elements/x-toast/x-toast.js';
 
     const $screen = new ScreenBackupPhraseImport();
 
     const randomKey = window.crypto.getRandomValues(new Uint8Array(32));
     $screen.privateKey = MnemonicPhrase._arrayToHex(randomKey);
 
-    $screen.addEventListener('x-import', () => {
-        console.log('Event "import" fired');
-    });
+    $screen.addEventListener('x-import', e => XToast.show(e.detail));
     </script>
 </body>
 

@@ -1,5 +1,5 @@
-import XWalletBackup from '/elements/x-wallet-backup/x-wallet-backup.js';
-import XScreenFit from '/elements/x-screen/x-screen-fit.js';
+import XWalletBackup from '../x-wallet-backup/x-wallet-backup.js';
+import XScreenFit from '../x-screen/x-screen-fit.js';
 
 export default class ScreenDownloadRecovery extends XScreenFit {
     html() {

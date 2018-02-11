@@ -1,5 +1,5 @@
-import XPasswordInput from '/elements/x-password-input/x-password-input.js';
-import XScreenFit from '/elements/x-screen/x-screen-fit.js';
+import XPasswordInput from '../x-password-input/x-password-input.js';
+import XScreenFit from '../x-screen/x-screen-fit.js';
 
 export default class ScreenBackupFileImportPassword extends XScreenFit {
     html() {

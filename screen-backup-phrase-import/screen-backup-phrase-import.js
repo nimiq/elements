@@ -1,6 +1,6 @@
 import XScreen from '../x-screen/x-screen.js';
 import ScreenPrivacy from '../screen-privacy/screen-privacy.js';
-import ScreenBackupPhraseImportEnter from './screen-backup-phrase-import-enter/screen-backup-phrase-import-enter';
+import ScreenBackupPhraseImportEnter from './screen-backup-phrase-import-enter.js';
 
 export default class ScreenBackupPhraseImport extends XScreen {
     html() {
@@ -11,13 +11,6 @@ export default class ScreenBackupPhraseImport extends XScreen {
                 <screen-backup-phrase-import-enter></screen-backup-phrase-import-enter>
             </x-slides>
         `
-    }
-
-    types() {
-        /** @type {ScreenPrivacy} */
-        this.$screenPrivacy = null;
-        /** @type {ScreenBackupPhraseImportEnter} */
-        this.$screenBackupPhraseImportEnter = null;
     }
 
     children() { return [ScreenPrivacy, ScreenBackupPhraseImportEnter] }

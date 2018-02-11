@@ -1,8 +1,8 @@
 import XScreen from '../x-screen/x-screen.js';
 import ScreenSuccess from '../screen-success/screen-success.js';
 import ScreenLoading from '../screen-loading/screen-loading.js';
-import ScreenBackupFileImportIntro from './screen-backup-file-import-intro/screen-backup-file-import-intro.js';
-import ScreenBackupFileImportPassword from './screen-backup-file-import-password/screen-backup-file-import-password.js';
+import ScreenBackupFileImportIntro from './screen-backup-file-import-intro.js';
+import ScreenBackupFileImportPassword from './screen-backup-file-import-password.js';
 
 export default class ScreenBackupFileImport extends XScreen {
     html() {

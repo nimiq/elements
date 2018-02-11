@@ -1,5 +1,5 @@
-import XPasswordSetter from '/elements/x-password-setter/x-password-setter.js';
-import XScreenFit from '/elements/x-screen/x-screen-fit.js';
+import XPasswordSetter from '../x-password-setter/x-password-setter.js';
+import XScreenFit from '../x-screen/x-screen-fit.js';
 
 export default class ScreenCreatePassword extends XScreenFit {
     html() {

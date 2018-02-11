@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Nimiq Address Pages</title>
+    <title>Nimiq Recipient</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link href="../screen-recipient.css" rel="stylesheet">
     <link href="/elements/x-toast/x-toast.css" rel="stylesheet">
@@ -13,10 +13,10 @@
     <script type="module">
         import ScreenRecipient from "../screen-recipient.js";
         import XToast from "/elements/x-toast/x-toast.js";
-        const $pages = new ScreenRecipient();
+        const $screen = new ScreenRecipient();
         
         const onAddressScanned = e => XToast.show(`address-scanned: ${e.detail}`);
-        $pages.addEventListener('x-address-scanned', onAddressScanned);
+        $screen.addEventListener('x-address-scanned', onAddressScanned);
     </script>
 </body>
 
