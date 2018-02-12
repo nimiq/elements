@@ -4,7 +4,7 @@ import XScreenFit from '../x-screen/x-screen-fit.js';
 export default class ScreenCreatePassword extends XScreenFit {
     html() {
         return `
-          <h2 secondary>Create a password to encrypt your backup file. Make sure you memorize it well because there is no way to recover it.</h2>
+          <h2 secondary>Create a password to encrypt your account access information. Make sure you memorize it well because there is no way to recover it.</h2>
           <x-password-setter></x-password-setter>
           <x-grow></x-grow>
           <button disabled="1">Next</button>
@@ -52,3 +52,6 @@ export default class ScreenCreatePassword extends XScreenFit {
         }
     }
 }
+
+// Todo: Password confirm, make visible hover eye
+// Todo: Indicate that click on image means to download it / download button

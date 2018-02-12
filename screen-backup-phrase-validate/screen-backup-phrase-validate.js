@@ -113,3 +113,5 @@ export default class ScreenBackupPhraseValidate extends XScreen {
         this.goTo(activeSlide.route);
     }
 }
+
+// Todo: Bug: fix back to phrase link

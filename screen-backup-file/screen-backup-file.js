@@ -8,7 +8,7 @@ import ScreenDownloadRecovery from './screen-download-recovery.js';
 export default class ScreenBackupFile extends XScreen {
     html() {
         return `
-            <h1>Backup your Recovery File</h1>
+            <h1>Backup your Account Access</h1>
             <x-slides>
                 <screen-create-password></screen-create-password>
                 <screen-loading>Encrypting Backup</screen-loading>
