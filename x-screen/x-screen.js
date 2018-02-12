@@ -1,5 +1,6 @@
 import XElement from '/libraries/x-element/x-element.js';
 import XState from './x-state.js';
+
 export default class XScreen extends XElement {
 
     types() {
@@ -27,9 +28,6 @@ export default class XScreen extends XElement {
      * @private
      */
     async _onStateChange(nextState, prevState, isNavigateBack) {
-        if (this.$slideIndicator && !this.$slideIndicator.isInitialized) {
-            this.$slideIndicator.init(this._filteredChildScreens.length);
-        }
         nextState = this._sanitizeState(nextState);
         const intersection = nextState.intersection(prevState); // calc intersection common parent path
         const nextStateDiff = nextState.difference(prevState);
@@ -39,38 +37,7 @@ export default class XScreen extends XElement {
         let exitParent = prevStateDiff && parent._getChildScreen(prevStateDiff[0]);
         if (exitParent) exitParent._exitScreens(prevStateDiff, nextState, prevState, isNavigateBack);
         parent._entryScreens(nextStateDiff, nextState, prevState, isNavigateBack);
-
-        // update slide indicator
-        if (this.$slideIndicator) {
-            if (this._childScreenFilter.includes(nextState.id)) {
-                this.$slideIndicator.hide();
-            }
-            else {
-                this.$slideIndicator.show(this._getSlideIndex(nextState.id));
-            }
-        }
-    }
-
-    /** ChildScreens with those ids will not count for indicator
-     * @returns {string[]}
-     */
-    get _childScreenFilter() { return ['success', 'error', 'loading'].concat(this.__childScreenFilter); }
-
-    /** Overwrite for additionally filtered childScreens
-     * @returns {string[]}
-     */
-    get __childScreenFilter() { return []; }
-
-    get _filteredChildScreens() {
-        return Array.from(this._childScreens.entries())
-            .filter(x => !this._childScreenFilter.includes(x[0]));
-    }
-
-    /** @param {string} childId
-     *  @returns {number}
-     */
-    _getSlideIndex(childId) {
-        return this._filteredChildScreens.findIndex(x => x[0] === childId);
+        if (parent._onUpdateSlideIndicator) parent._onUpdateSlideIndicator(nextState);
     }
 
     _exitScreens(prevStateDiff, nextState, prevState, isNavigateBack) {

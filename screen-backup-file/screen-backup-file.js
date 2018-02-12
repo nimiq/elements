@@ -1,12 +1,11 @@
-import XScreen from '../x-screen/x-screen.js';
+import XSlidesScreen from '../x-slides-screen/x-slides-screen.js';
 import ScreenSuccess from '../screen-success/screen-success.js';
 import ScreenLoading from '../screen-loading/screen-loading.js';
 import ScreenNoPasswordWarning from './screen-no-password-warning/screen-no-password-warning.js';
 import ScreenCreatePassword from './screen-create-password.js';
 import ScreenDownloadRecovery from './screen-download-recovery.js';
-import XSlideIndicator from '/elements/x-slide-indicator/x-slide-indicator.js';
 
-export default class ScreenBackupFile extends XScreen {
+export default class ScreenBackupFile extends XSlidesScreen {
     html() {
         return `
             <h1>Backup your Account Access</h1>
@@ -16,7 +15,6 @@ export default class ScreenBackupFile extends XScreen {
                 <screen-download-recovery></screen-download-recovery>
                 <screen-success>Backup Complete</screen-success>
             </x-slides>
-            <x-slide-indicator></x-slide-indicator>
             <screen-no-password-warning route="no-password"></screen-no-password-warning>
             `
     }
@@ -40,8 +38,7 @@ export default class ScreenBackupFile extends XScreen {
             ScreenLoading,
             ScreenDownloadRecovery,
             ScreenSuccess,
-            ScreenNoPasswordWarning,
-            XSlideIndicator
+            ScreenNoPasswordWarning
         ]
     }
 
@@ -53,3 +50,5 @@ export default class ScreenBackupFile extends XScreen {
         this.goTo('download')
     }
 }
+
+// Todo: Test import before proceed
