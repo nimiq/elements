@@ -17,7 +17,7 @@ export default class ScreenBackupPhraseValidate extends XScreen {
                 </screen-success>
             </x-slides>
             <x-slide-indicator></x-slide-indicator>
-            <a secondary href="../#backup-phrase">Back to phrase</a>
+            <a secondary href="#backup-phrase/phrase">Back to phrase</a>
         `
     }
 
@@ -115,5 +115,3 @@ export default class ScreenBackupPhraseValidate extends XScreen {
         this.goTo(activeSlide.route);
     }
 }
-
-// Todo: Bug: fix back to phrase link
