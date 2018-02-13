@@ -11,7 +11,7 @@ export default class XSlidesScreen extends XScreen {
     }
 
     /** @param {XState} nextState */
-    async _onUpdateSlideIndicator(nextState) {
+    async _onStateChange(nextState) {
         if (this._childScreenFilter.includes(nextState.child._id)) {
             this.$slideIndicator.hide();
         }
@@ -47,3 +47,4 @@ export default class XSlidesScreen extends XScreen {
 
     }
 }
+

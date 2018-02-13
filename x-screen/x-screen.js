@@ -15,7 +15,7 @@ export default class XScreen extends XElement {
     }
 
     _registerRootElement() {
-        XScreen._registerGlobalStateListener(this._onStateChange.bind(this));
+        XScreen._registerGlobalStateListener(this._onRootStateChange.bind(this));
         this._show();
     }
 
@@ -27,7 +27,7 @@ export default class XScreen extends XElement {
      * @returns {Promise<void>}
      * @private
      */
-    async _onStateChange(nextState, prevState, isNavigateBack) {
+    async _onRootStateChange(nextState, prevState, isNavigateBack) {
         nextState = this._sanitizeState(nextState);
         const intersection = nextState.intersection(prevState); // calc intersection common parent path
         const nextStateDiff = nextState.difference(prevState);
@@ -37,7 +37,7 @@ export default class XScreen extends XElement {
         let exitParent = prevStateDiff && parent._getChildScreen(prevStateDiff[0]);
         if (exitParent) exitParent._exitScreens(prevStateDiff, nextState, prevState, isNavigateBack);
         parent._entryScreens(nextStateDiff, nextState, prevState, isNavigateBack);
-        if (parent._onUpdateSlideIndicator) parent._onUpdateSlideIndicator(nextState);
+        if (parent._onStateChange) parent._onStateChange(nextState);
     }
 
     _exitScreens(prevStateDiff, nextState, prevState, isNavigateBack) {
