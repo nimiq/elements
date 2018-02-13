@@ -18,7 +18,9 @@ body {
     text-align: center;
     display: flex !important;
     will-change: unset !important;
-    transform-origin: unset !important;
+    transform: none !important;
+    animation: none !important;
+    animation-fill-mode: none !important;
 }
 
 .x-screen,

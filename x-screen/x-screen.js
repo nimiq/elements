@@ -114,6 +114,7 @@ export default class XScreen extends XElement {
 
     _show() {
         this.$el.style.display = 'flex';
+        this.$el.offsetWidth; // Bugfix for FF: trigger layout and repaint 
         this._isVisible = true;
     }
 
@@ -170,8 +171,7 @@ export default class XScreen extends XElement {
         if (child instanceof Array) {
             const name = child[0].__toChildName() + 's';
             if (this[name][0] instanceof XScreen) this.__createChildScreens(child[0]);
-        }
-        else {
+        } else {
             const childScreen = this[child.__toChildName()];
             if (childScreen instanceof XScreen) this.__createChildScreen(childScreen);
         }
@@ -207,7 +207,7 @@ export default class XScreen extends XElement {
     static _registerGlobalStateListener(callback) {
         if (this._stateListener) return; // We register only the first screen calling. All other screens get notified by their parent
         this._stateListener = window.addEventListener('popstate', e => this._onHistoryChange(callback));
-        this._onHistoryChange(callback);
+        requestAnimationFrame(e => this._onHistoryChange(callback));
     }
 
     /** @param {function} callback */
