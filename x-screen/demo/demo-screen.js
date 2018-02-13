@@ -76,5 +76,3 @@ class ScreenDemoTwoTwo extends Screen {
 
     styles() { return ['x-screen'] }
 }
-
-// Todo: Bug: Animations dirty in Firefox

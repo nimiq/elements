@@ -27,5 +27,3 @@ export default class XSlideIndicator extends XElement {
         this.$el.style.display = 'none';
     }
 }
-
-// Todo: [Max] Fix positioning
