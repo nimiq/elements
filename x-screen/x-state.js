@@ -9,11 +9,15 @@ export default class XState {
         if (child.length && child[0]) this._child = new XState(child);
         /** @type {boolean} */
         this._isLeaf = !this._child;
+        /** @type {string[]} */
         this._path = path;
     }
 
     /** @returns {boolean} */
     get isLeaf() { return this._isLeaf; }
+
+    /** @returns {string} */
+    get leafId() { return this._path[this._path.length]; }
 
     /** @returns {string} */
     get id() { return this._id; }

@@ -1,5 +1,6 @@
 import XScreen from '../x-screen/x-screen.js';
 import XIdenticon from '../x-identicon/x-identicon.js';
+import NanoApi from '/libraries/nano-api/nano-api.js';
 
 export default class ScreenIdenticons extends XScreen {
 
@@ -33,18 +34,13 @@ export default class ScreenIdenticons extends XScreen {
         this._clearIdenticons();
     }
 
-    onApiReady(api) {
-        this._api = api;
-        if (this._generated || !this.isVisible) return;
-        this._generateIdenticons();
-    }
-
     async _generateIdenticons() {
-        if (!this._api) return;
+        const api = NanoApi.getApi();
+        //if (!this._api) return;
         this._clearIdenticons();
         this._generated = true;
         const promises = [];
-        for (var i = 0; i < 7; i++) { promises.push(this._api.generateKeyPair()) }
+        for (var i = 0; i < 7; i++) { promises.push(api.generateKeyPair()) }
         const keyPairs = await Promise.all(promises);
         keyPairs.forEach(keyPair => this._generateIdenticon(keyPair));
         setTimeout(e => this.$el.setAttribute('active', true), 100);

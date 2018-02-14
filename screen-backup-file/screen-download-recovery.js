@@ -18,13 +18,4 @@ export default class ScreenDownloadRecovery extends XScreenFit {
     }
 
     children() { return [XWalletBackup] }
-
-    onCreate() {
-        this.addEventListener('x-wallet-backup-complete', e => this._onWalletBackupComplete());
-    }
-
-    async _onWalletBackupComplete() {
-        await this.goTo('success');
-        this.fire('x-backup-file-complete');
-    }
 }

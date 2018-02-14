@@ -12,7 +12,7 @@ export default class ScreenBackupFileImport extends XScreen {
             <screen-backup-file-import-intro></screen-backup-file-import-intro>
             <screen-backup-file-import-password></screen-backup-file-import-password>
             <screen-loading>Unlocking the Backup</screen-loading>
-            <screen-success>Account Imported</screen-success>
+            <screen-success>Import successfull</screen-success>
         </x-slides>
         `;
     }
@@ -31,15 +31,15 @@ export default class ScreenBackupFileImport extends XScreen {
         this.goTo('password');
     }
 
-    _onPasswordInput(e){
+    _onPasswordInput(e) {
         const password = e.detail;
         const result = { password: password, encryptedKey: this._encryptedKey }
         this.fire('x-decrypt-backup', result);
         this.goTo('loading');
     }
 
-    async onPasswordCorrect(){
-        return this.goTo('success');
+    async onPasswordCorrect() {
+        return await this.goTo('success');
     }
 
     async onPasswordIncorrect() {

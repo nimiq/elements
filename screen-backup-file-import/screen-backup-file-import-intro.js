@@ -4,7 +4,7 @@ import XScreenFit from '../x-screen/x-screen-fit.js';
 export default class ScreenBackupFileImportIntro extends XScreenFit {
     html() {
         return `
-            <h2 secondary>Select a backup file to import an account</h2>
+            <h2 secondary>Select your backup file</h2>
             <x-wallet-backup-import></x-wallet-backup-import>
         `
     }
