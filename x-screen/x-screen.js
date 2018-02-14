@@ -114,7 +114,7 @@ export default class XScreen extends XElement {
 
     _show() {
         this.$el.style.display = 'flex';
-        this.$el.offsetWidth; // Bugfix for FF: trigger layout and repaint 
+        this.$el.offsetWidth; // Bugfix for FF: trigger layout and repaint
         this._isVisible = true;
     }
 
@@ -207,12 +207,14 @@ export default class XScreen extends XElement {
     static _registerGlobalStateListener(callback) {
         if (this._stateListener) return; // We register only the first screen calling. All other screens get notified by their parent
         this._stateListener = window.addEventListener('popstate', e => this._onHistoryChange(callback));
-        this._onHistoryChange(callback);
+        this._onHistoryChange(callback, true);
     }
 
     /** @param {function} callback */
-    static _onHistoryChange(callback) {
-        const nextState = XState.fromLocation();
+    static _onHistoryChange(callback, isPageLoad) {
+        let nextState;
+        if (isPageLoad) nextState = XState.fromLocation('#');
+        else nextState = XState.fromLocation();
         if (nextState.isEqual(this.currState)) return;
         const isNavigateBack = (nextState.isEqual(this.prevState));
         this.prevState = this.currState;
