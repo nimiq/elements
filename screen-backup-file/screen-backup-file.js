@@ -57,7 +57,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
     }
 
     async _onWalletDownloadComplete() {
-        this.goTo('backup-file-import');
+        location.href = "#backup-file/backup-file-import";
         const $a = this.$Managed('a');
         $a.classList.remove('hidden');
         $a.addEventListener('click', () => $a.classList.add('hidden'));
