@@ -28,9 +28,9 @@ export default class ScreenBackupFile extends XSlidesScreen {
             ScreenCreatePassword,
             ScreenLoading,
             ScreenDownloadRecovery,
-            [ ScreenSuccess ], // another one in BackupFileImport
-            ScreenNoPasswordWarning,
-            ScreenBackupFileImport
+            ScreenBackupFileImport,
+            ScreenSuccess,
+            ScreenNoPasswordWarning
         ]
     }
 
@@ -58,7 +58,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
 
     async _onWalletDownloadComplete() {
         this.goTo('backup-file-import');
-        const $a = this.$('a');
+        const $a = this.$Managed('a');
         $a.classList.remove('hidden');
         $a.addEventListener('click', () => $a.classList.add('hidden'));
     }
