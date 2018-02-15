@@ -18,7 +18,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
                 <screen-backup-file-import></screen-backup-file-import>
                 <screen-success>Backup Complete</screen-success>
             </x-slides>
-            <a secondary class="hidden" href="#backup-file">I'm lost and want to try again</a>
+            <a secondary class="hidden" href="#backup-file" id="x-screen-backup-file-a">I'm lost and want to try again</a>
             <screen-no-password-warning route="no-password"></screen-no-password-warning>
             `
     }
@@ -58,7 +58,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
 
     async _onWalletDownloadComplete() {
         location.href = "#backup-file/backup-file-import";
-        const $a = this.$Managed('a');
+        const $a = this.$('#x-screen-backup-file-a');
         $a.classList.remove('hidden');
         $a.addEventListener('click', () => $a.classList.add('hidden'));
     }
