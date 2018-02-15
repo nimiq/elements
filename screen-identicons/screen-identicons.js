@@ -11,7 +11,7 @@ export default class ScreenIdenticons extends XScreen {
             <x-container>
                 <div class="center" id="loading">
                     <x-loading-animation></x-loading-animation>
-                    <h2>Preparing Avatars</h2>
+                    <h2>Mixing colors</h2>
                 </div>
             </x-container>
             <a secondary>Generate More</a>

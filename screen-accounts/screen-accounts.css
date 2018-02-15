@@ -27,10 +27,15 @@ x-account:last-child {
     border-bottom: 1px solid transparent;
 }
 
-x-account x-identicon svg {
+x-account x-identicon {
     width: 80px;
     height: 71px;
     margin-right: 8px;
+}
+
+x-account x-identicon svg {
+    width: 100%;
+    height: 100%;
 }
 
 x-account .x-address {

@@ -13,6 +13,8 @@ screen-identicons x-header {
 }
 
 screen-identicons x-identicon {
+    width: 128px;
+    height: 128px;
     position: absolute;
     transition: transform 500ms;
     will-change: transform;
@@ -25,8 +27,8 @@ screen-identicons x-identicon:hover {
 }
 
 screen-identicons x-identicon svg {
-    width: 128px;
-    height: 128px;
+    width: 100%;
+    height: 100%;
 }
 
 screen-identicons x-container {
