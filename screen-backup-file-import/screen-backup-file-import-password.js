@@ -21,15 +21,15 @@ export default class ScreenBackupFileImportPassword extends XScreenFit {
         this.$button.addEventListener('click', e => this._onPasswordInput(e));
     }
 
+    _onEntry() {
+        this.$passwordInput.focus();
+    }
+
     _validityChanged(valid) {
         if (valid)
             this.$button.removeAttribute('disabled');
         else
             this.$button.setAttribute('disabled', true);
-    }
-
-    _onEntry() {
-        this.$passwordInput.focus();
     }
 
     _onPasswordInput(e) {

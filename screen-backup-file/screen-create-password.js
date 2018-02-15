@@ -52,4 +52,3 @@ export default class ScreenCreatePassword extends XScreenFit {
 }
 
 // Todo: Password confirm, make visible hover eye
-// Todo: Indicate that click on image means to download it / download button
