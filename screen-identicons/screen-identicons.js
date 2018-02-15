@@ -9,7 +9,7 @@ export default class ScreenIdenticons extends XScreen {
             <h1>Choose Your Avatar</h1>
             <h2>Your Avatar will be unique to this Account. You can not change it later.</h2>
             <x-container>
-                <div class="center">
+                <div class="center" id="loading">
                     <x-loading-animation></x-loading-animation>
                     <h2>Preparing Avatars</h2>
                 </div>
@@ -25,7 +25,7 @@ export default class ScreenIdenticons extends XScreen {
 
     onCreate() {
         this.$container = this.$('x-container');
-        this.$loading = this.$('x-container center');
+        this.$loading = this.$('#loading');
         this.$address = this.$('x-address');
         this.$('[secondary]').addEventListener('click', e => this._generateIdenticons());
         this.$('[button]').addEventListener('click', e => this._onConfirm(e));

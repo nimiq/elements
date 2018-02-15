@@ -95,13 +95,9 @@ screen-identicons x-backdrop {
 
 screen-identicons [secondary] {
     position: absolute;
-    bottom: 40px;
+    bottom: 10px;
     margin-bottom: 20px;
     cursor: pointer;
-}
-
-screen-identicons x-backdrop [secondary] {
-    bottom: 10px;
 }
 
 screen-identicons x-address:before {
