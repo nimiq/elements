@@ -200,14 +200,12 @@ export default class XScreen extends XElement {
     static _registerGlobalStateListener(callback) {
         if (this._stateListener) return; // We register only the first screen calling. All other screens get notified by their parent
         this._stateListener = window.addEventListener('popstate', e => this._onHistoryChange(callback));
-        setTimeout(e => this._onHistoryChange(callback, true), 0); // Trigger FF layout
+        setTimeout(e => this._onHistoryChange(callback), 0); // Trigger FF layout
     }
 
     /** @param {function} callback */
-    static _onHistoryChange(callback, isPageLoad) {
-        let nextState;
-        if (isPageLoad) nextState = XState.fromLocation('#');
-        else nextState = XState.fromLocation();
+    static _onHistoryChange(callback) {
+        const nextState = XState.fromLocation();
         if (nextState.isEqual(this.currState)) return;
         const isNavigateBack = (nextState.isEqual(this.prevState));
         this.prevState = this.currState;
