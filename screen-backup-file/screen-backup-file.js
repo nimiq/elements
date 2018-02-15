@@ -42,6 +42,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
             'x-wallet-download-complete': '_onWalletDownloadComplete',
             'x-encrypt-backup': '_onSetPassword',
             'x-decrypt-backup': '_onDecryptBackup',
+            'x-password-input-retry': '_onRetryClicked'
         }
     }
 
@@ -75,6 +76,11 @@ export default class ScreenBackupFile extends XSlidesScreen {
             console.error(e);
             this.$screenBackupFileImport.onPasswordIncorrect();
         }
+    }
+
+    _onRetryClicked() {
+        const $a = this.$('#x-screen-backup-file-a');
+        $a.classList.add('hidden');
     }
 
     types() {
