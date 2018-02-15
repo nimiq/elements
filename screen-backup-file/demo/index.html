@@ -11,17 +11,16 @@
     <screen-backup-file></screen-backup-file>
     <script type="module">
     import ScreenBackupFile from '../screen-backup-file.js';
+    import NanoApi from '/libraries/nano-api/nano-api.js';
+
     const $screen = new ScreenBackupFile();
-    document.addEventListener('x-encrypt-backup', e => _onEncryptBackup(e));
     document.addEventListener('x-file-backup-complete', e => console.log('export complete!'));
 
-    function _onEncryptBackup(e) { setTimeout(e => _setRawBackup(), 200)}
+    const api = NanoApi.getApi();
+    api.generateKeyPair().then(keyPair => {
+        $screen.setKeyPair(keyPair);
+    });
 
-    function _setRawBackup() {
-        const address = 'NQ52 R00E 3NKS DXH5 53U3 RK0V S7V4 LEH0 QV64';
-        const privateKey = 'b15560371ce744c3931327205160a68ac46e2cb19bf09ddbd33bfc0292be32ad';
-        $screen.backup(address, privateKey);
-    }
     </script>
 </body>
 
