@@ -7,7 +7,7 @@ import ScreenBackupFileImportPassword from './screen-backup-file-import-password
 export default class ScreenBackupFileImport extends XScreen {
     html() {
         return `
-        <h1>Import Backup File</h1>
+        <h2>Import Backup File</h2>
         <x-slides>
             <screen-backup-file-import-intro></screen-backup-file-import-intro>
             <screen-backup-file-import-password></screen-backup-file-import-password>
@@ -44,6 +44,7 @@ export default class ScreenBackupFileImport extends XScreen {
 
     async onPasswordIncorrect() {
         await this.back();
+        this.$screenBackupFileImportPassword.onPasswordIncorrect();
         this.$screenBackupFileImportPassword.$passwordInput._onInvalid();
     }
 }

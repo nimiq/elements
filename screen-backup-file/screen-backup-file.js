@@ -73,7 +73,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
             this.fire('x-backup-file-complete');
         } catch (e) {
             console.error(e);
-            location.href = '#backup-file/create-password';
+            this.$screenBackupFileImport.onPasswordIncorrect();
         }
     }
 
