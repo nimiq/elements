@@ -8,14 +8,10 @@
 
 <body>
     <screen-identicons></screen-identicons>
-    <x-nimiq-api></x-nimiq-api>
     <script type="module">
     import ScreenIdenticons from '../screen-identicons.js';
-    import XNimiqApi from '../../x-nimiq-api/x-nimiq-api.js';
     const $screen = new ScreenIdenticons();
     $screen.visible = true;
-    const $api = new XNimiqApi();
-    $api.addEventListener('x-api-ready', event => $screen.onApiReady(event.detail));
     </script>
 </body>
 

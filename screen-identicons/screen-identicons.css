@@ -99,7 +99,6 @@ screen-identicons [secondary] {
     position: absolute;
     bottom: 10px;
     margin-bottom: 20px;
-    cursor: pointer;
 }
 
 screen-identicons x-address:before {

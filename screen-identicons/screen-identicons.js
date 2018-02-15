@@ -63,7 +63,7 @@ export default class ScreenIdenticons extends XScreen {
     }
 
     _onIdenticonSelected(keyPair, identicon) {
-        this._clearSelection();
+        this.$('x-identicon.returning') && this.$('x-identicon.returning').classList.remove('returning');
         this._selectedKeyPair = keyPair;
         this._selectedIdenticon = identicon;
         this.$el.setAttribute('selected', true);
@@ -75,7 +75,6 @@ export default class ScreenIdenticons extends XScreen {
         this._selectedKeyPair = null;
         if (!this._selectedIdenticon) return;
         this._selectedIdenticon.$el.classList.add('returning');
-        setTimeout(() => this._selectedIdenticon.$el.classList.remove('returning'), 500);
         this.$el.removeAttribute('selected');
         this._selectedIdenticon.$el.removeAttribute('selected');
     }
@@ -97,4 +96,3 @@ export default class ScreenIdenticons extends XScreen {
 
 // Todo: refactor api such that addresses can be generated before full api is loaded
 // Todo: [low priority] remove hack for overlay and find a general solution
-// Todo: Use general goal of transition for all identicons: focus, don't rely on calculating the position
