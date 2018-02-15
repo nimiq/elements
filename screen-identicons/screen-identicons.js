@@ -8,7 +8,9 @@ export default class ScreenIdenticons extends XScreen {
         return `
             <h1>Choose Your Avatar</h1>
             <h2>Your Avatar will be unique to this Account. You can not change it later.</h2>
-            <x-container></x-container>
+            <x-container>
+                <x-loading-animation></x-loading-animation>
+            </x-container>
             <a secondary>Generate More</a>
             <x-backdrop class="center">
                 <x-address></x-address>
@@ -19,6 +21,7 @@ export default class ScreenIdenticons extends XScreen {
 
     onCreate() {
         this.$container = this.$('x-container');
+        this.$loading = this.$('x-container x-loading-animation');
         this.$address = this.$('x-address');
         this.$('[secondary]').addEventListener('click', e => this._generateIdenticons());
         this.$('[button]').addEventListener('click', e => this._onConfirm(e));
@@ -44,6 +47,9 @@ export default class ScreenIdenticons extends XScreen {
         const keyPairs = await Promise.all(promises);
         keyPairs.forEach(keyPair => this._generateIdenticon(keyPair));
         setTimeout(e => this.$el.setAttribute('active', true), 100);
+        if(!this.$loading) return;
+        this.$container.removeChild(this.$loading);
+        this.$loading = null;
     }
 
     _generateIdenticon(keyPair) {
@@ -72,7 +78,9 @@ export default class ScreenIdenticons extends XScreen {
     _clearIdenticons() {
         this._generated = false;
         this._clearSelection()
-        this.$container.innerHTML = '';
+        while(this.$container.querySelector('x-identicon')) {
+            this.$container.removeChild(this.$container.querySelector('x-identicon'));
+        }
         this.$el.removeAttribute('active');
     }
 
@@ -82,7 +90,6 @@ export default class ScreenIdenticons extends XScreen {
     }
 }
 
-// Todo: show loading screen while waiting for api to start
 // Todo: refactor api such that addresses can be generated before full api is loaded
 // Todo: [low priority] remove hack for overlay and find a general solution
 // Todo: [Max] Bug: Overlay broken on Android. But is to be refactored anyway

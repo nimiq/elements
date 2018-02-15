@@ -1,5 +1,6 @@
 @import '../x-screen/x-screen.css';
 @import '../x-address/x-address.css';
+@import '../x-loading-animation/x-loading-animation.css';
 
 screen-identicons {
     -webkit-user-select: none;
