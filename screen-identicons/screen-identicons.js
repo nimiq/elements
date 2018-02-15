@@ -39,7 +39,6 @@ export default class ScreenIdenticons extends XScreen {
 
     async _generateIdenticons() {
         const api = NanoApi.getApi();
-        //if (!this._api) return;
         this._clearIdenticons();
         this._generated = true;
         const promises = [];
