@@ -16,7 +16,6 @@ export default class XScreen extends XElement {
 
     _registerRootElement() {
         XScreen._registerGlobalStateListener(this._onRootStateChange.bind(this));
-        this._show();
     }
 
     /**
@@ -207,8 +206,7 @@ export default class XScreen extends XElement {
     static _registerGlobalStateListener(callback) {
         if (this._stateListener) return; // We register only the first screen calling. All other screens get notified by their parent
         this._stateListener = window.addEventListener('popstate', e => this._onHistoryChange(callback));
-        requestAnimationFrame(e => {}); // Trigger FF layout
-        this._onHistoryChange(callback, true);
+        setTimeout(e => this._onHistoryChange(callback, true), 0); // Trigger FF layout
     }
 
     /** @param {function} callback */
