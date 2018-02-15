@@ -142,10 +142,6 @@ export default class XScreen extends XElement {
         })
     }
 
-    goToChild(route) {
-        document.location = this._location + '/' + route;
-    }
-
     back() {
         return new Promise(resolve => {
             XScreen._goToResolve = resolve;
@@ -200,9 +196,6 @@ export default class XScreen extends XElement {
         XScreen._goToResolve = null;
     }
 
-    _validateState(nextState, prevState, isNavigateBack) { return true /* Abstract Method */ }
-
-
     /** @param {function} callback */
     static _registerGlobalStateListener(callback) {
         if (this._stateListener) return; // We register only the first screen calling. All other screens get notified by their parent
@@ -226,4 +219,3 @@ export default class XScreen extends XElement {
 }
 
 // Todo: Fix kind of animations when using back and forward buttons in whatever order
-// Todo Fix general page layout (Firefox bugs, absolute positioning)
