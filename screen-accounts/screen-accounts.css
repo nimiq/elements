@@ -4,7 +4,7 @@
 x-accounts-list {
     width: 100%;
     flex-grow: 1;
-    overflow: scroll;
+    overflow: auto;
     margin-bottom: 24px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     flex-direction:  column;
@@ -26,7 +26,7 @@ x-account:last-child {
     border-bottom: 1px solid transparent;
 }
 
-x-account x-identicon {
+x-account x-identicon svg {
     width: 80px;
     height: 71px;
     margin-right: 8px;
