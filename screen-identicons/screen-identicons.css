@@ -13,13 +13,20 @@ screen-identicons x-header {
 }
 
 screen-identicons x-identicon {
-    width: 128px;
-    height: 128px;
     position: absolute;
     transition: transform 500ms;
     will-change: transform;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     transform: scale(0.6);
+}
+
+screen-identicons x-identicon:hover {
+    cursor: pointer;
+}
+
+screen-identicons x-identicon svg {
+    width: 128px;
+    height: 128px;
 }
 
 screen-identicons x-container {
