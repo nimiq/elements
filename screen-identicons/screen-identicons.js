@@ -9,15 +9,16 @@ export default class ScreenIdenticons extends XScreen {
             <h1>Choose Your Avatar</h1>
             <h2>Your Avatar will be unique to this Account. You can not change it later.</h2>
             <x-container>
-                <center>
+                <div class="center">
                     <x-loading-animation></x-loading-animation>
                     <h2>Preparing Avatars</h2>
-                </center>
+                </div>
             </x-container>
             <a secondary>Generate More</a>
             <x-backdrop class="center">
                 <x-address></x-address>
                 <a button>Confirm</a>
+                <a secondary>Back</a>
             </x-backdrop>
             `
     }
@@ -94,5 +95,4 @@ export default class ScreenIdenticons extends XScreen {
 
 // Todo: refactor api such that addresses can be generated before full api is loaded
 // Todo: [low priority] remove hack for overlay and find a general solution
-// Todo: [Max] Bug: Overlay broken on Android. But is to be refactored anyway
-// Todo: [Max] Bug: Totally broken on iOs
+// Todo: Use general goal of transition for all identicons: focus, don't rely on calculating the position

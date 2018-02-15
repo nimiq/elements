@@ -73,7 +73,7 @@ screen-identicons [button] {
     will-change: transform;
     transition-delay: 300ms;
     position: absolute;
-    top: calc( 50% + 240px);
+    bottom: 50px;
     pointer-events: none;
     width: calc(100% - 64px);
 }
@@ -100,6 +100,9 @@ screen-identicons [secondary] {
     cursor: pointer;
 }
 
+screen-identicons x-backdrop [secondary] {
+    bottom: 10px;
+}
 
 screen-identicons x-address:before {
     display: block;
