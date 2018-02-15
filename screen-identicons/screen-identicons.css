@@ -137,12 +137,15 @@ screen-identicons[selected] x-backdrop {
     /* border: 100vmax solid rgb(21, 20, 51); */
 }
 
-screen-identicons x-identicon[selected] {
+screen-identicons x-identicon[selected],
+screen-identicons x-identicon.returning {
     z-index: 3;
-    transform: scale(1.5) translateY(-40px);
+    transition-delay: 0s !important;
 }
 
-
+screen-identicons x-identicon[selected] {
+    transform: scale(1.5) translateY(-40px);
+}
 
 @media (max-width: 380px) {
     screen-identicons x-identicon {
@@ -187,8 +190,4 @@ screen-identicons x-identicon:nth-child(3),
 screen-identicons x-identicon:nth-child(4),
 screen-identicons x-identicon:nth-child(7) {
     transition-delay: 300ms;
-}
-
-screen-identicons x-identicon[selected] {
-    transition-delay: 0s !important;
 }

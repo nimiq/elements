@@ -74,6 +74,8 @@ export default class ScreenIdenticons extends XScreen {
     _clearSelection() {
         this._selectedKeyPair = null;
         if (!this._selectedIdenticon) return;
+        this._selectedIdenticon.$el.classList.add('returning');
+        setTimeout(() => this._selectedIdenticon.$el.classList.remove('returning'), 500);
         this.$el.removeAttribute('selected');
         this._selectedIdenticon.$el.removeAttribute('selected');
     }
