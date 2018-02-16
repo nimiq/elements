@@ -199,6 +199,7 @@ export default class XScreen extends XElement {
     /** @param {function} callback */
     static _registerGlobalStateListener(callback) {
         if (this._stateListener) return; // We register only the first screen calling. All other screens get notified by their parent
+        this.stateHistory = [];
         this._stateListener = window.addEventListener('popstate', e => this._onHistoryChange(callback));
         setTimeout(e => this._onHistoryChange(callback), 0); // Trigger FF layout
     }
@@ -207,13 +208,16 @@ export default class XScreen extends XElement {
     static _onHistoryChange(callback) {
         const nextState = XState.fromLocation();
         if (nextState.isEqual(this.currState)) return;
-        const isNavigateBack = (nextState.isEqual(this.prevState));
-        this.prevState = this.currState;
+        const isNavigateBack = (nextState.isEqual(this.stateHistory[this.stateHistory.length - 1]));
+
+        // Handle state history array
+        if(isNavigateBack) this.stateHistory.pop();
+        else this.stateHistory.push(this.currState);
+
+        const prevState = this.currState;
         this.currState = nextState;
-        callback(nextState, this.prevState, isNavigateBack);
+        callback(nextState, prevState, isNavigateBack);
     }
 
     static launch() { window.addEventListener('load', () => new this()); }
 }
-
-// Todo: Fix kind of animations when using back and forward buttons in whatever order
