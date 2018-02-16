@@ -7,11 +7,11 @@ export default class XSlidesScreen extends XScreen {
         this.$slideIndicator = XSlideIndicator.createElement();
         this.$('x-slides').insertAdjacentElement('afterend', this.$slideIndicator.$el);
 
-        this._filteredChildScreens = XSlidesScreen._prepareChildScreens('', this._childScreens, this._childScreenFilter)
+        this._filteredChildScreenPaths = XSlidesScreen._prepareChildScreens('', this._childScreens, this._childScreenFilter)
 
         this.addEventListener('x-entry', e => this._update(e.detail));
 
-        this.$slideIndicator.init(this._filteredChildScreens.length);
+        this.$slideIndicator.init(this._filteredChildScreenPaths.length);
         this.$slideIndicator.show(0);
     }
 
@@ -46,22 +46,19 @@ export default class XSlidesScreen extends XScreen {
         const metaChildScreens = filteredChildScreens
             .filter(x => x[1]._childScreens);
 
-        const preparedChildScreens = simpleChildScreens.map(x => ({
-            ...x,
-            path: path + x[0]
-        }));
+        const childScreenPaths = simpleChildScreens.map(x => path + x[0]);
 
-        const recursiveChildScreens = metaChildScreens.map(x =>
+        const recursiveChildScreenPaths = metaChildScreens.map(x =>
             XSlidesScreen._prepareChildScreens(x[0] + '/', x[1]._childScreens, filter)
         ).reduce((a,b) => a.concat(b), [])
 
-        return preparedChildScreens.concat(recursiveChildScreens);
+        return childScreenPaths.concat(recursiveChildScreenPaths);
     }
 
     /** @param {string} childId
      *  @returns {number}
      */
     _getSlideIndex(childPath) {
-        return this._filteredChildScreens.findIndex(x => x.path === childPath);
+        return this._filteredChildScreenPaths.findIndex(x => x === childPath);
     }
 }
