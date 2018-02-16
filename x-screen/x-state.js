@@ -96,6 +96,7 @@ export default class XState {
         if (!route) return '';
         if (route[0] === '/') return this._locationFromAbsoluteRoute(route);
         if (route.indexOf('./') === 0) return this._locationFromSubroute(route);
+        if (route.indexOf('../') === 0) return this._locationFromParentRoute(route);
         return this._locationFromRelativeRoute(route);
     }
 
@@ -112,11 +113,20 @@ export default class XState {
     /** @param {string[]} route
      *  @returns string */
     static _locationFromSubroute(route) {
-        route = route.slice(2);
         let fragment = this._currFragment();
+        // Todo [Robin]: Decide on way to do things - either with string testing, or with string splitting
         let lastChar = fragment[fragment.length - 1];
         if (!!fragment && lastChar !== '/') fragment += '/';
-        return '#' + fragment + route;
+        return '#' + fragment + route.slice(2);
+    }
+
+    static _locationFromParentRoute(route) {
+        const fragment = this._currFragment();
+        const path = fragment.split('/').filter(e => e);
+        path.pop();
+        path.pop();
+        path.push(route.slice(3));
+        return '#' + path.join('/');
     }
 
     /** @param {string[]} route

@@ -76,7 +76,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
         const encryptedKey = backup.encryptedKey;
         try {
             await NanoApi.getApi().importEncrypted(encryptedKey, password);
-            await this.goTo('success');
+            await this.goTo('../success');
             this.fire('x-backup-file-complete');
         } catch (e) {
             console.error(e);
@@ -86,8 +86,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
 
     _onRetryClicked() {
         this.$a.classList.add('hidden');
-        // todo fix
-        this.goTo('../create-password');
+        this.goTo('../');
     }
 
     types() {

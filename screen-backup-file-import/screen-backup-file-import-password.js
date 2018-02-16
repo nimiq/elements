@@ -46,8 +46,9 @@ export default class ScreenBackupFileImportPassword extends XScreenFit {
     }
 
     _onPasswordInput(e) {
-        this.fire('x-password-input', this.$passwordInput.value);
+        const value = this.$passwordInput.value;
         this.$passwordInput.value = '';
+        this.fire('x-password-input', value);
         this.$hint.classList.add('hidden');
     }
 

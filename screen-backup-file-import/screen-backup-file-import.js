@@ -32,11 +32,11 @@ export default class ScreenBackupFileImport extends XScreen {
         this.goTo('password');
     }
 
-    _onPasswordInput(e) {
+    async _onPasswordInput(e) {
         const password = e.detail;
         const result = { password: password, encryptedKey: this._encryptedKey }
+        await this.goTo('loading');
         this.fire('x-decrypt-backup', result);
-        this.goTo('loading');
     }
 
     async onPasswordCorrect() {
