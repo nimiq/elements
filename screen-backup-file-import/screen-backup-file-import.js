@@ -6,11 +6,12 @@ import ScreenBackupFileImportPassword from './screen-backup-file-import-password
 
 export default class ScreenBackupFileImport extends XScreen {
     html() {
+        const isTestImport = this.$el.hasAttribute('test-import');
         return `
         <h2>Import Backup File</h2>
         <x-slides>
             <screen-backup-file-import-intro></screen-backup-file-import-intro>
-            <screen-backup-file-import-password></screen-backup-file-import-password>
+            <screen-backup-file-import-password ${isTestImport && 'test-import'}></screen-backup-file-import-password>
             <screen-loading>Unlocking the Backup</screen-loading>
             <screen-success>Import successfull</screen-success>
         </x-slides>

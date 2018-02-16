@@ -17,7 +17,7 @@ export default class XState {
     get isLeaf() { return this._isLeaf; }
 
     /** @returns {string} */
-    get leafId() { return this._path[this._path.length]; }
+    get leafId() { return this._path[this._path.length -1]; }
 
     /** @returns {string} */
     get id() { return this._id; }

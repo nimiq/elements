@@ -15,10 +15,10 @@ export default class ScreenBackupFile extends XSlidesScreen {
                 <screen-create-password></screen-create-password>
                 <screen-loading>Encrypting Backup</screen-loading>
                 <screen-download-recovery></screen-download-recovery>
-                <screen-backup-file-import></screen-backup-file-import>
+                <screen-backup-file-import test-import></screen-backup-file-import>
                 <screen-success>Backup Complete</screen-success>
             </x-slides>
-            <a secondary class="hidden" href="#backup-file" id="x-screen-backup-file-a">I'm lost and want to try again</a>
+            <a secondary class="hidden" id="x-screen-backup-file-a">I'm lost and want to try again</a>
             <screen-no-password-warning route="no-password"></screen-no-password-warning>
             `
     }
@@ -36,6 +36,12 @@ export default class ScreenBackupFile extends XSlidesScreen {
 
     /** Do not use those for slide indicator */
     get __childScreenFilter() { return ['no-password']; }
+
+    onCreate() {
+        super.onCreate();
+        this.$a = this.$('#x-screen-backup-file-a');
+        this.$a.addEventListener('click', e => this._onRetryClicked());
+    }
 
     listeners() {
         return {
@@ -58,7 +64,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
     }
 
     async _onWalletDownloadComplete() {
-        location.href = "#backup-file/backup-file-import";
+        this.goTo('backup-file-import');
         const $a = this.$('#x-screen-backup-file-a');
         $a.classList.remove('hidden');
         $a.addEventListener('click', () => $a.classList.add('hidden'));
@@ -79,8 +85,9 @@ export default class ScreenBackupFile extends XSlidesScreen {
     }
 
     _onRetryClicked() {
-        const $a = this.$('#x-screen-backup-file-a');
-        $a.classList.add('hidden');
+        this.$a.classList.add('hidden');
+        // todo fix
+        this.goTo('../create-password');
     }
 
     types() {

@@ -51,4 +51,4 @@ export default class ScreenCreatePassword extends XScreenFit {
     }
 }
 
-// Todo: Password confirm, make visible hover eye
+// Todo: Make visible hover eye for password?

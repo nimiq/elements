@@ -3,11 +3,13 @@ import XScreenFit from '../x-screen/x-screen-fit.js';
 
 export default class ScreenBackupFileImportPassword extends XScreenFit {
     html() {
+        const isTestImport = this.$el.hasAttribute('test-import');
         return `
             <h2 secondary>Enter the password to unlock this backup</h2>
             <x-password-input></x-password-input>
             <p id="screen-backup-file-import-password-error" class="hidden">
-                That password was incorrect.<br>Try again or <a href="javascript:void(0)">set a new password</a>.
+                That password was incorrect.
+                ${ isTestImport && `<br>Try again or <a href="javascript:void(0)">set a new password</a>` }
             </p>
             <x-grow></x-grow>
             <button disabled="yes">Unlock</button>
@@ -41,7 +43,6 @@ export default class ScreenBackupFileImportPassword extends XScreenFit {
     _onRetryClicked(e) {
         this.fire('x-password-input-retry');
         this.$hint.classList.add('hidden');
-        location.href = "#backup-file";
     }
 
     _onPasswordInput(e) {

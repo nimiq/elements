@@ -12,6 +12,7 @@ export default class XScreen extends XElement {
         super(parent);
         if (!parent) this._registerRootElement();
         this._bindListeners();
+        this.addEventListener('x-entry', this._onChildEntry.bind(this));
     }
 
     _registerRootElement() {
@@ -83,6 +84,7 @@ export default class XScreen extends XElement {
     async __onEntry(nextState, prevState, isNavigateBack) {
         if (this.isVisible) return;
         if (this._onBeforeEntry) this._onBeforeEntry(nextState, prevState, isNavigateBack);
+        this.fire('x-entry', this.route);
         await this._animateEntry(isNavigateBack);
         if (this._onEntry) await this._onEntry(nextState, prevState, isNavigateBack);
         this._resolveGoTo();
@@ -164,6 +166,7 @@ export default class XScreen extends XElement {
 
     __createChild(child) {
         super.__createChild(child);
+        this.path = (parent ? parent.path : '') + this.route;
         if (child instanceof Array) {
             const name = child[0].__toChildName() + 's';
             if (this[name][0] instanceof XScreen) this.__createChildScreens(child[0]);
@@ -174,6 +177,7 @@ export default class XScreen extends XElement {
     }
 
     __createChildScreen(child) {
+        //super.__createChild(child);
         if (!this._childScreens) this._childScreens = new Map();
         this._childScreens.set(child.route, child);
         child._parent = this;
@@ -183,6 +187,18 @@ export default class XScreen extends XElement {
         const name = child.__toChildName() + 's';
 
         this[name].forEach(c => this.__createChildScreen(c));
+    }
+
+    _onChildEntry(e) {
+        if (e.target === this.$el) return;
+
+        e.stopPropagation();
+
+        if (this.route) {
+            const childPath = e.detail;
+            const myPath = this.route + '/' + childPath;
+            this.fire('x-entry', myPath);
+        }
     }
 
     __bindStyles(styles) {

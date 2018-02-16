@@ -6,18 +6,19 @@ export default class XSlidesScreen extends XScreen {
     onCreate() {
         this.$slideIndicator = XSlideIndicator.createElement();
         this.$('x-slides').insertAdjacentElement('afterend', this.$slideIndicator.$el);
+
+        this._filteredChildScreens = XSlidesScreen._prepareChildScreens('', this._childScreens, this._childScreenFilter)
+
+        this.addEventListener('x-entry', e => this._update(e.detail));
+
         this.$slideIndicator.init(this._filteredChildScreens.length);
         this.$slideIndicator.show(0);
     }
 
     /** @param {XState} nextState */
-    async _onStateChange(nextState) {
-        if (this._childScreenFilter.includes(nextState.leafId)) {
-            this.$slideIndicator.hide();
-        }
-        else {
-            this.$slideIndicator.show(this._getSlideIndex(nextState.leafId));
-        }
+    async _update(childPath) {
+        const slideIndex = this._getSlideIndex(childPath);
+        if (slideIndex > 0) this.$slideIndicator.show(slideIndex);
     }
 
     /** ChildScreens with those ids will not count for indicator
@@ -34,18 +35,33 @@ export default class XSlidesScreen extends XScreen {
         return [];
     }
 
-    /** @returns {XScreen[]} */
-    get _filteredChildScreens() {
-        return Array.from(this._childScreens.entries())
-            .filter(x => !this._childScreenFilter.includes(x[0]));
+    /** @returns {(XScreen & {path: string})[]} */
+    static _prepareChildScreens(path, childScreens, filter) {
+        const filteredChildScreens = Array.from(childScreens.entries())
+            .filter(x => !filter.includes(x[0]));
+
+        const simpleChildScreens = filteredChildScreens
+            .filter(x => !x[1]._childScreens);
+
+        const metaChildScreens = filteredChildScreens
+            .filter(x => x[1]._childScreens);
+
+        const preparedChildScreens = simpleChildScreens.map(x => ({
+            ...x,
+            path: path + x[0]
+        }));
+
+        const recursiveChildScreens = metaChildScreens.map(x =>
+            XSlidesScreen._prepareChildScreens(x[0] + '/', x[1]._childScreens, filter)
+        ).reduce((a,b) => a.concat(b), [])
+
+        return preparedChildScreens.concat(recursiveChildScreens);
     }
 
     /** @param {string} childId
      *  @returns {number}
      */
-    _getSlideIndex(childId) {
-        return this._filteredChildScreens.findIndex(x => x[0] === childId);
-
+    _getSlideIndex(childPath) {
+        return this._filteredChildScreens.findIndex(x => x.path === childPath);
     }
 }
-
