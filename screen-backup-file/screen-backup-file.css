@@ -10,7 +10,11 @@
 	screen-create-password button{
 		display: none;
 	}
-	x-wallet-backup x-downloadable-image img {
-		max-height: 44vh;
+}
+
+@media(max-height: 700px){
+	screen-backup-file a[secondary] {
+		position: absolute;
+		bottom: 25px;
 	}
 }

@@ -25,3 +25,9 @@ x-slide-indicator x-dot {
 x-slide-indicator x-dot[on] {
     background: white;
 }
+
+@media (max-height: 700px) {
+    x-slide-indicator {
+        bottom: 10px;
+    }
+}

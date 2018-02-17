@@ -17,7 +17,7 @@ export default class XScreen extends XElement {
 
     _registerRootElement() {
         XScreen._registerGlobalStateListener(this._onRootStateChange.bind(this));
-        setTimeout(e => this._show(), 100);
+        //setTimeout(e => this._show(), 100);
     }
 
     /**

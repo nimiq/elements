@@ -11,7 +11,6 @@ export default class ScreenBackupFileImportPassword extends XScreenFit {
                 That password was incorrect.
                 ${ isTestImport && `<br>Try again or <a href="javascript:void(0)">set a new password</a>` }
             </p>
-            <x-grow></x-grow>
             <button disabled="yes">Unlock</button>
         `
     }

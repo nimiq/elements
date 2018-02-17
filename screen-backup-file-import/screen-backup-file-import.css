@@ -8,4 +8,12 @@
 	screen-create-password-import button{
 		display: none;
 	}
+
+	x-screen, x-screen-fit {
+		height: 85vh !important;
+	}
+}
+
+screen-backup-file-import-password {
+	justify-content: stretch;
 }
