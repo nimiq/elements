@@ -94,5 +94,4 @@ export default class ScreenIdenticons extends XScreen {
     }
 }
 
-// Todo: refactor api such that addresses can be generated before full api is loaded
 // Todo: [low priority] remove hack for overlay and find a general solution
