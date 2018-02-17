@@ -8,3 +8,5 @@ export default class ScreenLoading extends XScreenFit {
         `
     }
 }
+
+// Todo: When going back in history, skip loading screens. Semnatically better would be if they had no own route.
