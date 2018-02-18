@@ -133,7 +133,8 @@ screen-identicons[selected] x-address {
 screen-identicons[selected] x-backdrop {
     pointer-events: all;
     opacity: 1;
-    /* border: 100vmax solid rgb(21, 20, 51); */
+    border: 100vmax solid transparent;
+    margin-bottom: -100vmax;
 }
 
 screen-identicons x-identicon[selected],
