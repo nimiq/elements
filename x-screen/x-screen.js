@@ -1,6 +1,5 @@
 import XElement from '/libraries/x-element/x-element.js';
 import XState from './x-state.js';
-import XAppState from './x-app-state.js';
 
 export default class XScreen extends XElement {
 
@@ -17,7 +16,6 @@ export default class XScreen extends XElement {
     }
 
     _registerRootElement() {
-        this.appState = new XAppState();
         XScreen._registerGlobalStateListener(this._onRootStateChange.bind(this));
         //setTimeout(e => this._show(), 100);
     }
@@ -31,7 +29,7 @@ export default class XScreen extends XElement {
      * @private
      */
     async _onRootStateChange(nextState, prevState, isNavigateBack) {
-        if (this.appState.error && nextState.leafId !== 'error') return;
+        if (this.state.error && nextState.leafId !== 'error') return;
         nextState = this._sanitizeState(nextState);
         const intersection = nextState.intersection(prevState); // calc intersection common parent path
         const nextStateDiff = nextState.difference(prevState);
