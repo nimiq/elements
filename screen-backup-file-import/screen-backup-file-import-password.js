@@ -21,9 +21,9 @@ export default class ScreenBackupFileImportPassword extends XScreenFit {
 
     onCreate() {
         this.addEventListener('x-password-input-valid', e => this._validityChanged(e.detail));
-        this.$hint = this.$('#screen-backup-file-import-password-error');
+        this.$passwordError = this.$('#screen-backup-file-import-password-error');
         this.$a = this.$('a');
-        this.$a.addEventListener('click', e => this._onRetryClicked());
+        if (this.$a) this.$a.addEventListener('click', e => this._onRetryClicked());
         this.$button = this.$('button');
         this.$button.addEventListener('click', e => this._onPasswordInput(e));
     }
@@ -41,17 +41,17 @@ export default class ScreenBackupFileImportPassword extends XScreenFit {
 
     _onRetryClicked(e) {
         this.fire('x-password-input-retry');
-        this.$hint.classList.add('hidden');
+        this.$passwordError.classList.add('hidden');
     }
 
     _onPasswordInput(e) {
         const value = this.$passwordInput.value;
         this.$passwordInput.value = '';
         this.fire('x-password-input', value);
-        this.$hint.classList.add('hidden');
+        this.$passwordError.classList.add('hidden');
     }
 
     onPasswordIncorrect() {
-        this.$hint.classList.remove('hidden');
+        this.$passwordError.classList.remove('hidden');
     }
 }

@@ -66,9 +66,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
 
     async _onWalletDownloadComplete() {
         this.goTo('backup-file-import');
-        const $a = this.$('#x-screen-backup-file-a');
-        $a.classList.remove('hidden');
-        $a.addEventListener('click', () => $a.classList.add('hidden'));
+        this.$a.classList.remove('hidden');
     }
 
     async _onDecryptBackup(backup) {
@@ -87,6 +85,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
 
     _onRetryClicked() {
         this.$a.classList.add('hidden');
+        this.$screenBackupFileImport.$screenBackupFileImportPassword.$passwordError.classList.add('hidden');
         this.goTo('../');
     }
 
