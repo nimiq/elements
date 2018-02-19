@@ -1,4 +1,4 @@
-export default class XState {
+export default class XLocationState {
     constructor(path) {
         /** @type {string} */
         this._id = path[0];
@@ -6,7 +6,7 @@ export default class XState {
         this._toString = path.join('/');
         /** @type {string} */
         const child = path.slice(1);
-        if (child.length && child[0]) this._child = new XState(child);
+        if (child.length && child[0]) this._child = new XLocationState(child);
         /** @type {boolean} */
         this._isLeaf = !this._child;
         /** @type {string[]} */
@@ -25,7 +25,7 @@ export default class XState {
     /** @returns {boolean} */
     get isRoot() { return this.id === '' }
 
-    /** @returns {XState} */
+    /** @returns {XLocationState} */
     get child() { return this._child; }
 
     /** @returns {string[]} */
@@ -74,7 +74,7 @@ export default class XState {
     }
 
     /** @param {string} fragment
-     *  @returns {XState}
+     *  @returns {XLocationState}
      */
     static fromLocation(fragment) {
         fragment = fragment || this._currFragment();
@@ -83,11 +83,11 @@ export default class XState {
     }
 
     /** @param {string} string
-     * @returns {XState}
+     * @returns {XLocationState}
      */
     static fromString(string) {
         const path = string.split('/');
-        return new XState(path);
+        return new XLocationState(path);
     }
 
     /** @param {string[]} route

@@ -15,7 +15,7 @@ export default class XSlidesScreen extends XScreen {
         this.$slideIndicator.show(0);
     }
 
-    /** @param {XState} nextState */
+    /** @param {XLocationState} nextState */
     async _update(childPath) {
         const slideIndex = this._getSlideIndex(childPath);
         if (slideIndex > 0) this.$slideIndicator.show(slideIndex);
