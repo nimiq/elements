@@ -41,6 +41,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
         super.onCreate();
         this.$a = this.$('#x-screen-backup-file-a');
         this.$a.addEventListener('click', e => this._onRetryClicked());
+        this.$h1 = this.$('h1');
     }
 
     listeners() {
@@ -104,3 +105,5 @@ export default class ScreenBackupFile extends XSlidesScreen {
         this.$screenBackupFileImport = null;
     }
 }
+
+// TODO fix lost and try again

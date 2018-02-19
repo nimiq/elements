@@ -17,3 +17,7 @@
 screen-backup-file-import-password {
 	justify-content: stretch;
 }
+
+#screen-backup-file-import-password-error {
+	margin-bottom: 15px;
+}

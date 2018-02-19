@@ -103,7 +103,7 @@ screen-identicons [secondary] {
 
 screen-identicons x-address:before {
     display: block;
-    content: 'Avatar Address';
+    content: 'Account';
     line-height: 24px;
     font-weight: 700;
     font-size: 13px;
