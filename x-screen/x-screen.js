@@ -21,28 +21,6 @@ export default class XScreen extends XElement {
         //setTimeout(e => this._show(), 100);
     }
 
-    /**
-     *
-     * @param {XState} nextState
-     * @param {XState} prevState
-     * @param {boolean} isNavigateBack
-     * @returns {Promise<void>}
-     * @private
-     */
-    async _onRootStateChange(nextState, prevState, isNavigateBack) {
-        if (XAppState.getAppState().error && nextState.leafId !== 'error') return;
-        nextState = this._sanitizeState(nextState);
-        const intersection = nextState.intersection(prevState); // calc intersection common parent path
-        const nextStateDiff = nextState.difference(prevState);
-        const prevStateDiff = prevState && prevState.difference(nextState);
-        let parent = this;
-        intersection.forEach(childId => parent = parent._getChildScreen(childId)); // decent common path
-        let exitParent = prevStateDiff && parent._getChildScreen(prevStateDiff[0]);
-        if (exitParent) exitParent._exitScreens(prevStateDiff, nextState, prevState, isNavigateBack);
-        parent._entryScreens(nextStateDiff, nextState, prevState, isNavigateBack);
-        if (parent._onStateChange) parent._onStateChange(nextState);
-    }
-
     _exitScreens(prevStateDiff, nextState, prevState, isNavigateBack) {
         if (prevStateDiff && prevStateDiff.length > 1) {
             const childScreen = this._getChildScreen(prevStateDiff[1]);
@@ -245,6 +223,4 @@ export default class XScreen extends XElement {
         this.currState = nextState;
         callback(nextState, prevState, isNavigateBack);
     }
-
-    static launch() { window.addEventListener('load', () => new this()); }
 }

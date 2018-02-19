@@ -27,4 +27,8 @@ export default class ScreenError extends XScreen {
         this.$button.textContent = text;
         this.$button.classList.remove('hidden');
     }
+
+    removeLink() {
+        this.$button.classList.add('hidden');
+    }
 }
