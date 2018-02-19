@@ -43,6 +43,8 @@ export default class ScreenBackupPhraseValidate extends XScreen {
     }
 
     _onBeforeEntry() {
+        if (this._initialized) return;
+        this._initialized = true;
         this._activeSlideIndex = 0;
         this._generateIndices();
         this._setSlideContent(this._activeSlideIndex);

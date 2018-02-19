@@ -42,6 +42,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
         this.$a = this.$('#x-screen-backup-file-a');
         this.$a.addEventListener('click', e => this._onRetryClicked());
         this.$h1 = this.$('h1');
+        // TODO add event listener
     }
 
     listeners() {
@@ -49,8 +50,29 @@ export default class ScreenBackupFile extends XSlidesScreen {
             'x-wallet-download-complete': '_onWalletDownloadComplete',
             'x-encrypt-backup': '_onSetPassword',
             'x-decrypt-backup': '_onDecryptBackup',
-            'x-password-input-retry': '_onRetryClicked'
+            'x-password-input-retry': '_onRetryClicked',
+            'x-entry': '_onChildEntry'
         }
+    }
+
+    _onChildEntry(e) {
+        switch (e.detail) {
+            case 'backup-file-import':
+            case 'success':
+                this.updateHeadline('Test your Account Backup');
+                break;
+            case 'create-password':
+            case 'loading':
+            case 'download-recovery':
+                this.updateHeadline('Backup your Account Access');
+                break;
+            default:
+                break;
+        }
+    }
+
+    updateHeadline(headline) {
+        this.$h1.textContent = headline;
     }
 
     /** @param {Nimiq.KeyPair} */
