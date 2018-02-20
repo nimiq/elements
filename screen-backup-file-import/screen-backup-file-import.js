@@ -13,7 +13,7 @@ export default class ScreenBackupFileImport extends XScreen {
             <screen-backup-file-import-intro></screen-backup-file-import-intro>
             <screen-backup-file-import-password ${isTestImport && 'test-import'}></screen-backup-file-import-password>
             <screen-loading>Unlocking the Backup</screen-loading>
-            <screen-success>Import successfull</screen-success>
+            <screen-success>Import successful</screen-success>
         </x-slides>
         `;
     }

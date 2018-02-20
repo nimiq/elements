@@ -42,9 +42,9 @@ export default class ScreenIdenticons extends XScreen {
     }
 
     async _generateIdenticons() {
+        this._generated = true;
         const api = NanoApi.getApi();
         this._clearIdenticons();
-        this._generated = true;
         const promises = [];
         for (var i = 0; i < 7; i++) { promises.push(api.generateKeyPair()) }
         const keyPairs = await Promise.all(promises);

@@ -32,3 +32,5 @@ export default class ScreenBackupPhrase extends XScreen {
 }
 
 // Todo: [low priority] add warning "screenshots are not safe" ?
+
+// Todo: Reset when clicking "back to phrase?"
