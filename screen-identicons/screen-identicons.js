@@ -33,7 +33,6 @@ export default class ScreenIdenticons extends XScreen {
     }
 
     _onEntry() {
-        if (this._generated) return;
         return this._generateIdenticons();
     }
 
@@ -42,7 +41,6 @@ export default class ScreenIdenticons extends XScreen {
     }
 
     async _generateIdenticons() {
-        this._generated = true;
         const api = NanoApi.getApi();
         this._clearIdenticons();
         const promises = [];
@@ -80,7 +78,6 @@ export default class ScreenIdenticons extends XScreen {
     }
 
     _clearIdenticons() {
-        this._generated = false;
         this._clearSelection()
         while(this.$container.querySelector('x-identicon')) {
             this.$container.removeChild(this.$container.querySelector('x-identicon'));
