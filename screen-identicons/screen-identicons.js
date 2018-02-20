@@ -6,8 +6,8 @@ export default class ScreenIdenticons extends XScreen {
 
     html() {
         return `
-            <h1>Choose Your Avatar</h1>
-            <h2>Your Avatar will be unique to this Account. You can not change it later.</h2>
+            <h1>Choose Your Account Avatar</h1>
+            <h2>The Avatar will be 'unique' to this Account. You can not change it later.</h2>
             <x-container>
                 <div class="center" id="loading">
                     <x-loading-animation></x-loading-animation>
