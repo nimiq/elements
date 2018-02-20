@@ -15,6 +15,7 @@ export default class ScreenAccounts extends XScreenFit {
     }
 
     set accounts(accounts) {
+        this.$accountsList.textContent = '';
         accounts.forEach(async account => await this._createAccount(account));
     }
 
