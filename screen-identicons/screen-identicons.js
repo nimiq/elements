@@ -14,7 +14,7 @@ export default class ScreenIdenticons extends XScreen {
                     <h2>Mixing colors</h2>
                 </div>
             </x-container>
-            <a secondary>Generate More</a>
+            <a secondary class="generate-more">Generate More</a>
             <x-backdrop class="center">
                 <x-address></x-address>
                 <a button>Confirm</a>
@@ -27,7 +27,7 @@ export default class ScreenIdenticons extends XScreen {
         this.$container = this.$('x-container');
         this.$loading = this.$('#loading');
         this.$address = this.$('x-address');
-        this.$('[secondary]').addEventListener('click', e => this._generateIdenticons());
+        this.$('.generate-more').addEventListener('click', e => this._generateIdenticons());
         this.$('[button]').addEventListener('click', e => this._onConfirm(e));
         this.$('x-backdrop').addEventListener('click', e => this._clearSelection());
     }
