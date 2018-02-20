@@ -6,6 +6,7 @@ import ScreenCreatePassword from './screen-create-password.js';
 import ScreenDownloadRecovery from './screen-download-recovery.js';
 import ScreenBackupFileImport from '/elements/screen-backup-file-import/screen-backup-file-import.js';
 import NanoApi from '/libraries/nano-api/nano-api.js';
+import XToast from '../x-toast/x-toast.js';
 
 export default class ScreenBackupFile extends XSlidesScreen {
     html() {
@@ -42,7 +43,6 @@ export default class ScreenBackupFile extends XSlidesScreen {
         this.$a = this.$('#x-screen-backup-file-a');
         this.$a.addEventListener('click', e => this._onRetryClicked());
         this.$h1 = this.$('h1');
-        // TODO add event listener
     }
 
     listeners() {
@@ -93,14 +93,22 @@ export default class ScreenBackupFile extends XSlidesScreen {
 
     async _onDecryptBackup(backup) {
         console.log(backup);
-        const password = backup.password
+        const password = backup.password;
         const encryptedKey = backup.encryptedKey;
         try {
             await NanoApi.getApi().importEncrypted(encryptedKey, password);
-            await this.goTo('../success');
-            this.fire('x-backup-file-complete');
+
+            const decryptedAddress = await NanoApi.getApi().getAddress();
+
+            if (decryptedAddress === this._keyPair.address) {
+                await this.goTo('../success');
+                this.fire('x-backup-file-complete');
+            } else {
+                XToast.show('You uploaded the wrong file!');
+                this.goTo('intro');
+            }
         } catch (e) {
-            console.error(e);
+            console.error(e)
             this.$screenBackupFileImport.onPasswordIncorrect();
         }
     }
