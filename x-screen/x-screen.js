@@ -62,7 +62,6 @@ export default class XScreen extends XElement {
     }
 
     async __onEntry(nextState, prevState, isNavigateBack) {
-        this._fixStuckAnimations();
         if (this.isVisible) return;
         if (this._onBeforeEntry) this._onBeforeEntry(nextState, prevState, isNavigateBack);
         this.fire('x-entry', this.route);
@@ -93,14 +92,6 @@ export default class XScreen extends XElement {
             return this.animate('x-exit-animation', null, null, beforeEndCallback);
         else
             return this.animate('x-entry-animation-reverse', null, null, beforeEndCallback);
-    }
-
-    _fixStuckAnimations() {
-        // workaround: fix stuck animations
-        this.$el.classList.remove('x-entry-animation');
-        this.$el.classList.remove('x-exit-animation');
-        this.$el.classList.remove('x-entry-animation-reverse');
-        this.$el.classList.remove('x-exit-animation-reverse');
     }
 
     _show() {
