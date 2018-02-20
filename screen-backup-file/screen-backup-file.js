@@ -11,7 +11,7 @@ import XToast from '../x-toast/x-toast.js';
 export default class ScreenBackupFile extends XSlidesScreen {
     html() {
         return `
-            <h1>Backup your Account Access</h1>
+            <h1></h1>
             <x-slides>
                 <screen-create-password></screen-create-password>
                 <screen-loading>Encrypting Backup</screen-loading>
@@ -64,7 +64,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
             case 'create-password':
             case 'loading':
             case 'download-recovery':
-                this.updateHeadline('Backup your Account Access');
+                this.updateHeadline('Save your Account Access');
                 break;
             default:
                 break;
