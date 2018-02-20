@@ -4,7 +4,7 @@ import XScreenFit from '../x-screen/x-screen-fit.js';
 export default class ScreenCreatePassword extends XScreenFit {
     html() {
         return `
-          <h2 secondary>Create a password to encrypt your account access file. Make sure you memorize the password well because there is <strong>no way</strong> to recover or change it.</h2>
+          <h2 secondary>Create a password to encrypt your Account Access File. Make sure you memorize the password well because there is <strong>no way</strong> to recover or change it.</h2>
           <x-password-setter></x-password-setter>
           <x-grow></x-grow>
           <button disabled="1">Next</button>
@@ -34,6 +34,7 @@ export default class ScreenCreatePassword extends XScreenFit {
 
     _onEntry() {
         this.$passwordSetter.focus();
+        this._parent._hideRetryLinks();
     }
 
     _onPasswordInput() {

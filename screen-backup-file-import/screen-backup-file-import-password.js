@@ -5,7 +5,7 @@ export default class ScreenBackupFileImportPassword extends XScreenFit {
     html() {
         const isTestImport = this.$el.hasAttribute('test-import');
         return `
-            <h2 secondary>Enter the password to unlock this backup</h2>
+            <h2 secondary>Enter the password to unlock this Access File</h2>
             <x-password-input></x-password-input>
             <p id="screen-backup-file-import-password-error" class="hidden">
                 That password was incorrect.

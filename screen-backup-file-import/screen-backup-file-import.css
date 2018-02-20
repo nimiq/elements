@@ -4,16 +4,6 @@
 @import '../x-wallet-backup-import/x-wallet-backup-import.css';
 @import '../x-password-input/x-password-input.css';
 
-@media (max-height: 480px){
-	screen-create-password-import button{
-		display: none;
-	}
-
-	x-screen, x-screen-fit {
-		height: 85vh !important;
-	}
-}
-
 screen-backup-file-import-password {
 	justify-content: stretch;
 }

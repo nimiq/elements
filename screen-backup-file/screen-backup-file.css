@@ -8,9 +8,18 @@
 @import "../x-toast/x-toast.css";
 
 @media (max-height: 480px){
-	screen-create-password button{
+	screen-create-password button,
+    screen-backup-file-import-password button {
 		display: none;
 	}
+
+    screen-backup-file-import-password h2 {
+        padding-bottom: 0 !important;
+    }
+
+    x-screen, x-screen-fit {
+        height: 85vh !important;
+    }
 }
 
 @media(max-height: 700px){

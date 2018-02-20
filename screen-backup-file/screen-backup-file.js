@@ -14,10 +14,10 @@ export default class ScreenBackupFile extends XSlidesScreen {
             <h1></h1>
             <x-slides>
                 <screen-create-password></screen-create-password>
-                <screen-loading>Encrypting Backup</screen-loading>
+                <screen-loading>Encrypting Access File</screen-loading>
                 <screen-download-recovery></screen-download-recovery>
                 <screen-backup-file-import test-import></screen-backup-file-import>
-                <screen-success>Backup Complete</screen-success>
+                <screen-success>Access Test Complete</screen-success>
             </x-slides>
             <a secondary class="hidden" id="x-screen-backup-file-a">I'm lost and want to try again</a>
             <screen-no-password-warning route="no-password"></screen-no-password-warning>
@@ -59,7 +59,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
         switch (e.detail) {
             case 'backup-file-import':
             case 'success':
-                this.updateHeadline('Test your Account Backup');
+                this.updateHeadline('Test your Account Access');
                 break;
             case 'create-password':
             case 'loading':
@@ -114,9 +114,13 @@ export default class ScreenBackupFile extends XSlidesScreen {
     }
 
     _onRetryClicked() {
+        this._hideRetryLinks();
+        this.goTo('../');
+    }
+
+    _hideRetryLinks() {
         this.$a.classList.add('hidden');
         this.$screenBackupFileImport.$screenBackupFileImportPassword.$passwordError.classList.add('hidden');
-        this.goTo('../');
     }
 
     types() {
