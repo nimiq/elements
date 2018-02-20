@@ -114,6 +114,11 @@ screen-identicons x-address {
     position: absolute;
     transition: opacity 300ms, transform 500ms;
     transform: scale(0.3);
+    cursor: auto;
+}
+
+screen-identicons x-address:hover {
+    background: none;
 }
 
 screen-identicons[selected] [button] {
