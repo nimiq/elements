@@ -14,7 +14,7 @@ export default class ScreenIdenticons extends XScreen {
                     <h2>Mixing colors</h2>
                 </div>
             </x-container>
-            <a secondary class="generate-more">Generate More</a>
+            <a secondary class="generate-more">Generate New</a>
             <x-backdrop class="center">
                 <x-address></x-address>
                 <a button>Confirm</a>
