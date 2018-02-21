@@ -13,6 +13,7 @@ x-accounts-list {
 
 x-account {
     display: flex;
+    align-items: center;
     padding: 8px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     animation: from-right 500ms;
@@ -44,7 +45,6 @@ x-account .x-address {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: calc(100% - 96px);
-    margin-top: 8px;
     pointer-events: none;
     padding: 0;
     min-width: auto;
