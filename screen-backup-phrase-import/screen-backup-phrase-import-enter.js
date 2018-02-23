@@ -4,9 +4,9 @@ import XMnemonicInput from '../x-mnemonic-input/x-mnemonic-input.js';
 export default class ScreenBackupPhraseImportEnter extends XScreenFit {
     html() {
         return `
-            <h2 secondary>Enter the 24 words of your backup phrase to recover your account</h2>
+            <h2 secondary>Enter the 24 words of your Recovery Phrase to recover your account</h2>
             <x-mnemonic-input></x-mnemonic-input>
-            <x-grow></x-grow>   
+            <x-grow></x-grow>
         `
     }
 
@@ -19,5 +19,8 @@ export default class ScreenBackupPhraseImportEnter extends XScreenFit {
 
     get route() { return 'enter' }
 
-    _onEntry() { this.$mnemonicInput.animateEntry(); }
+    _onEntry() {
+        this.$mnemonicInput.focus();
+        // this.$mnemonicInput.animateEntry(); // currently not functional
+    }
 }

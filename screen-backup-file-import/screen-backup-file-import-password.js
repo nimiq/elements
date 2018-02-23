@@ -9,7 +9,7 @@ export default class ScreenBackupFileImportPassword extends XScreenFit {
             <x-password-input></x-password-input>
             <p id="screen-backup-file-import-password-error" class="hidden">
                 That password was incorrect.
-                ${ isTestImport && `<br>Try again or <a href="javascript:void(0)">set a new password</a>` }
+                ${ (isTestImport && `<br>Try again or <a href="javascript:void(0)">set a new password</a>`) || '' }
             </p>
             <button disabled="yes">Unlock</button>
         `

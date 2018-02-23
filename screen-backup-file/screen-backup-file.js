@@ -92,7 +92,6 @@ export default class ScreenBackupFile extends XSlidesScreen {
     }
 
     async _onDecryptBackup(backup) {
-        console.log(backup);
         const password = backup.password;
         const encryptedKey = backup.encryptedKey;
         try {

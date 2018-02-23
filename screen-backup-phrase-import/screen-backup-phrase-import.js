@@ -15,11 +15,21 @@ export default class ScreenBackupPhraseImport extends XScreen {
 
     children() { return [ScreenPrivacy, ScreenBackupPhraseImportEnter] }
 
+    listeners() {
+        return {
+            'x-mnemonic-input':'_onMenmonicInput'
+        }
+    }
+
     onCreate() {
         this.addEventListener('x-surrounding-checked', e => this._onSurrondingChecked())
     }
 
     _onSurrondingChecked() {
         this.goTo('enter');
+    }
+
+    _onMenmonicInput(privateKey) {
+        this.fire('x-phrase-imported', privateKey);
     }
 }
