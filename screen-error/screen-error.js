@@ -1,6 +1,7 @@
 import XScreen from '../x-screen/x-screen.js';
 export default class ScreenError extends XScreen {
     html() {
+        // @asset(/elements/screen-error/screen-error.svg)
         return `
             <img src="/elements/screen-error/screen-error.svg">
             <h1>Error</h1>
