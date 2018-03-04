@@ -1,6 +1,6 @@
 import XScreenFit from './x-screen-fit.js';
 import XAppState from '/elements/x-screen/x-app-state.js';
-import XSlideIndicator from '../x-slide-indicator/x-slide-indicator.js';
+import XSlideNumberIndicator from '../x-slide-indicator/x-slide-number-indicator.js';
 
 export default class XAppIndicatorScreen extends XScreenFit {
 
@@ -72,8 +72,8 @@ export default class XAppIndicatorScreen extends XScreenFit {
      */
 
     onCreate() {
-        this.$slideIndicator = XSlideIndicator.createElement();
-        this.$el.appendChild(this.$slideIndicator.$el);
+        this.$slideIndicator = XSlideNumberIndicator.createElement();
+        this.$el.insertBefore(this.$slideIndicator.$el, this.$el.firstChild);
 
         this._filteredChildScreenPaths = XAppIndicatorScreen._prepareChildScreens('', this._childScreens, this._childScreenFilter);
         console.log(this._filteredChildScreenPaths);
@@ -81,7 +81,7 @@ export default class XAppIndicatorScreen extends XScreenFit {
         this.addEventListener('x-entry', e => this._update());
 
         this.$slideIndicator.init(this._filteredChildScreenPaths.length);
-        this.$slideIndicator.show(0);
+        this.$slideIndicator.hide();
     }
 
     /**
@@ -91,7 +91,6 @@ export default class XAppIndicatorScreen extends XScreenFit {
         const childPath = location.hash.slice(1);
         console.log('childPath to find:', childPath);
         const slideIndex = this._getSlideIndex(childPath);
-        console.log(slideIndex);
         if (slideIndex > -1) this.$slideIndicator.show(slideIndex);
     }
 

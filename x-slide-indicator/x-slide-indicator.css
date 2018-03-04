@@ -31,3 +31,26 @@ x-slide-indicator x-dot[on] {
         bottom: 10px;
     }
 }
+
+x-slide-number-indicator {
+    margin: auto;
+    width: 100%;
+    max-width: 350px;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    position: absolute;
+    top: calc((100vh - 672px) / 2 / 2 + 9px);
+}
+
+@media (max-height: 740px) {
+    x-slide-number-indicator {
+        top: calc((100vh - 672px) / 2 / 4 + 9px);
+    }
+}
+
+@media (max-height: 672px) {
+    x-slide-number-indicator {
+        top: 9px;
+    }
+}
