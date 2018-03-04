@@ -75,7 +75,7 @@ screen-identicons [button] {
     will-change: transform;
     transition-delay: 300ms;
     position: absolute;
-    bottom: 50px;
+    bottom: 75px;
     pointer-events: none;
     width: calc(100% - 64px);
 }
@@ -94,10 +94,14 @@ screen-identicons x-backdrop {
     box-sizing: content-box;
 }
 
+screen-identicons x-backdrop [button]+[secondary] {
+    margin-bottom: 16px;
+}
+
 
 screen-identicons [secondary] {
     position: absolute;
-    bottom: 10px;
+    bottom: 30px;
     margin-bottom: 20px;
 }
 

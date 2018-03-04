@@ -1,4 +1,4 @@
-import XSlidesScreen from '../x-slides-screen/x-slides-screen.js';
+import XScreen from '../x-screen/x-screen.js';
 import ScreenSuccess from '../screen-success/screen-success.js';
 import ScreenLoading from '../screen-loading/screen-loading.js';
 import ScreenNoPasswordWarning from './screen-no-password-warning/screen-no-password-warning.js';
@@ -8,7 +8,7 @@ import ScreenBackupFileImport from '/elements/screen-backup-file-import/screen-b
 import NanoApi from '/libraries/nano-api/nano-api.js';
 import XToast from '../x-toast/x-toast.js';
 
-export default class ScreenBackupFile extends XSlidesScreen {
+export default class ScreenBackupFile extends XScreen {
     html() {
         return `
             <h1></h1>
@@ -35,11 +35,7 @@ export default class ScreenBackupFile extends XSlidesScreen {
         ]
     }
 
-    /** Do not use those for slide indicator */
-    get __childScreenFilter() { return ['no-password']; }
-
     onCreate() {
-        super.onCreate();
         this.$a = this.$('#x-screen-backup-file-a');
         this.$a.addEventListener('click', e => this._onRetryClicked());
         this.$h1 = this.$('h1');
