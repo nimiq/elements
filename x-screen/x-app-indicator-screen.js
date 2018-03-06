@@ -76,7 +76,7 @@ export default class XAppIndicatorScreen extends XScreenFit {
         this.$el.insertBefore(this.$slideIndicator.$el, this.$el.firstChild);
 
         this._filteredChildScreenPaths = XAppIndicatorScreen._prepareChildScreens('', this._childScreens, this._childScreenFilter);
-        console.log(this._filteredChildScreenPaths);
+        // console.log(this._filteredChildScreenPaths);
 
         this.addEventListener('x-entry', e => this._update());
 
@@ -89,7 +89,7 @@ export default class XAppIndicatorScreen extends XScreenFit {
      */
     async _update() {
         const childPath = location.hash.slice(1);
-        console.log('childPath to find:', childPath);
+        // console.log('childPath to find:', childPath);
         const slideIndex = this._getSlideIndex(childPath);
         if (slideIndex > -1) this.$slideIndicator.show(slideIndex);
     }
