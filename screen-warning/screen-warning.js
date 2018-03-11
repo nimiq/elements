@@ -5,7 +5,7 @@ export default class ScreenWarning extends XScreenFit {
 			<x-warning x-grow>
 				<i icon-warning></i>
 				<h2>Important Notice</h2>
-				<div content>Warning!</div>
+				<div data-x-content>Warning!</div>
 			</x-warning>
 			<button>I Understand</button>
 		`;

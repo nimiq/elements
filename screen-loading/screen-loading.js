@@ -4,7 +4,7 @@ export default class ScreenLoading extends XScreenFit {
     html() {
         return `
             <x-loading-animation></x-loading-animation>
-            <h2 content></h2>
+            <h2 data-x-content></h2>
         `
     }
 }

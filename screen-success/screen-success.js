@@ -4,7 +4,7 @@ export default class ScreenSuccess extends XScreenFit {
     html() {
         return `
             <x-success-mark></x-success-mark>
-            <h2 content></h2>
+            <h2 data-x-content></h2>
         `
     }
 
