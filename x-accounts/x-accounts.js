@@ -36,6 +36,7 @@ export default class XAccounts extends XElement {
         $account.title = account.title;
         $account.address = account.address || account.number;
         $account.balance = account.balance;
+        $account.secure = account.secure;
 
         this.$accountsList.appendChild($account.$el);
     }

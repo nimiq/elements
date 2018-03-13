@@ -1,6 +1,7 @@
 import XElement from '/libraries/x-element/x-element.js';
 import XIdenticon from '../x-identicon/x-identicon.js';
 import XAddress from '../x-address/x-address.js';
+import NanoApi from '/libraries/nano-api/nano-api.js';
 
 export default class XAccount extends XElement {
     html() {
@@ -9,7 +10,10 @@ export default class XAccount extends XElement {
             <div class="x-account-info">
                 <span class="x-account-title"></span>
                 <x-address></x-address>
-                <span class="x-account-balance"></span>
+                <div class="x-account-bottom">
+                    <i class="hidden secure-icon" title="High security account"></i>
+                    <span class="x-account-balance"></span>
+                </div>
             </div>
         `
     }
@@ -18,6 +22,7 @@ export default class XAccount extends XElement {
     onCreate() {
         this.$title = this.$('.x-account-title')
         this.$balance = this.$('.x-account-balance');
+        this.$secureIcon = this.$('.secure-icon');
         this.$el.addEventListener('click', e => this._onAccountSelected())
     }
 
@@ -36,11 +41,15 @@ export default class XAccount extends XElement {
         this.$balance.textContent = this._formatBalance(balance);
     }
 
+    set secure(secure) {
+        if (secure) this.$secureIcon.classList.remove('hidden');
+    }
+
     _onAccountSelected() {
         this.fire('x-accounts-selected', this._address);
     }
 
-    _formatBalance(balance) {
-        return balance.toString() + ' NIM';
+    _formatBalance(value) {
+        return NanoApi.formatValue(value, 3) + ' NIM';
     }
 }

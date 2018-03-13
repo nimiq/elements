@@ -64,12 +64,12 @@
             address: 'NQ25 LL4U QTYX R48H 597P 29DH HV20 3C67 66CQ',
             title: 'Last account',
             balance: 9999,
-            secure: false
+            secure: true
         }
     ];
 
     // Prefill two accounts
-    // $accounts.accounts = [demoAccounts.shift(), demoAccounts.shift()];
+    $accounts.accounts = [demoAccounts.shift(), demoAccounts.shift()];
 
     const createAccount = () => {
         XToast.show('Clicked "Create Account"');
