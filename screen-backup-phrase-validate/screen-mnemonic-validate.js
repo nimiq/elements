@@ -3,7 +3,7 @@ import XScreenFit from '../x-screen/x-screen-fit.js';
 export default class ScreenMnemonicValidate extends XScreenFit {
     html() {
         return `
-            <p>Please select the following word from your phrase:</p>
+            <p>Please select the following word from your list:</p>
             <x-target-index></x-target-index>
             <x-wordlist>
                 <button class="small"></button>
