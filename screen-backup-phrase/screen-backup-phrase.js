@@ -5,7 +5,7 @@ import ScreenPhrase from './screen-phrase.js';
 export default class ScreenBackupPhrase extends XScreen {
     html() {
         return `
-            <h1>Secure your Recovery Phrase</h1>
+            <h1>Secure your Recovery Words</h1>
             <x-slides>
                 <screen-privacy></screen-privacy>
                 <screen-phrase></screen-phrase>

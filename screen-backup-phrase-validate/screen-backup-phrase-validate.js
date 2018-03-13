@@ -6,16 +6,16 @@ import ScreenMnemonicValidate from './screen-mnemonic-validate.js';
 export default class ScreenBackupPhraseValidate extends XScreen {
     html() {
         return `
-            <h1>Validate Recovery Phrase</h1>
+            <h1>Validate Recovery Words</h1>
             <x-slides>
                 <screen-mnemonic-validate route="1"></screen-mnemonic-validate>
                 <screen-mnemonic-validate route="2"></screen-mnemonic-validate>
                 <screen-mnemonic-validate route="3"></screen-mnemonic-validate>
                 <screen-success>
-                    Phrase validated
+                    Words validated
                 </screen-success>
             </x-slides>
-            <a secondary href="#backup-phrase/phrase">Back to phrase</a>
+            <a secondary href="#backup-phrase/phrase">Back to List</a>
         `
     }
 

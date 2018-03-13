@@ -5,7 +5,7 @@ import ScreenBackupPhraseImportEnter from './screen-backup-phrase-import-enter.j
 export default class ScreenBackupPhraseImport extends XScreen {
     html() {
         return `
-            <h1>Enter Recovery Phrase</h1>
+            <h1>Enter Recovery Words</h1>
             <x-slides>
                 <screen-privacy></screen-privacy>
                 <screen-backup-phrase-import-enter></screen-backup-phrase-import-enter>
