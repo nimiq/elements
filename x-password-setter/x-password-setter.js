@@ -2,15 +2,16 @@ import XPasswordInput from '../x-password-input/x-password-input.js';
 import XPasswordIndicator from '../x-password-indicator/x-password-indicator.js';
 import XElement from '../../libraries/x-element/x-element.js';
 
+
+
 export default class XPasswordSetter extends XElement {
     html() {
-        const buttonLabel = this.$el.getAttribute('buttonLabel') || 'Confirm';
-        const showIndicator = this.$el.getAttribute('showIndicator') === 'true';
+        const { buttonLabel, showIndicator } = this.attributes;
 
         return `
             <x-password-input></x-password-input>
-            ${ showIndicator ? `<x-password-indicator></x-password-indicator>` : '' }
-            <button disabled="true">${buttonLabel}</button>
+            ${ showIndicator === 'true' ? `<x-password-indicator></x-password-indicator>` : '' }
+            <button disabled="true">${buttonLabel || 'Confirm'}</button>
         `;
     }
 
