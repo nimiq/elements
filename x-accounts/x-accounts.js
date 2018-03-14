@@ -31,7 +31,6 @@ export default class XAccounts extends XElement {
 
     async _createAccount(account) {
         const $account = XAccount.createElement();
-        console.log($account);
 
         $account.title = account.title;
         $account.address = account.address || account.number;
