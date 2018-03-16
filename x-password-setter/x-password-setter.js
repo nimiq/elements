@@ -10,8 +10,8 @@ export default class XPasswordSetter extends XElement {
 
         return `
             <x-password-input></x-password-input>
-            ${ showIndicator === 'true' ? `<x-password-indicator></x-password-indicator>` : '' }
-            <button disabled="true">${buttonLabel || 'Confirm'}</button>
+            ${ (showIndicator && showIndicator !== 'false') ? `<x-password-indicator></x-password-indicator>` : '' }
+            <button${ showIndicator ? ' disabled' : '' }>${ buttonLabel || 'Confirm' }</button>
         `;
     }
 
@@ -32,7 +32,8 @@ export default class XPasswordSetter extends XElement {
 
     listeners() {
         return {
-            'x-password-input-change': '_onPasswordUpdate'
+            'x-password-input-change': value => this._onPasswordUpdate(value),
+            'click button': e => this._onPasswordSubmit()
         }
     }
 
@@ -49,24 +50,29 @@ export default class XPasswordSetter extends XElement {
         this.$passwordInput.value = value;
     }
 
-    _onPasswordUpdate(value) {
-        const strength = this._getPasswordStrength(value);
+    _onPasswordUpdate(password) {
+        if (!this.$passwordIndicator) return;
+
+        const strength = this._getPasswordStrength(password);
         this.$passwordIndicator.setStrength(strength);
-        if (strength >= 3) {
-            this.$button.setAttribute('disabled', 'false');
-            this.fire(this.__tagName + '-valid');
+        if (strength < 3) {
+            this.$button.setAttribute('disabled', 'disabled');
         } else {
-            this.$button.setAttribute('disabled', 'true');
+            this.$button.removeAttribute('disabled');
         }
+    }
+
+    _onPasswordSubmit() {
+        this.fire(this.__tagName + '-submitted', this.value);
     }
 
     /** @param {string} password
      * @return {number} */
     _getPasswordStrength(password) {
-      if (password.length === 0) return 0;
-      if (password.length < 7) return 1;
-      if (password.length < 10) return 2;
-      if (password.length < 14) return 3;
-      return 4;
+        if (password.length === 0) return 0;
+        if (password.length < 7) return 1;
+        if (password.length < 10) return 2;
+        if (password.length < 14) return 3;
+        return 4;
     }
 }
