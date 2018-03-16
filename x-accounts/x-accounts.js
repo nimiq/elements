@@ -21,11 +21,10 @@ export default class XAccounts extends XElement {
     set accounts(accounts) {
 
         accounts.forEach(account => {
-            // const [storedAccount, accountElement] = this._accounts.get(account.address);
-            const stored = this._accounts.get(account.address);
+            const stored = this._accounts.get(account.address || account.number);
 
             if (!stored) {
-                this._accounts.set(account.address, [account, this._createAccount(account)]);
+                this._accounts.set(account.address || account.number, [account, this._createAccount(account)]);
                 return;
             }
 
@@ -42,14 +41,24 @@ export default class XAccounts extends XElement {
             }
         });
 
-        // TODO: Remove unpassed accounts
+        // Remove unpassed accounts
+        const storedAddresses = Array.from(this._accounts.keys());
+        const passedAddresses = accounts.map(a => a.address || a.number);
+
+        const removedAddresses = storedAddresses.filter(address => !passedAddresses.includes(address));
+
+        removedAddresses.forEach(address => {
+            const [storedAccount, accountElement] = this._accounts.get(address);
+            accountElement.$el.parentNode.removeChild(accountElement.$el);
+            this._accounts.delete(address);
+        });
     }
 
     /**
      * @param {object} account
      */
     addAccount(account) {
-        this._accounts.set(account.address, [account, this._createAccount(account)]);
+        this._accounts.set(account.address || account.number, [account, this._createAccount(account)]);
         // this.accounts = [...Array.from(this._accounts.values()).map(i => i[0]), account];
     }
 
