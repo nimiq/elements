@@ -8,10 +8,10 @@ export default class XAccount extends XElement {
         return `
             <x-identicon></x-identicon>
             <div class="x-account-info">
-                <span class="x-account-title"></span>
+                <span class="x-account-label"></span>
                 <x-address></x-address>
                 <div class="x-account-bottom">
-                    <i class="hidden secure-icon" title="High security account"></i>
+                    <i class="hidden secure-icon" label="High security account"></i>
                     <span class="x-account-balance"></span>
                 </div>
             </div>
@@ -20,15 +20,15 @@ export default class XAccount extends XElement {
     children() { return [XIdenticon, XAddress] }
 
     onCreate() {
-        this.$title = this.$('.x-account-title')
+        this.$label = this.$('.x-account-label')
         this.$balance = this.$('.x-account-balance');
         this.$secureIcon = this.$('.secure-icon');
         this.$el.addEventListener('click', e => this._onAccountSelected())
     }
 
     // 'name' is a reserved property of XElement
-    set title(title) {
-        this.$title.textContent = title;
+    set label(label) {
+        this.$label.textContent = label;
     }
 
     set address(address) {

@@ -32,7 +32,7 @@ export default class XAccounts extends XElement {
     async _createAccount(account) {
         const $account = XAccount.createElement();
 
-        $account.title = account.title;
+        $account.label = account.label;
         $account.address = account.address || account.number;
         $account.balance = account.balance;
         $account.secure = account.secure;

@@ -51,7 +51,7 @@ x-account .x-account-info {
     max-width: calc(100% - 96px);
 }
 
-x-account .x-account-title {
+x-account .x-account-label {
     display: block;
     text-align: left;
     font-weight: bold;
