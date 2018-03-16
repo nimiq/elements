@@ -20,7 +20,7 @@ export default class XAccount extends XElement {
     children() { return [XIdenticon, XAddress] }
 
     onCreate() {
-        this.$label = this.$('.x-account-label')
+        this.$label = this.$('.x-account-label');
         this.$balance = this.$('.x-account-balance');
         this.$secureIcon = this.$('.secure-icon');
         this.$el.addEventListener('click', e => this._onAccountSelected())

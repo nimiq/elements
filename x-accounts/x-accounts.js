@@ -10,6 +10,7 @@ export default class XAccounts extends XElement {
     }
 
     onCreate() {
+        this._accounts = new Map();
         this.$accountsList = this.$('x-accounts-list');
         this.$('button').addEventListener('click', e => this._onCreateAccount());
     }
@@ -18,18 +19,41 @@ export default class XAccounts extends XElement {
      * @param {array} accounts: Array of account objects
      */
     set accounts(accounts) {
-        this.$accountsList.textContent = '';
-        accounts.forEach(async account => await this._createAccount(account));
+
+        accounts.forEach(account => {
+            // const [storedAccount, accountElement] = this._accounts.get(account.address);
+            const stored = this._accounts.get(account.address);
+
+            if (!stored) {
+                this._accounts.set(account.address, [account, this._createAccount(account)]);
+                return;
+            }
+
+            const [storedAccount, accountElement] = stored;
+
+            // Check if properties changed
+            for(const prop in account) {
+                if (storedAccount[prop] !== account[prop]) {
+                    // Update display
+                    accountElement[prop] = account[prop];
+                    // Update stored account
+                    storedAccount[prop] = account[prop];
+                }
+            }
+        });
+
+        // TODO: Remove unpassed accounts
     }
 
     /**
      * @param {object} account
      */
-    async addAccount(account){
-        await this._createAccount(account);
+    addAccount(account) {
+        this._accounts.set(account.address, [account, this._createAccount(account)]);
+        // this.accounts = [...Array.from(this._accounts.values()).map(i => i[0]), account];
     }
 
-    async _createAccount(account) {
+    _createAccount(account) {
         const $account = XAccount.createElement();
 
         $account.label = account.label;
@@ -38,6 +62,8 @@ export default class XAccounts extends XElement {
         $account.secure = account.secure;
 
         this.$accountsList.appendChild($account.$el);
+
+        return $account;
     }
 
     _onCreateAccount() {
