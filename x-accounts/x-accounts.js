@@ -4,15 +4,17 @@ import XAccount from './x-account.js';
 export default class XAccounts extends XElement {
     html() {
         return `
+            <button create class="small">&plus; Create</button>
+            <button import class="small">&#8615; Import</button>
             <x-accounts-list></x-accounts-list>
-            <button>Create Account</button>
         `
     }
 
     onCreate() {
         this._accounts = new Map();
         this.$accountsList = this.$('x-accounts-list');
-        this.$('button').addEventListener('click', e => this._onCreateAccount());
+        this.$('button[create]').addEventListener('click', e => this._onCreateAccount());
+        this.$('button[import]').addEventListener('click', e => this._onImportAccount());
     }
 
     /**
@@ -77,5 +79,9 @@ export default class XAccounts extends XElement {
 
     _onCreateAccount() {
         this.fire('x-accounts-create');
+    }
+
+    _onImportAccount() {
+        this.fire('x-accounts-import');
     }
 }

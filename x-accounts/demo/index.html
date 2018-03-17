@@ -16,7 +16,7 @@
 
 <body>
     <h1>Your Accounts</h1>
-    <h2>This is the XAccounts Demo. Select an existing account or create a new one.</h2>
+    <h2>This is the XAccounts Demo. Select an existing account, import yours or create a new one.</h2>
     <x-accounts></x-accounts>
 
     <script type="module">
@@ -27,7 +27,7 @@
     const demoAccounts = [
         {
             address: 'NQ57 2CTN 72AK GR4K P6FC 46HS SRPU MTF3 0AXF',
-            label: 'Account 1',
+            label: 'This is my account with a really really really long name',
             balance: 238.12,
             secure: false
         },
@@ -80,6 +80,7 @@
 
     window.addEventListener('x-accounts-create', e => createAccount());
     window.addEventListener('x-accounts-selected', e => XToast.show('Selected Account: ' + e.detail));
+    window.addEventListener('x-accounts-import', e => XToast.show('Clicked "Import Account"'));
     </script>
 </body>
 
