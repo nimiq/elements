@@ -1,3 +1,6 @@
+@import '/libraries/nimiq-style/nimiq-style.css';
+@import '../x-toast/x-toast.css';
+
 x-address, .x-address{
     width: 100%;
     min-width: 320px;
