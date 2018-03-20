@@ -1,5 +1,3 @@
-@import '/libraries/nimiq-style/nimiq-style.css';
-
 /* hide the native file-input to replace it with ours */
 .x-qr-file-input label{
 	cursor: inherit;

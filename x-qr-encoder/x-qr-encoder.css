@@ -1,7 +1,6 @@
-@import '/libraries/nimiq-style/nimiq-style.css';
 x-qr-encoder {
     border-radius: 8px;
-    background: white; 
+    background: white;
     display: block;
     padding: 16px;
 }
