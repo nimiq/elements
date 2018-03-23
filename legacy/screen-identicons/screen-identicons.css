@@ -26,11 +26,6 @@ screen-identicons x-identicon:hover {
     cursor: pointer;
 }
 
-screen-identicons x-identicon svg {
-    width: 100%;
-    height: 100%;
-}
-
 screen-identicons x-container {
     display: flex;
     flex-grow: 1;
