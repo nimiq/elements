@@ -1,5 +1,5 @@
 import XQrScanner from '../x-qr-scanner/x-qr-scanner.js';
-import NanoApi from '/libraries/nano-api/nano-api.js';
+import ValidationUtils from '/libraries/nimiq-utils/validation-utils/validation-utils.js';
 export default class XAddressScanner extends XQrScanner {
     onCreate() {
         super.onCreate();
@@ -7,6 +7,6 @@ export default class XAddressScanner extends XQrScanner {
     }
 
     _validate(address) {
-        return NanoApi.validateAddress(address);
+        return ValidationUtils.isValidAddress(address);
     }
 }
