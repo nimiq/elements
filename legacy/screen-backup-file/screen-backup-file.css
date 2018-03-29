@@ -1,8 +1,8 @@
 @import '../../x-screen/x-screen.css';
 @import '../../x-wallet-backup/x-wallet-backup.css';
-@import '../../x-loading-animation/x-loading-animation.css';
+@import '../../../secure-elements/x-loading-animation/x-loading-animation.css';
 @import '../../x-success-mark/x-success-mark.css';
-@import '../../x-password-setter/x-password-setter.css';
+@import '../../../secure-elements/x-passphrase-setter/x-passphrase-setter.css';
 @import '../../x-slide-indicator/x-slide-indicator.css';
 @import '../screen-backup-file-import/screen-backup-file-import.css';
 @import "../../x-toast/x-toast.css";

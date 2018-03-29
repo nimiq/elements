@@ -1,8 +1,8 @@
 @import '../../x-screen/x-screen.css';
 @import '../screen-success/screen-success.css';
-@import '../../x-loading-animation/x-loading-animation.css';
-@import '../../x-wallet-backup-import/x-wallet-backup-import.css';
-@import '../../x-password-input/x-password-input.css';
+@import '../../../secure-elements/x-loading-animation/x-loading-animation.css';
+@import '../../../secure-elements/x-account-backup-import/x-account-backup-import.css';
+@import '../../../secure-elements/x-passphrase-input/x-passphrase-input.css';
 
 screen-backup-file-import-password {
 	justify-content: stretch;

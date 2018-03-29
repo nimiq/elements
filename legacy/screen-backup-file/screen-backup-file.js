@@ -46,7 +46,7 @@ export default class ScreenBackupFile extends XScreen {
             'x-wallet-download-complete': '_onWalletDownloadComplete',
             'x-encrypt-backup': '_onSetPassword',
             'x-decrypt-backup': '_onDecryptBackup',
-            'x-password-input-retry': '_onRetryClicked',
+            'x-passphrase-input-retry': '_onRetryClicked',
             'x-entry': '_onChildEntry'
         }
     }

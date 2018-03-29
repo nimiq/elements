@@ -1,5 +1,5 @@
 import XScreenFit from '../../x-screen/x-screen-fit.js';
-import XPrivacyAgent from '../../x-privacy-agent/x-privacy-agent.js';
+import XPrivacyAgent from '../../../secure-elements/x-privacy-agent/x-privacy-agent.js';
 export default class ScreenPrivacy extends XScreenFit {
     html() {
         return `

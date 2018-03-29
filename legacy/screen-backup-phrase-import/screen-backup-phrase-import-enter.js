@@ -1,5 +1,5 @@
 import XScreenFit from '../../x-screen/x-screen-fit.js';
-import XMnemonicInput from '../../x-mnemonic-input/x-mnemonic-input.js';
+import XMnemonicInput from '../../../secure-elements/x-mnemonic-input/x-mnemonic-input.js';
 
 export default class ScreenBackupPhraseImportEnter extends XScreenFit {
     html() {

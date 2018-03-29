@@ -1,5 +1,5 @@
 import XScreen from '../../x-screen/x-screen.js';
-import XIdenticon from '../../x-identicon/x-identicon.js';
+import XIdenticon from '../../../secure-elements/x-identicon/x-identicon.js';
 import NanoApi from '/libraries/nano-api/nano-api.js';
 
 export default class ScreenIdenticons extends XScreen {

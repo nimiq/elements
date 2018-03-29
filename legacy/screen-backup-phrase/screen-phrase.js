@@ -1,5 +1,5 @@
 import XScreenFit from '../../x-screen/x-screen-fit.js';
-import XMnemonicPhrase from '../../x-mnemonic-phrase/x-mnemonic-phrase.js';
+import XMnemonicPhrase from '../../../secure-elements/x-mnemonic-phrase/x-mnemonic-phrase.js';
 
 export  default class ScreenPhrase extends XScreenFit {
     html() {

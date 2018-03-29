@@ -23,7 +23,7 @@ export default class ScreenBackupFileImport extends XScreen {
     onCreate() {
         this.addEventListener('x-success', e => _onSuccess(e));
         this.addEventListener('x-backup-import', e => this._onWalletImport(e));
-        this.addEventListener('x-password-input', e => this._onPasswordInput(e));
+        this.addEventListener('x-passphrase-input', e => this._onpassphraseInput(e));
     }
 
     _onWalletImport(e) {
@@ -32,7 +32,7 @@ export default class ScreenBackupFileImport extends XScreen {
         this.goTo('password');
     }
 
-    async _onPasswordInput(e) {
+    async _onpassphraseInput(e) {
         const password = e.detail;
         const result = { password: password, encryptedKey: this._encryptedKey }
         await this.goTo('loading');
@@ -46,7 +46,7 @@ export default class ScreenBackupFileImport extends XScreen {
     async onPasswordIncorrect() {
         await this.back();
         this.$screenBackupFileImportPassword.onPasswordIncorrect();
-        this.$screenBackupFileImportPassword.$passwordInput._onInvalid();
+        this.$screenBackupFileImportPassword.$passphraseInput._onInvalid();
     }
 }
 

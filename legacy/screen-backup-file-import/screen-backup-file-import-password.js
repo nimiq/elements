@@ -1,4 +1,4 @@
-import XPasswordInput from '../../x-password-input/x-password-input.js';
+import XPassphraseInput from '../../../secure-elements/x-passphrase-input/x-passphrase-input.js';
 import XScreenFit from '../../x-screen/x-screen-fit.js';
 
 export default class ScreenBackupFileImportPassword extends XScreenFit {
@@ -6,7 +6,7 @@ export default class ScreenBackupFileImportPassword extends XScreenFit {
         const isTestImport = this.$el.hasAttribute('test-import');
         return `
             <h2 secondary>Enter the password to unlock this Access File:</h2>
-            <x-password-input></x-password-input>
+            <x-passphrase-input></x-passphrase-input>
             <p id="screen-backup-file-import-password-error" class="hidden">
                 That password was incorrect.
                 ${ (isTestImport && `<br>Try again or <a href="javascript:void(0)">set a new password</a>`) || '' }
@@ -17,19 +17,19 @@ export default class ScreenBackupFileImportPassword extends XScreenFit {
 
     get route() { return 'password' }
 
-    children() { return [XPasswordInput] }
+    children() { return [XPassphraseInput] }
 
     onCreate() {
-        this.addEventListener('x-password-input-valid', e => this._validityChanged(e.detail));
+        this.addEventListener('x-passphrase-input-valid', e => this._validityChanged(e.detail));
         this.$passwordError = this.$('#screen-backup-file-import-password-error');
         this.$a = this.$('a');
         if (this.$a) this.$a.addEventListener('click', e => this._onRetryClicked());
         this.$button = this.$('button');
-        this.$button.addEventListener('click', e => this._onPasswordInput(e));
+        this.$button.addEventListener('click', e => this._onpassphraseInput(e));
     }
 
     _onEntry() {
-        this.$passwordInput.focus();
+        this.$passphraseInput.focus();
     }
 
     _validityChanged(valid) {
@@ -40,14 +40,14 @@ export default class ScreenBackupFileImportPassword extends XScreenFit {
     }
 
     _onRetryClicked(e) {
-        this.fire('x-password-input-retry');
+        this.fire('x-passphrase-input-retry');
         this.$passwordError.classList.add('hidden');
     }
 
-    _onPasswordInput(e) {
-        const value = this.$passwordInput.value;
-        this.$passwordInput.value = '';
-        this.fire('x-password-input', value);
+    _onpassphraseInput(e) {
+        const value = this.$passphraseInput.value;
+        this.$passphraseInput.value = '';
+        this.fire('x-passphrase-input', value);
         this.$passwordError.classList.add('hidden');
     }
 

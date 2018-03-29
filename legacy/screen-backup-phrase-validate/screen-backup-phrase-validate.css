@@ -1,5 +1,5 @@
 @import '../../x-screen/x-screen.css';
-@import '../../x-privacy-agent/x-privacy-agent.css';
+@import '../../../secure-elements/x-privacy-agent/x-privacy-agent.css';
 @import '../../x-success-mark/x-success-mark.css';
 
 screen-mnemonic-validate {

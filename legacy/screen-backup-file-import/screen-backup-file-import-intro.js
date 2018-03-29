@@ -1,4 +1,4 @@
-import XWalletBackupImport from '../../x-wallet-backup-import/x-wallet-backup-import.js';
+import XWalletBackupImport from '../../../secure-elements/x-account-backup-import/x-account-backup-import.js';
 import XScreenFit from '../../x-screen/x-screen-fit.js';
 
 export default class ScreenBackupFileImportIntro extends XScreenFit {

@@ -1,6 +1,6 @@
 @import '../../x-screen/x-screen.css';
-@import '../../x-privacy-agent/x-privacy-agent.css';
-@import '../../x-mnemonic-input/x-mnemonic-input.css';
+@import '../../../secure-elements/x-privacy-agent/x-privacy-agent.css';
+@import '../../../secure-elements/x-mnemonic-input/x-mnemonic-input.css';
 
 screen-backup-phrase-import-enter small {
     margin-top: 4px;
