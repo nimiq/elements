@@ -7,7 +7,7 @@
     <link href="../x-address-scanner.css" rel="stylesheet">
     <style type="text/css">
         @import "/libraries/nimiq-style/nimiq-style.css";
-        @import "/elements/x-toast/x-toast.css";
+        @import "/secure-elements/x-toast/x-toast.css";
     </style>
 </head>
 
@@ -15,7 +15,7 @@
     <x-address-scanner></x-address-scanner>
     <script type="module">
         import XQrScanner from "../x-address-scanner.js";
-        import XToast from "/elements/x-toast/x-toast.js";
+        import XToast from "/secure-elements/x-toast/x-toast.js";
         const $scanner = new XQrScanner();
         const onScan = e => XToast.show(e.detail);
         $scanner.addEventListener('x-address-scan', onScan);

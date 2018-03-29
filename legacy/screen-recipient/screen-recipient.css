@@ -1,5 +1,5 @@
 @import "../../x-screen/x-screen.css";
-@import '../../x-toast/x-toast.css';
+@import '../../../secure-elements/x-toast/x-toast.css';
 @import '../../x-address-input/x-address-input.css';
 @import '../../x-address-file-input/x-address-file-input.css';
 @import "../../x-address-scanner/x-address-scanner.css";

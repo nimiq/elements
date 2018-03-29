@@ -7,7 +7,7 @@
     <link href="../x-qr-scanner.css" rel="stylesheet">
     <style type="text/css">
         @import "/libraries/nimiq-style/nimiq-style.css";
-        @import "/elements/x-toast/x-toast.css";
+        @import "/secure-elements/x-toast/x-toast.css";
     </style>
 </head>
 
@@ -15,7 +15,7 @@
     <x-qr-scanner></x-qr-scanner>
     <script type="module">
         import XQrScanner from "../x-qr-scanner.js";
-        import XToast from "/elements/x-toast/x-toast.js";
+        import XToast from "/secure-elements/x-toast/x-toast.js";
         const $scanner = new XQrScanner();
         const onScan = e => {
             XToast.show(e.detail);

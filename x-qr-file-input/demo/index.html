@@ -7,7 +7,7 @@
     <link href="/libraries/nimiq-style/nimiq-style.css" rel="stylesheet">
     <link href="../x-qr-file-input.css" rel="stylesheet">
     <link href="../../x-screen/x-screen.css" rel="stylesheet">
-    <link href="../../x-toast/x-toast.css" rel="stylesheet">
+    <link href="../../../secure-elements/x-toast/x-toast.css" rel="stylesheet">
 </head>
 
 <body>
@@ -19,7 +19,7 @@
     </section>
     <script type="module">
         import XQrFileInput from "../x-qr-file-input.js";
-        import XToast from "../../x-toast/x-toast.js";
+        import XToast from "../../../secure-elements/x-toast/x-toast.js";
         const $input1 = new XQrFileInput(document.querySelector('[demo1]'));
         const $input2 = new XQrFileInput(document.querySelector('[demo2]'));
         const callback = e => XToast.show(`${e.type}: ${e.detail}`);

@@ -1,5 +1,5 @@
 import XScreenFit from '../../x-screen/x-screen-fit.js';
-import XToast from '../../x-toast/x-toast.js';
+import XToast from '../../../secure-elements/x-toast/x-toast.js';
 import ScreenRecipientIntro from './screen-recipient-intro.js';
 import ScreenRecipientScanner from './screen-recipient-scanner.js';
 import ScreenRecipientFallback from './screen-recipient-fallback.js';
