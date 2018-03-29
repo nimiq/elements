@@ -1,5 +1,5 @@
 import XQrScanner from '../x-qr-scanner/x-qr-scanner.js';
-import ValidationUtils from '/libraries/nimiq-utils/validation-utils/validation-utils.js';
+import ValidationUtils from '/libraries/secure-utils/validation-utils/validation-utils.js';
 export default class XAddressScanner extends XQrScanner {
     onCreate() {
         super.onCreate();
