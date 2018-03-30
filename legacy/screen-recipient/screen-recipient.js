@@ -50,7 +50,7 @@ export default class ScreenRecipient extends XScreenFit {
     _onCameraError() {
         this.goTo('fallback');
         ScannerSettingsStorage.useScanner = false;
-        this.$toast.show('Failed to start scanner. Make sure nimiq.com is allowed to access your camera.');
+        this.$toast.error('Failed to start scanner. Make sure nimiq.com is allowed to access your camera.');
     }
 
     _getDefaultScreen() {
@@ -84,4 +84,4 @@ class ScannerSettingsStorage {
 }
 
 // Todo: Bug: Page layout defect in Firefox
-// Todo: Bug: redirect to fallback after camera error does not work 
+// Todo: Bug: redirect to fallback after camera error does not work

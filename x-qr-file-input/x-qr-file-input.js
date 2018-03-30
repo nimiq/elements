@@ -39,7 +39,7 @@ export default class XQrFileInput extends XElement {
 
     _onInvalid(message){
         this.animate('shake');
-        if(message) XToast.show(message);
+        if(message) XToast.error(message);
     }
 
     _validate() { return true; /* abstract method */ }
