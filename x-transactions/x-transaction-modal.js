@@ -64,6 +64,8 @@ export default class XTransactionModal extends MixinModal(XTransaction) {
 
     children() { return super.children().concat([XAddress]) }
 
+    listeners() { return [] }
+
     onCreate() {
         this.$senderAddress = this.$address[0];
         this.$recipientAddress = this.$address[1];
