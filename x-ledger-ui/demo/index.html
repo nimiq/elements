@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>x-ledger-ui</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link href="../x-ledger-ui.css" rel="stylesheet">
+    <link href="../x-ledger-ui-modal.css" rel="stylesheet">
+    <link href="/elements/mixin-modal/mixin-modal.css" rel="stylesheet">
+    <link href="/secure-elements/x-toast/x-toast.css" rel="stylesheet">
+    <style>
+        x-ledger-ui {
+            max-width: 800px;
+        }
+        #protocol-warning {
+            display: none;
+        }
+        .button-container {
+            margin: 32px 0;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        textarea {
+            width: 720px;
+            height: 132px;
+        }
+    </style>
+</head>
+
+<body>
+<h1 id="protocol-warning">Needs to be served via https.</h1>
+<div class="button-container">
+    <label><input type="checkbox" id="use-modal"> Use Modal</label>
+</div>
+
+<x-ledger-ui></x-ledger-ui>
+<div class="button-container">
+    <button id="get-address">Get Address</button>
+    <button id="get-confirmed-address">Get Confirmed Address</button>
+    <button id="sign-transaction">Sign Transaction</button>
+    <button id="cancel-requests">Cancel Requests</button>
+</div>
+
+<h3>Transaction to sign:</h3>
+<textarea>
+    {
+        "sender": "NQ09 AUXT TVM7 T0UJ BT7G P802 5AD8 DJDX 7G41",
+        "recipient": "NQ63 B0E0 J7PL UM2D 5PNK 6JME 0DSM 18D4 V8U5",
+        "value": 3.14,
+        "fee": 0.01,
+        "validityStartHeight": 0,
+        "network": "test"
+    }
+</textarea>
+
+<x-ledger-ui-modal></x-ledger-ui-modal>
+
+<script type="module">
+    import XLedgerUi from '../x-ledger-ui.js';
+    import XLedgerUiModal from '../x-ledger-ui-modal.js';
+    import XToast from '/secure-elements/x-toast/x-toast.js';
+
+    window.$ledgerUi = new XLedgerUi();
+    window.$ledgerUiModal = new XLedgerUiModal();
+    const modalCheckbox = document.querySelector('#use-modal');
+
+    if (location.protocol.indexOf('https') === -1) {
+        document.querySelector('#protocol-warning').style.display = 'block';
+    }
+
+    function ledgerUiToUse() {
+        return modalCheckbox.checked? $ledgerUiModal : $ledgerUi;
+    }
+
+    document.querySelector('#get-address').addEventListener('click', () => {
+        ledgerUiToUse().getAddress().then(
+            address => XToast.show(JSON.stringify(address)),
+            e => { console.error(e); XToast.show(e.message || e); }
+        );
+    });
+
+    document.querySelector('#get-confirmed-address').addEventListener('click', () => {
+        ledgerUiToUse().getConfirmedAddress().then(
+            address => XToast.show(JSON.stringify(address)),
+            e => { console.error(e); XToast.show(e.message || e); }
+        );
+    });
+
+    document.querySelector('#sign-transaction').addEventListener('click', () => {
+        const transaction = JSON.parse(document.querySelector('textarea').value);
+        ledgerUiToUse().signTransaction(transaction).then(
+            signature => { console.log(signature); XToast.show('Signature: ' + JSON.stringify(signature)); },
+            e => { console.error(e); XToast.show(e.message || e); }
+        );
+    });
+
+    document.querySelector('#cancel-requests').addEventListener('click', () => {
+        ledgerUiToUse().cancelRequests();
+    });
+</script>
+</body>
+
+</html>

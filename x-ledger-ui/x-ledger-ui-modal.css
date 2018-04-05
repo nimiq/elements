@@ -1,0 +1,6 @@
+@import "./x-ledger-ui.css";
+
+x-ledger-ui-modal {
+    max-width: 800px !important;
+    padding: 32px;
+}
