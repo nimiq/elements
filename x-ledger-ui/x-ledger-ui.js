@@ -13,7 +13,6 @@ import LazyLoading from '/libraries/nimiq-utils/lazy-loading/lazy-loading.js';
 
 export default class XLedgerUi extends XElement {
     // TODO render the pin dots as round divs
-    // TODO add instructions images for get address and sign
     html() {
         return `
             <div ledger-device-container>
@@ -52,8 +51,8 @@ export default class XLedgerUi extends XElement {
 
     async getAddress() {
         const request = this._createRequest(async api => {
-            const result = await api.getPublicKey(XLedgerUi.BIP32_PATH, true, false);
-            return result.publicKey; // is actually a user friendly address
+            const result = await api.getAddress(XLedgerUi.BIP32_PATH, true, false);
+            return result.address;
         });
         return this._callLedger(request);
     }
@@ -62,16 +61,27 @@ export default class XLedgerUi extends XElement {
     // TODO if request times out and user confirms address after timeout (TransportError with message timeout), ledger crashes (but can be 'brought back' by new request, e.g. call getAppConfiguration)
     async confirmAddress(userFriendlyAddress) {
         const request = this._createRequest(async api => {
-            const result = await api.getPublicKey(XLedgerUi.BIP32_PATH, true, true);
-            return result.publicKey; // is actually a user friendly address
+            const result = await api.getAddress(XLedgerUi.BIP32_PATH, true, true);
+            return result.address;
         }, 'confirm-address', `Confirm whether the address on your ledger matches ${userFriendlyAddress}`);
+        return this._callLedger(request);
+    }
+
+
+    async getPublicKey() {
+        const request = this._createRequest(async api => {
+            const result = await api.getPublicKey(XLedgerUi.BIP32_PATH, true, false);
+            return result.publicKey;
+        });
         return this._callLedger(request);
     }
 
 
     async getConfirmedAddress() {
         const address = await this.getAddress();
-        return this.confirmAddress(address);
+        const confirmedAddress = await this.confirmAddress(address);
+        if (address !== confirmedAddress) throw Error('Address missmatch');
+        return confirmedAddress;
     }
 
 
@@ -82,24 +92,26 @@ export default class XLedgerUi extends XElement {
         if (typeof transaction.validityStartHeight !== 'number'
             || Math.round(transaction.validityStartHeight) !== transaction.validityStartHeight)
             throw Error('Invalid validity start height');
-        const address = await this.getAddress(); // also loads Nimiq as a side effect
-        if (transaction.sender.replace(/ /g, '') !== address.replace(/ /g, ''))
+        const senderPubKeyBytes = await this.getPublicKey(); // also loads Nimiq as a side effect
+        const senderPubKey = Nimiq.PublicKey.unserialize(new Nimiq.SerialBuffer(senderPubKeyBytes));
+        const senderAddress = senderPubKey.toAddress().toUserFriendlyAddress();
+        if (transaction.sender.replace(/ /g, '') !== senderAddress.replace(/ /g, ''))
             throw Error('Sender Address doesn\'t match this ledger account');
-        const genesisConfig = Nimiq.GenesisConfig[transaction.network];
+        const genesisConfig = Nimiq.GenesisConfig.CONFIGS[transaction.network];
         if (!genesisConfig) throw Error('Invalid network');
         const networkId = genesisConfig.NETWORK_ID;
-        const sender = Nimiq.Address.fromUserFriendlyAddress(transaction.sender);
         const recipient = Nimiq.Address.fromUserFriendlyAddress(transaction.recipient);
         const value = Nimiq.Policy.coinsToSatoshis(transaction.value);
         const fee = Nimiq.Policy.coinsToSatoshis(transaction.fee);
         // for now only basic transactions allowed
-        const nimiqTx = new Nimiq.Transaction(Nimiq.Transaction.Format.BASIC, sender, Nimiq.Account.Type.BASIC,
-            recipient, Nimiq.Account.Type.BASIC, value, fee, transaction.validityStartHeight,
-            Nimiq.Transaction.Flag.NONE, /* data */ new Uint8Array(0), /* signature */ null, networkId);
+        const nimiqTx = new Nimiq.BasicTransaction(senderPubKey, recipient, value, fee, transaction.validityStartHeight,
+            undefined, networkId);
 
         const request = this._createRequest(async api => {
-            const result = await api.signTransaction(XLedgerUi.BIP32_PATH, nimiqTx.serializeContent());
-            return result.signature;
+            const signature = (await api.signTransaction(XLedgerUi.BIP32_PATH, nimiqTx.serializeContent())).signature;
+            transaction.signature = signature;
+            transaction.senderPubKey = senderPubKeyBytes;
+            return transaction;
         }, 'confirm-transaction', 'Confirm on your ledger whether you want to send the transaction');
         return this._callLedger(request);
     }

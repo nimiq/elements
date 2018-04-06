@@ -17,3 +17,4 @@ export default class XLedgerUiModal extends MixinModal(XLedgerUi) {
        super._showInstructions(type, text);
    }
 }
+// TODO close modal on success
