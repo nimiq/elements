@@ -11,8 +11,9 @@ import LazyLoading from '/libraries/nimiq-utils/lazy-loading/lazy-loading.js';
 // - user cancel
 // - when in another app: fires unknown error
 
+// TODO handle "device is busy" exception (appears when another request is running ?)
+
 export default class XLedgerUi extends XElement {
-    // TODO render the pin dots as round divs
     html() {
         return `
             <div ledger-device-container>
@@ -63,7 +64,6 @@ export default class XLedgerUi extends XElement {
     }
 
 
-    // TODO if request times out and user confirms address after timeout (TransportError with message timeout), ledger crashes (but can be 'brought back' by new request, e.g. call getAppConfiguration)
     async confirmAddress(userFriendlyAddress) {
         const request = this._createRequest(async api => {
             const result = await api.getAddress(XLedgerUi.BIP32_PATH, true, true);
@@ -146,7 +146,7 @@ export default class XLedgerUi extends XElement {
         return request;
     }
 
-    // TODO on error retry until user approved, denied or cancelled
+
     async _callLedger(request) {
         if (request.cancelled) throw Error('Request cancelled');
         return new Promise(async (resolve, reject) => {
@@ -157,13 +157,35 @@ export default class XLedgerUi extends XElement {
                 // instructions or the provided instructions for this call.
                 const api = await this._connect(request);
                 this._showInstructions(request.instructions, request.instructionsText);
+                var start = Date.now();
                 const result = await request.call(api);
+                this._requests.delete(request);
                 this._showInstructions('none');
                 resolve(result);
             } catch(e) {
+                console.log('Timeout after', (Date.now() - start) / 1000);
                 reject(e);
-            } finally {
+            }
+        }).catch(async e => {
+            // catch outside of the promise to also be able to catch rejections by request.cancel
+            // TODO refactor request cancellation
+            console.log(e);
+            const message = (e.message || e || '').toLowerCase();
+            if (message.indexOf('denied') !== -1 // for confirmAddress
+                || message.indexOf('rejected') !== -1 // for signTransaction
+                || message.indexOf('cancelled') !== -1) { // for cancellation in the ui
+                // user cancelled or denied the request
                 this._requests.delete(request);
+                this._showInstructions('none');
+                throw e;
+            } else {
+                if (message.indexOf('timeout') === -1) {
+                    console.warn('Unknown ledger call error', e);
+                }
+                // TODO experiment with lower wait times
+                await new Promise(resolve => setTimeout(resolve, 3000)); // wait some time to make sure the call also
+                // time outed on the ledger device before we resend the request to be able to replace the old one
+                return this._callLedger(request);
             }
         });
     }
@@ -179,6 +201,7 @@ export default class XLedgerUi extends XElement {
             await api.getAppConfiguration(); // to check whether the connection is established
             return api;
         } catch(e) {
+            console.log(e);
             const message = (e.message || e || '').toLowerCase();
             if (message.indexOf('cancelled') !== -1) {
                 throw e;
@@ -186,7 +209,7 @@ export default class XLedgerUi extends XElement {
                 return await this._connect(request);
             } else {
                 if (message.indexOf('locked') === -1) console.warn('Unknown ledger connect error', e);
-                await new Promise(resolve => setTimeout(resolve, 300));
+                await new Promise(resolve => setTimeout(resolve, 500));
                 return await this._connect(request);
             }
         } finally {
@@ -197,7 +220,7 @@ export default class XLedgerUi extends XElement {
 
     async _getApi() {
         XLedgerUi._api = XLedgerUi._api
-            || this._loadLibraries().then(() => LedgerjsNimiq.Transport.create(XLedgerUi.CONNECT_TIMEOUT))
+            || this._loadLibraries().then(() => LedgerjsNimiq.Transport.create())
                 .then(transport => new LedgerjsNimiq.Api(transport));
         return XLedgerUi._api;
     }
@@ -210,7 +233,6 @@ export default class XLedgerUi extends XElement {
         ]);
     }
 }
-XLedgerUi.BIP32_PATH = '44\'/242\'/0\'';
-XLedgerUi.CONNECT_TIMEOUT = 3600000;
+XLedgerUi.BIP32_PATH = "44'/242'/0'/0'";
 // @asset(/libraries/ledger-api/ledgerjs-nimiq.min.js)
 XLedgerUi.LIB_PATH = '/libraries/ledger-api/ledgerjs-nimiq.min.js';
