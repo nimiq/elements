@@ -19,9 +19,14 @@ export default class XLedgerUi extends XElement {
                 <div ledger-cable></div>
                 <div ledger-device></div>
                 <div ledger-screen-pin class="ledger-screen">
-                    <div ledger-pin-dots-container>
-                        <div ledger-pin-dots></div>
-                    </div>
+                    <div ledger-pin-dot></div>
+                    <div ledger-pin-dot></div>
+                    <div ledger-pin-dot></div>
+                    <div ledger-pin-dot></div>
+                    <div ledger-pin-dot></div>
+                    <div ledger-pin-dot></div>
+                    <div ledger-pin-dot></div>
+                    <div ledger-pin-dot></div>
                 </div>
                 <div ledger-screen-home class="ledger-screen"></div>
                 <div ledger-screen-app class="ledger-screen"></div>

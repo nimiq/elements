@@ -52,34 +52,12 @@
     display: none;
 }
 
-.x-ledger-ui .ledger-screen .icon:before {
-    /* fixed aspect ratio */
-    content: "";
-    display: block;
-    padding-top: 100%;
-}
-
-.x-ledger-ui [ledger-pin-dots-container] {
-    width: 70%;
-    position: relative;
-    overflow: hidden;
-}
-
-.x-ledger-ui [ledger-pin-dots-container]:before {
-    /* fixed aspect ratio */
-    content: "";
-    display: block;
-    padding-top: 12.5%;
-}
-
-.x-ledger-ui [ledger-pin-dots] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 64 64"><circle cx="32" cy="32" r="19" fill="%2321b6ff"/></svg>');
-    background-repeat: space;
+.x-ledger-ui [ledger-pin-dot] {
+    margin: 2%;
+    width: 5%;
+    height: 15.7%;
+    background-color: #21b6ff;
+    border-radius: 50%;
 }
 
 .x-ledger-ui [ledger-screen-home] {
@@ -116,8 +94,8 @@
     animation: ledger-show-screen-pin var(--ledger-connect-animation-duration) both infinite;
     display: flex;
 }
-.x-ledger-ui[instructions="connect"] [ledger-pin-dots] {
-    animation: ledger-input-pin var(--ledger-connect-animation-duration) steps(8, start) both infinite;
+.x-ledger-ui[instructions="connect"] [ledger-pin-dot] {
+    animation: ledger-show-pin-dot var(--ledger-connect-animation-duration) both infinite;
 }
 .x-ledger-ui[instructions="connect"] [ledger-screen-home] {
     animation: ledger-show-screen-home var(--ledger-connect-animation-duration) both infinite;
@@ -151,12 +129,12 @@
     }
 }
 
-@keyframes ledger-input-pin {
-    0%, 33% {
-        transform: translateX(-100%);
+@keyframes ledger-show-pin-dot {
+    0%, 34% {
+        opacity: 0;
     }
-    66%, 100% {
-        transform: translateX(0);
+    35%, 66%, 100% {
+        opacity: 1;
     }
 }
 
@@ -196,4 +174,26 @@
     1%, 32%, 35%, 65%, 68%, 99% {
         opacity: 1;
     }
+}
+
+.x-ledger-ui [ledger-pin-dot]:nth-child(2) {
+    animation-delay: calc(1 * var(--ledger-connect-animation-duration) / 3.5 / 8);
+}
+.x-ledger-ui [ledger-pin-dot]:nth-child(3) {
+    animation-delay: calc(2 * var(--ledger-connect-animation-duration) / 3.5 / 8);
+}
+.x-ledger-ui [ledger-pin-dot]:nth-child(4) {
+    animation-delay: calc(3 * var(--ledger-connect-animation-duration) / 3.5 / 8);
+}
+.x-ledger-ui [ledger-pin-dot]:nth-child(5) {
+    animation-delay: calc(4 * var(--ledger-connect-animation-duration) / 3.5 / 8);
+}
+.x-ledger-ui [ledger-pin-dot]:nth-child(6) {
+    animation-delay: calc(5 * var(--ledger-connect-animation-duration) / 3.5 / 8);
+}
+.x-ledger-ui [ledger-pin-dot]:nth-child(7) {
+    animation-delay: calc(6 * var(--ledger-connect-animation-duration) / 3.5 / 8);
+}
+.x-ledger-ui [ledger-pin-dot]:nth-child(8) {
+    animation-delay: calc(7 * var(--ledger-connect-animation-duration) / 3.5 / 8);
 }
