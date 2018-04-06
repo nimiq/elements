@@ -34,7 +34,8 @@ export default class XLedgerUi extends XElement {
                 <div ledger-screen-confirm-address class="ledger-screen"></div>
                 <div ledger-screen-confirm-transaction class="ledger-screen"></div>
             </div>
-            <h3 instructions-text></h3>
+            <h3 instructions-title></h3>
+            <h4 instructions-text></h4>
         `;
     }
 
@@ -43,6 +44,7 @@ export default class XLedgerUi extends XElement {
     }
 
     onCreate() {
+        this.$instructionsTitle = this.$('[instructions-title]');
         this.$instructionsText = this.$('[instructions-text]');
         this._requests = new Set();
     }
@@ -68,7 +70,10 @@ export default class XLedgerUi extends XElement {
         const request = this._createRequest(async api => {
             const result = await api.getAddress(XLedgerUi.BIP32_PATH, true, true);
             return result.address;
-        }, 'confirm-address', `Confirm whether the address on your ledger matches ${userFriendlyAddress}`);
+        }, 'confirm-address', 'Confirm Address', [
+            'Confirm if the address on your Ledger matches',
+            userFriendlyAddress
+        ]);
         return this._callLedger(request);
     }
 
@@ -117,23 +122,36 @@ export default class XLedgerUi extends XElement {
             transaction.signature = signature;
             transaction.senderPubKey = senderPubKeyBytes;
             return transaction;
-        }, 'confirm-transaction', 'Confirm on your ledger whether you want to send the transaction');
+        }, 'confirm-transaction', 'Confirm transaction', [
+            'Confirm on your Ledger if you want to send the following transaction:',
+            `From: ${transaction.sender}`,
+            `To: ${transaction.recipient}`,
+            `Value: ${transaction.value}`,
+            `Fee: ${transaction.fee}`
+        ]);
         return this._callLedger(request);
     }
 
-    _showInstructions(type, text = null) {
+    _showInstructions(type, title=null, text=null) {
         this.$el.setAttribute('instructions', type || 'none');
-        if (text) {
-            this.$instructionsText.textContent = text;
+        this.$instructionsTitle.textContent = title? title : '';
+        if (Array.isArray(text)) {
+            this.$instructionsText.textContent = ''; // clear
+            text.forEach(line => {
+                const el = document.createElement('div');
+                el.textContent = line;
+                this.$instructionsText.appendChild(el);
+            });
         } else {
-            this.$instructionsText.textContent = '';
+            this.$instructionsText.textContent = text? text : '';
         }
     }
 
-    _createRequest(call, instructions=null, instructionsText=null) {
+    _createRequest(call, instructions=null, instructionsTitle=null, instructionsText=null) {
         const request = {
             call,
             instructions,
+            instructionsTitle,
             instructionsText,
             cancelled: false,
             cancel: () => {
@@ -156,7 +174,7 @@ export default class XLedgerUi extends XElement {
                 this._showInstructions('none'); // don't show any instructions until we know we should show connect
                 // instructions or the provided instructions for this call.
                 const api = await this._connect(request);
-                this._showInstructions(request.instructions, request.instructionsText);
+                this._showInstructions(request.instructions, request.instructionsTitle, request.instructionsText);
                 var start = Date.now();
                 const result = await request.call(api);
                 this._requests.delete(request);
@@ -195,7 +213,7 @@ export default class XLedgerUi extends XElement {
         if (request.cancelled) throw Error('Request cancelled');
         // if the Ledger is already connected and the library already loaded, the call typically takes < 200ms.
         // If it takes longer, we ask the user to connect his ledger.
-        const connectInstructionsTimeout = setTimeout(() => this._showInstructions('connect'), 250);
+        const connectInstructionsTimeout = setTimeout(() => this._showInstructions('connect', 'Connect'), 250);
         try {
             const api = await this._getApi();
             await api.getAppConfiguration(); // to check whether the connection is established

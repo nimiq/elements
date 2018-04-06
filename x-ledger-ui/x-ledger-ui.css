@@ -8,6 +8,12 @@
     --ledger-connect-animation-duration: 8s;
 }
 
+.x-ledger-ui [instructions-text] {
+    opacity: .9;
+    margin: 0;
+    line-height: 1.4;
+}
+
 .x-ledger-ui [ledger-device-container] {
     width: 50%;
     margin: auto;

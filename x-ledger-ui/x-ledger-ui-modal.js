@@ -10,11 +10,11 @@ export default class XLedgerUiModal extends MixinModal(XLedgerUi) {
         this.cancelRequests();
     }
 
-    _showInstructions(type, text) {
-        if ((type && type !== 'none') || text) {
+    _showInstructions(type, title, text) {
+        if ((type && type !== 'none') || title || text) {
             this.show();
         }
-        super._showInstructions(type, text);
+        super._showInstructions(type, title, text);
     }
 
     cancelRequests() {
