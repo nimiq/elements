@@ -26,6 +26,8 @@ export default class XLedgerUi extends XElement {
                 </div>
                 <div ledger-screen-home class="ledger-screen"></div>
                 <div ledger-screen-app class="ledger-screen"></div>
+                <div ledger-screen-confirm-address class="ledger-screen"></div>
+                <div ledger-screen-confirm-transaction class="ledger-screen"></div>
             </div>
             <h3 instructions-text></h3>
         `;
@@ -120,9 +122,6 @@ export default class XLedgerUi extends XElement {
             cancel: () => {
                 request.cancelled=true;
                 request._reject('Request cancelled');
-                request.delete();
-            },
-            delete: () => {
                 this._requests.delete(request);
             },
             setReject: reject => request._reject = reject
@@ -136,6 +135,7 @@ export default class XLedgerUi extends XElement {
         return new Promise(async (resolve, reject) => {
             try {
                 request.setReject(reject);
+                this._requests.add(request);
                 this._showInstructions('none'); // don't show any instructions until we know we should show connect
                 // instructions or the provided instructions for this call.
                 const api = await this._connect(request);
@@ -146,7 +146,7 @@ export default class XLedgerUi extends XElement {
             } catch(e) {
                 reject(e);
             } finally {
-                request.delete();
+                this._requests.delete(request);
             }
         });
     }
