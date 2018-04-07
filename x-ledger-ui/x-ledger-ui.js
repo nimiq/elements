@@ -121,6 +121,7 @@ export default class XLedgerUi extends XElement {
             const signature = (await api.signTransaction(XLedgerUi.BIP32_PATH, nimiqTx.serializeContent())).signature;
             transaction.signature = signature;
             transaction.senderPubKey = senderPubKeyBytes;
+            transaction.hash = nimiqTx.hash().toBase64();
             return transaction;
         }, 'confirm-transaction', 'Confirm transaction', [
             'Confirm on your Ledger if you want to send the following transaction:',
