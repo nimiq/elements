@@ -71,7 +71,7 @@ export default class XLedgerUi extends XElement {
             const result = await api.getAddress(XLedgerUi.BIP32_PATH, true, true);
             return result.address;
         }, 'confirm-address', 'Confirm Address', [
-            'Confirm if the address on your Ledger matches',
+            'Confirm that the address on your Ledger matches',
             userFriendlyAddress
         ]);
         return this._callLedger(request);
@@ -172,6 +172,7 @@ export default class XLedgerUi extends XElement {
             try {
                 request.setReject(reject);
                 this._requests.add(request);
+                // TODO should not set the instructions to none on retry after timeout
                 this._showInstructions('none'); // don't show any instructions until we know we should show connect
                 // instructions or the provided instructions for this call.
                 const api = await this._connect(request);
@@ -217,6 +218,7 @@ export default class XLedgerUi extends XElement {
         const connectInstructionsTimeout = setTimeout(() => this._showInstructions('connect', 'Connect'), 250);
         try {
             const api = await this._getApi();
+            // TODO check whether app configurations says that actually the nimiq app is opened
             await api.getAppConfiguration(); // to check whether the connection is established
             return api;
         } catch(e) {
