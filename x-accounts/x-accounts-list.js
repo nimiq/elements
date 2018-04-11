@@ -56,8 +56,8 @@ export default class XAccountsList extends MixinRedux(XElement) {
      * @param {object} account
      */
     _addAccountEntry(account) {
-        if (this.attributes.noVesting && account.type === 4) {
-            // Do not display vesting accounts
+        if ((account.type === 4 && this.attributes.noVesting) || (account.type === 5 && this.attributes.noTracked)) {
+            // Do not display vesting or tracked accounts
             this._accountEntries.set(account.address, true);
             return;
         }

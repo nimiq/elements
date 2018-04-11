@@ -203,6 +203,11 @@ x-account-modal .vesting-icon::after {
     content: 'access_time';
 }
 
+x-account .tracked-icon::after,
+x-account-modal .tracked-icon::after {
+    content: 'remove_red_eye';
+}
+
 x-account .ledger-icon,
 x-account-modal .ledger-icon,
 x-popup-menu .ledger-icon {

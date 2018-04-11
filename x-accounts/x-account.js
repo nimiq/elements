@@ -66,7 +66,7 @@ export default class XAccount extends MixinRedux(XElement) {
     }
 
     set type(type) {
-        this.$icon.classList.remove('secure-icon', 'ledger-icon', 'vesting-icon');
+        this.$icon.classList.remove('secure-icon', 'ledger-icon', 'vesting-icon', 'tracked-icon');
 
         switch (type) {
             case 1: // KEYGUARD_HIGH
@@ -83,6 +83,11 @@ export default class XAccount extends MixinRedux(XElement) {
                 this.$icon.classList.add('vesting-icon');
                 this.$icon.classList.remove('display-none');
                 this.$icon.setAttribute('title', 'Vesting contract');
+                break;
+            case 5: // TRACKED
+                this.$icon.classList.add('tracked-icon');
+                this.$icon.classList.remove('display-none');
+                this.$icon.setAttribute('title', 'Tracked account');
                 break;
             default: // KEYGUARD_LOW
                 this.$icon.classList.add('display-none');
