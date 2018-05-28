@@ -54,7 +54,15 @@ export default class VContactListModal extends MixinModal(XElement) {
             },
             computed: {
                 filteredContacts() {
-                    return this.contacts
+                    const searchTerm = this.searchTerm.trim().toLowerCase()
+
+                    if (!searchTerm) return Object.assign({}, this.contacts)
+
+                    var result = {}
+                    for (var label of Object.keys(this.contacts))
+                        if (label.toLowerCase().includes(searchTerm))
+                            result[label] = this.contacts[label]
+                    return result
                 }
             }
         })
