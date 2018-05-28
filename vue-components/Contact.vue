@@ -1,4 +1,4 @@
-<div class="contact" v-on:click="$emit('contact-selected', contact.address)">
+<div class="contact" @click="selected">
     <identicon :address="contact.address"></identicon>
     <div class="info">
         <span class="label">{{ contact.label }}</span>
@@ -12,7 +12,12 @@
 
 window['contact'] = {
     name: 'contact',
-    props: ['contact']
+    props: ['contact'],
+    methods: {
+        selected() {
+            this.$eventBus.$emit('contact-selected', this.contact.address)
+        }
+    }
 }
 </script>
 

@@ -8,10 +8,10 @@ export default class XSendTransactionModal extends MixinModal(XSendTransaction) 
         return !address || ValidationUtils.isValidAddress(dashToSpace(address));
     }
 
-    /* mode: sender or recipient */
+    /* mode: sender or recipient or fromContactList */
     onShow(address, mode, amount, message, freeze) {
-        // TODO Do not clear when coming from contact list modal
-        this.clear();
+
+        if (mode !== 'fromContactList') this.clear();
 
         this.$amountInput.maxDecimals = document.body.classList.contains('setting-show-all-decimals') ? 5 : 2;
 

@@ -4,6 +4,8 @@ import MixinRedux from '/secure-elements/mixin-redux/mixin-redux.js'
 import { upgradeCanceled } from '/elements/x-accounts/accounts-redux.js'
 import { importVueComponent } from '/elements/vue-components/import-vue-component.js'
 import Iqons from '/libraries/iqons/dist/iqons.min.js'
+import XSendTransactionModal from '/elements/x-send-transaction/x-send-transaction-modal.js'
+import { spaceToDash } from '/libraries/nimiq-utils/parameter-encoding/parameter-encoding.js'
 
 export default class VContactListModal extends MixinModal(XElement) {
     html() {
@@ -13,10 +15,7 @@ export default class VContactListModal extends MixinModal(XElement) {
                 <h2>Contacts</h2>
             </div>
             <div class="modal-body" id="vue-contact-list">
-                <input type="text" placeholder="Search..." v-model="searchTerm">
-                <div class="contact-list">
-                    <contact v-for="contact in filteredContacts" :contact="contact" :key="contact.label"></contact>
-                </div>
+                <contact-list :contacts="contacts" ref="contactList"></contact-list>
             </div>
         `
     }
@@ -26,9 +25,11 @@ export default class VContactListModal extends MixinModal(XElement) {
         const self = this
 
         // Load dependency components
+        /* asset(/elements/vue-components/ContactList.vue) */
         /* asset(/elements/vue-components/Contact.vue) */
         /* asset(/elements/vue-components/Identicon.vue) */
         /* asset(/elements/vue-components/AccountAddress.vue) */
+        importVueComponent('contact-list', location.origin + '/elements/vue-components/ContactList.vue')
         importVueComponent('contact', location.origin + '/elements/vue-components/Contact.vue')
         importVueComponent('identicon', location.origin + '/elements/vue-components/Identicon.vue')
         importVueComponent('account-address', location.origin + '/elements/vue-components/AccountAddress.vue')
@@ -36,12 +37,11 @@ export default class VContactListModal extends MixinModal(XElement) {
         // Provide Iqons to the Identicons component
         window.Iqons = Iqons
 
-        this.app = new Vue({
+        Vue.prototype.$eventBus = new Vue({})
+
+        this.vue = new Vue({
             el: '#vue-contact-list',
             data: {
-                // Local state
-                searchTerm: '',
-                isCreatingNewContact: false,
                 // Global state
                 contacts: {
                     'Sarah Silverman': {
@@ -54,23 +54,27 @@ export default class VContactListModal extends MixinModal(XElement) {
                     }
                 }
             },
-            computed: {
-                filteredContacts() {
-                    const searchTerm = this.searchTerm.trim().toLowerCase()
-
-                    if (!searchTerm) return Object.assign({}, this.contacts)
-
-                    var result = {}
-                    for (var label of Object.keys(this.contacts))
-                        if (label.toLowerCase().includes(searchTerm))
-                            result[label] = this.contacts[label]
-                    return result
-                }
+            created() {
+                this.$eventBus.$on('contact-selected', address => {
+                    self._wasClosedByContactSelection = true
+                    self._onContactSelected(address)
+                })
             }
         })
     }
 
     onShow() {
         // Reset local state
+        this._wasClosedByContactSelection = false;
+        this.vue.$refs.contactList.reset()
+    }
+
+    onHide() {
+        if (this._wasClosedByContactSelection) return
+        XSendTransactionModal.show('fromContactList=yes')
+    }
+
+    _onContactSelected(address) {
+        XSendTransactionModal.show('fromContactList=yes', 'recipient=' + spaceToDash(address))
     }
 }
