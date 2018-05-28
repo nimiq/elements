@@ -10,6 +10,7 @@ export default class XSendTransactionModal extends MixinModal(XSendTransaction) 
 
     /* mode: sender or recipient */
     onShow(address, mode, amount, message, freeze) {
+        // TODO Do not clear when coming from contact list modal
         this.clear();
 
         this.$amountInput.maxDecimals = document.body.classList.contains('setting-show-all-decimals') ? 5 : 2;
