@@ -28,10 +28,10 @@ export default class VContactListModal extends MixinModal(XElement) {
         // Load dependency components
         /* asset(/elements/vue-components/Contact.vue) */
         /* asset(/elements/vue-components/Identicon.vue) */
-        /* asset(/elements/vue-components/Account-Address.vue) */
+        /* asset(/elements/vue-components/AccountAddress.vue) */
         importVueComponent('contact', location.origin + '/elements/vue-components/Contact.vue')
         importVueComponent('identicon', location.origin + '/elements/vue-components/Identicon.vue')
-        importVueComponent('account-address', location.origin + '/elements/vue-components/Account-Address.vue')
+        importVueComponent('account-address', location.origin + '/elements/vue-components/AccountAddress.vue')
 
         // Provide Iqons to the Identicons component
         window.Iqons = Iqons
