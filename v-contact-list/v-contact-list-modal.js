@@ -1,11 +1,13 @@
 import XElement from '/libraries/x-element/x-element.js'
 import MixinModal from '/elements/mixin-modal/mixin-modal.js'
 import MixinRedux from '/secure-elements/mixin-redux/mixin-redux.js'
-import { upgradeCanceled } from '/elements/x-accounts/accounts-redux.js'
+import { bindActionCreators } from '/libraries/redux/src/index.js';
 import { importVueComponent } from '/elements/vue-components/import-vue-component.js'
 import Iqons from '/libraries/iqons/dist/iqons.min.js'
 import XSendTransactionModal from '/elements/x-send-transaction/x-send-transaction-modal.js'
 import { spaceToDash } from '/libraries/nimiq-utils/parameter-encoding/parameter-encoding.js'
+import Provider from '/elements/vue-components/vuejs-redux.js'
+import { setContact, removeContact } from './contacts-redux.js'
 
 export default class VContactListModal extends MixinModal(XElement) {
     html() {
@@ -15,7 +17,11 @@ export default class VContactListModal extends MixinModal(XElement) {
                 <h2>Contacts</h2>
             </div>
             <div class="modal-body" id="vue-contact-list">
-                <contact-list :contacts="contacts" ref="contactList"></contact-list>
+                <redux-provider :map-state-to-props="mapStateToProps" :map-dispatch-to-props="mapDispatchToProps" :store="store">
+                    <template slot-scope="{contacts, actions}">
+                        <contact-list :contacts="contacts" :actions="actions" ref="contactList"></contact-list>
+                    </template>
+                </redux-provider>
             </div>
         `
     }
@@ -34,6 +40,14 @@ export default class VContactListModal extends MixinModal(XElement) {
         importVueComponent('identicon', location.origin + '/elements/vue-components/Identicon.vue')
         importVueComponent('account-address', location.origin + '/elements/vue-components/AccountAddress.vue')
 
+        // Set up async waiting, to make sure the components are loaded when we need them in onShow()
+        this._isLoadingComponents = false
+        this._awaitComponents = new Promise(res => this._awaitComponentsResolver = res)
+        importVueComponent.track((isLoading) => {
+            if (this._isLoadingComponents && !isLoading) this._awaitComponentsResolver()
+            this._isLoadingComponents = isLoading
+        })
+
         // Provide Iqons to the Identicons component
         window.Iqons = Iqons
 
@@ -42,30 +56,37 @@ export default class VContactListModal extends MixinModal(XElement) {
         this.vue = new Vue({
             el: '#vue-contact-list',
             data: {
-                // Global state
-                contacts: {
-                    'Sarah Silverman': {
-                        label: 'Sarah Silverman',
-                        address: 'NQ94 VESA PKTA 9YQ0 XKGC HVH0 Q9DF VSFU STSP'
-                    },
-                    'Peter Dinklage': {
-                        label: 'Peter Dinklage',
-                        address: 'NQ36 P00L 1N6T S3QL KJY8 6FH4 5XN4 DXY0 L7C8'
-                    }
-                }
+                store: MixinRedux.store
             },
             created() {
                 this.$eventBus.$on('contact-selected', address => {
                     self._wasClosedByContactSelection = true
                     self._onContactSelected(address)
                 })
+            },
+            components: {
+                'redux-provider': Provider
+            },
+            methods: {
+                mapStateToProps(state) {
+                    return {
+                        contacts: state.contacts
+                    }
+                },
+
+                mapDispatchToProps(dispatch) {
+                    return {
+                        actions: bindActionCreators({ setContact, removeContact }, dispatch)
+                    }
+                }
             }
         })
     }
 
-    onShow() {
+    async onShow() {
         // Reset local state
-        this._wasClosedByContactSelection = false;
+        this._wasClosedByContactSelection = false
+        await this._awaitComponents
         this.vue.$refs.contactList.reset()
     }
 

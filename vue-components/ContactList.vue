@@ -10,7 +10,7 @@
 
 window['contact-list'] = {
     name: 'contact-list',
-    props: ['contacts'],
+    props: ['contacts', 'actions'],
     data: function() {
         return {
             // Local state
@@ -36,8 +36,7 @@ window['contact-list'] = {
     methods: {
         reset() {
             this.searchTerm = ''
-            console.log(this.$refs.input, this.nextTick)
-            setTimeout(() => this.$refs.input.focus())
+            this.$refs.input.focus()
         }
     }
 }
