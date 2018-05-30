@@ -1,8 +1,12 @@
-<div class="contact" @click="selected">
+<div class="contact" @click="select">
     <identicon :address="contact.address"></identicon>
     <div class="info">
         <span class="label">{{ contact.label }}</span>
         <account-address :address="contact.address"></account-address>
+        <div class="bottom" v-if="showOptions">
+            <button class="small secondary" @click.stop="editMethod(contact.label, contact.address)" title="Edit contact"><i class="material-icons">edit</i></button>
+            <button class="small secondary remove" @click.stop="remove" title="Delete contact"><i class="material-icons">delete</i></button>
+        </div>
     </div>
 </div>
 
@@ -12,10 +16,14 @@
 
 window['contact'] = {
     name: 'contact',
-    props: ['contact'],
+    props: ['contact', 'showOptions', 'editMethod', 'removeAction'],
     methods: {
-        selected() {
+        select() {
             this.$eventBus.$emit('contact-selected', this.contact.address)
+        },
+        remove() {
+            const confirmRemove = confirm(`Really delete this contact: ${this.contact.label}?`)
+            confirmRemove && this.removeAction(this.contact.label)
         }
     }
 }
@@ -63,6 +71,40 @@ window['contact'] = {
         min-width: auto;
         font-weight: normal;
         opacity: 0.6;
+    }
+
+    .contact .bottom {
+        text-align: right;
+        margin-top: 4px;
+    }
+
+    .contact .bottom button {
+        padding: 0 7px;
+        min-height: 0;
+        height: 29px;
+        width: 29px;
+        margin-bottom: 0;
+        background: white;
+        opacity: 0.75;
+    }
+
+    .contact .bottom button:hover {
+        opacity: 1;
+    }
+
+    .contact .bottom button .material-icons {
+        font-size: 21px;
+        position: relative;
+        left: -4px;
+        top: -6px;
+    }
+
+    .contact .bottom button.remove {
+        border-color: var(--error-color);
+    }
+
+    .contact .bottom button.remove .material-icons {
+        color: var(--error-color);
     }
 
     @media (max-width: 480px) {

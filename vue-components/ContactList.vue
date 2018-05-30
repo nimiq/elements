@@ -1,12 +1,26 @@
 <div class="contact-list">
-    <input type="text" placeholder="Search..." v-model="searchTerm" ref="input">
+    <input v-if="!isEditingContact" type="text" placeholder="Search..." v-model="searchTerm" ref="input">
+    <form v-if="isEditingContact" @submit.prevent="submitEditContact">
+        <i class="close material-icons" @click="endEditContact">close</i>
+        <input type="text" v-model="editingLabel" placeholder="Name">
+        <input type="text" v-model="editingAddress" placeholder="Address">
+        <button>Set</button>
+    </form>
     <div class="list">
-        <contact v-for="contact in filteredContacts" :contact="contact" :key="contact.label"></contact>
+        <contact
+            v-for="contact in filteredContacts"
+            :contact="contact"
+            :show-options="isEditing"
+            :remove-action="actions.removeContact"
+            :edit-method="startEditContact"
+            :key="contact.label"
+        ></contact>
     </div>
 </div>
 
 <script>
 // import Contact from './Contact.vue'
+// import ValidationUtils from '/libraries/secure-utils/validation-utils/validation-utils.js'
 
 window['contact-list'] = {
     name: 'contact-list',
@@ -15,7 +29,10 @@ window['contact-list'] = {
         return {
             // Local state
             searchTerm: '',
-            isCreatingNewContact: false,
+            isEditing: false,
+            isEditingContact: false,
+            editingLabel: '',
+            editingAddress: ''
         }
     },
     computed: {
@@ -35,8 +52,44 @@ window['contact-list'] = {
     },
     methods: {
         reset() {
-            this.searchTerm = ''
+            this.searchTerm = '',
+            this.isEditing = false
+            this.isEditingContact = false
             this.$refs.input.focus()
+        },
+        toggleManaging() {
+            this.isEditing = !this.isEditing
+        },
+        startEditContact(label, address) {
+            this.editingLabel = label || ''
+            this.editingAddress = address || ''
+            this.isEditingContact = true
+        },
+        submitEditContact() {
+            // Validate label
+            if (!this.editingLabel) {
+                // TODO Set user error message
+                console.error("Label is required")
+                return
+            }
+
+            // Validate address
+            if (!ValidationUtils.isValidAddress(this.editingAddress)) {
+                // TODO Set user error message
+                console.error("Address not valid")
+                return
+            }
+
+            // Format address
+            const address = this.editingAddress.replace(/ /g, '').replace(/.{4}/g, '$& ').trim()
+
+            this.actions.setContact(this.editingLabel, address)
+
+            // Reset form
+            this.startEditContact()
+        },
+        endEditContact() {
+            this.isEditingContact = false
         }
     }
 }
@@ -45,6 +98,10 @@ window['contact-list'] = {
 <style>
     .contact-list input {
         width: 100%;
+    }
+
+    .contact-list form .close {
+        float: right;
     }
 
     .contact-list .list {
