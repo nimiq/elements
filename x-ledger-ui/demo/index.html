@@ -40,7 +40,7 @@
     <button id="get-address">Get Address</button>
     <button id="get-confirmed-address">Get Confirmed Address</button>
     <button id="sign-transaction">Sign Transaction</button>
-    <button id="cancel-requests">Cancel Requests</button>
+    <button id="cancel-request">Cancel Request</button>
 </div>
 
 <h3>Transaction to sign:</h3>
@@ -96,8 +96,8 @@
         );
     });
 
-    document.querySelector('#cancel-requests').addEventListener('click', () => {
-        ledgerUiToUse().cancelRequests();
+    document.querySelector('#cancel-request').addEventListener('click', () => {
+        ledgerUiToUse().cancelRequest();
     });
 </script>
 </body>

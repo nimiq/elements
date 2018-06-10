@@ -6,61 +6,35 @@ export default class XLedgerUiModal extends MixinModal(XLedgerUi) {
         return [ ...super.styles(), 'nimiq-dark' ];
     }
 
+    onCreate() {
+        super.onCreate();
+        this._hideTimeout = null;
+        this._shouldCancelOnHide = true;
+    }
+
     onHide() {
-        this.cancelRequests();
+        if (this._shouldCancelOnHide) this.cancelRequest();
     }
 
     _showInstructions(type, title, text) {
         if ((type && type !== 'none') || title || text) {
+            clearTimeout(this._hideTimeout);
+            super._showInstructions(type, title, text);
             this.show();
+        } else {
+            // delay hiding to not hide between compound calls that consist of two calls to ledger
+            this._hideTimeout = setTimeout(() => {
+                this._shouldCancelOnHide = false;
+                this.hide();
+                this._shouldCancelOnHide = true;
+                this._hideTimeout = setTimeout(() => super._showInstructions('none'), 400);
+            }, 250);
         }
-        super._showInstructions(type, title, text);
     }
 
-    cancelRequests() {
-        super.cancelRequests();
+    cancelRequest() {
+        super.cancelRequest();
         this.hide();
     }
 
-/*  // TODO hiding modal for getAddress, confirmAddress and getPublicKey shouldn't be done this way, as they also get
-    // called within getConfirmedAddress and signTransaction
-    async getAddress() {
-        try {
-            return await super.getAddress();
-        } finally {
-            this.hide();
-        }
-    }
-
-    async confirmAddress(userFriendlyAddress) {
-        try {
-            return await super.confirmAddress(userFriendlyAddress);
-        } finally {
-            this.hide();
-        }
-    }
-
-    async getPublicKey() {
-        try {
-            return await super.getPublicKey();
-        } finally {
-            this.hide();
-        }
-    }*/
-
-    async getConfirmedAddress() {
-        try {
-            return await super.getConfirmedAddress();
-        } finally {
-            this.hide();
-        }
-    }
-
-    async signTransaction(transaction) {
-        try {
-            return await super.signTransaction(transaction);
-        } finally {
-            this.hide();
-        }
-    }
 }
