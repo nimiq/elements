@@ -107,7 +107,7 @@ export default class XLedgerUi extends XElement {
             const result = await api.getAddress(XLedgerUi.BIP32_PATH, /*validate*/ true, /*display*/ true);
             return result.address;
         });
-        if (userFriendlyAddress !== confirmedAddress) throw Error('Address missmatch');
+        if (userFriendlyAddress !== confirmedAddress) throw Error('Address mismatch');
         return confirmedAddress;
     }
 
