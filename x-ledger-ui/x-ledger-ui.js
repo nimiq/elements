@@ -16,6 +16,9 @@ import LazyLoading from '/libraries/nimiq-utils/lazy-loading/lazy-loading.js';
 
 // Some notes about the behaviour of the ledger:
 // - The ledger only supports one call at a time.
+// - If the browser doesn't support U2F, an exception gets thrown ("U2F browser support is needed for Ledger")
+// - Firefox' implementation of U2F (when enabled in about:config) does not seem to be compatible with ledger and
+//   throws "U2F DEVICE_INELIGIBLE"
 // - The browsers U2F API has a timeout after which the call fails in the browser. The timeout is about 30s
 // - For requests with display on the ledger, the ledger keeps displaying the request even if it timed out. When the
 //   user confirms or declines that request after the timeout the ledger ignores that and freezes on second press.
@@ -189,6 +192,11 @@ export default class XLedgerUi extends XElement {
                         if (message.indexOf('denied') !== -1 // for confirmAddress
                             || message.indexOf('rejected') !== -1) { // for signTransaction
                             reject(e); // user rejected the call on the ledger device
+                            return;
+                        }
+                        if (message.indexOf('browser support') !== -1 || message.indexOf('u2f device_ineligible') !== -1
+                            || message.indexOf('u2f other_error')) {
+                            reject(new Error('Ledger not supported by browser or support not enabled.'));
                             return;
                         }
                         if (message.indexOf('timeout') === -1 && message.indexOf('locked') === -1
