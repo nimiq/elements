@@ -195,7 +195,7 @@ export default class XLedgerUi extends XElement {
                             return;
                         }
                         if (message.indexOf('browser support') !== -1 || message.indexOf('u2f device_ineligible') !== -1
-                            || message.indexOf('u2f other_error')) {
+                            || message.indexOf('u2f other_error') !== -1) {
                             reject(new Error('Ledger not supported by browser or support not enabled.'));
                             return;
                         }
