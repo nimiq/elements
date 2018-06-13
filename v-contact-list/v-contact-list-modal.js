@@ -111,7 +111,7 @@ export default class VContactListModal extends MixinModal(XElement) {
 
     onHide() {
         if (this._wasClosedByContactSelection) return
-        XSendTransactionModal.show('fromContactList=yes')
+        XSendTransactionModal.show('-', 'contact')
     }
 
     _onClickManageContacts() {
@@ -119,6 +119,6 @@ export default class VContactListModal extends MixinModal(XElement) {
     }
 
     _onContactSelected(address) {
-        XSendTransactionModal.show('fromContactList=yes', 'recipient=' + spaceToDash(address))
+        XSendTransactionModal.show(spaceToDash(address), 'contact')
     }
 }
