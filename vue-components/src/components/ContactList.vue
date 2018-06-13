@@ -1,29 +1,31 @@
-<div class="contact-list">
-    <input v-if="!isEditingContact" type="text" placeholder="Search..." v-model="searchTerm" ref="input">
-    <form v-if="isEditingContact" @submit.prevent="submitEditContact">
-        <i class="close material-icons" @click="endEditContact">close</i>
-        <input type="text" v-model="editingLabel" placeholder="Name">
-        <input type="text" v-model="editingAddress" placeholder="Address">
-        <button>Set</button>
-    </form>
-    <div class="list">
-        <contact
-            v-for="contact in filteredContacts"
-            :contact="contact"
-            :show-options="isEditing"
-            :remove-action="actions.removeContact"
-            :edit-method="startEditContact"
-            :key="contact.label"
-        ></contact>
+<template>
+    <div class="contact-list">
+        <input v-if="!isEditingContact" type="text" placeholder="Search..." v-model="searchTerm" ref="input">
+        <form v-if="isEditingContact" @submit.prevent="submitEditContact">
+            <i class="close material-icons" @click="endEditContact">close</i>
+            <input type="text" v-model="editingLabel" placeholder="Name">
+            <input type="text" v-model="editingAddress" placeholder="Address">
+            <button>Set</button>
+        </form>
+        <div class="list">
+            <Contact
+                v-for="contact in filteredContacts"
+                :contact="contact"
+                :show-options="isEditing"
+                :remove-action="actions.removeContact"
+                :edit-method="startEditContact"
+                :key="contact.label"
+            />
+        </div>
     </div>
-</div>
+</template>
 
 <script>
-// import Contact from './Contact.vue'
-// import ValidationUtils from '/libraries/secure-utils/validation-utils/validation-utils.js'
+import Contact from './Contact.vue'
+import ValidationUtils from '../../../../libraries/secure-utils/validation-utils/validation-utils.js'
 
-window['contact-list'] = {
-    name: 'contact-list',
+export default {
+    name: 'ContactList',
     props: ['contacts', 'actions'],
     data: function() {
         return {
@@ -91,6 +93,9 @@ window['contact-list'] = {
         endEditContact() {
             this.isEditingContact = false
         }
+    },
+    components: {
+        Contact
     }
 }
 </script>

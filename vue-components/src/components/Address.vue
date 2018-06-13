@@ -1,12 +1,13 @@
-<div class="account-address" @click="copy">
-    <span>{{ address }}</span>
-    <div class="copied-cover">Copied!</div>
-</div>
+<template>
+    <div class="address" @click="copy">
+        <span>{{ address }}</span>
+        <div class="copied-cover">Copied!</div>
+    </div>
+</template>
 
 <script>
-// 'address' is a reserved word in HTML
-window['account-address'] = {
-    name: 'account-address',
+export default {
+    name: 'Address',
     props: ['address'],
     methods: {
         copy() {
@@ -30,7 +31,7 @@ window['account-address'] = {
 </script>
 
 <style>
-    .account-address {
+    .address {
         position: relative;
         width: 100%;
         min-width: 320px;
@@ -43,11 +44,11 @@ window['account-address'] = {
         border-radius: 3px;
     }
 
-    .account-address:hover {
+    .address:hover {
         background: rgba(0, 0, 0, 0.2);
     }
 
-    .account-address .copied-cover {
+    .address .copied-cover {
         position: absolute;
         left: 0;
         top: 0;
@@ -64,7 +65,7 @@ window['account-address'] = {
         transition: opacity 0.2s;
     }
 
-    .account-address.copied .copied-cover {
+    .address.copied .copied-cover {
         opacity: 1;
     }
 </style>

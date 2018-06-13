@@ -5,7 +5,7 @@ import { dashToSpace } from '/libraries/nimiq-utils/parameter-encoding/parameter
 
 export default class XSendTransactionModal extends MixinModal(XSendTransaction) {
     allowsShow(address) {
-        return !address || ValidationUtils.isValidAddress(dashToSpace(address));
+        return address === '-' || !address || ValidationUtils.isValidAddress(dashToSpace(address));
     }
 
     /* mode: sender or recipient or fromContactList */

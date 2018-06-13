@@ -1,13 +1,15 @@
-<div class="identicon">
-    <img :src="dataUrl">
-</div>
+<template>
+    <div class="identicon">
+        <img :src="dataUrl">
+    </div>
+</template>
 
 <script>
-// import Iqons from '/libraries/iqons/dist/iqons.min.js'
-// Iqons.svgPath = '/iqons.min.svg'
+import Iqons from '../../../../libraries/iqons/src/js/iqons.js'
+if (!location.host.includes('localhost')) Iqons.svgPath = '/iqons.min.svg'
 
-window['identicon'] = {
-    name: 'identicon',
+export default {
+    name: 'Identicon',
     props: ['address'],
     asyncComputed: {
         dataUrl: {

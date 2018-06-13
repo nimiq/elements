@@ -1,21 +1,23 @@
-<div class="contact" @click="select">
-    <identicon :address="contact.address"></identicon>
-    <div class="info">
-        <span class="label">{{ contact.label }}</span>
-        <account-address :address="contact.address"></account-address>
-        <div class="bottom" v-if="showOptions">
-            <button class="small secondary" @click.stop="editMethod(contact.label, contact.address)" title="Edit contact"><i class="material-icons">edit</i></button>
-            <button class="small secondary remove" @click.stop="remove" title="Delete contact"><i class="material-icons">delete</i></button>
+<template>
+    <div class="contact" @click="select">
+        <Identicon :address="contact.address"/>
+        <div class="info">
+            <span class="label">{{ contact.label }}</span>
+            <Address :address="contact.address"/>
+            <div class="bottom" v-if="showOptions">
+                <button class="small secondary" @click.stop="editMethod(contact.label, contact.address)" title="Edit contact"><i class="material-icons">edit</i></button>
+                <button class="small secondary remove" @click.stop="remove" title="Delete contact"><i class="material-icons">delete</i></button>
+            </div>
         </div>
     </div>
-</div>
+</template>
 
 <script>
-// import Identicon from './Identicon.vue'
-// import Address from './Address.vue'
+import Identicon from './Identicon.vue'
+import Address from './Address.vue'
 
-window['contact'] = {
-    name: 'contact',
+export default {
+    name: 'Contact',
     props: ['contact', 'showOptions', 'editMethod', 'removeAction'],
     methods: {
         select() {
@@ -25,6 +27,10 @@ window['contact'] = {
             const confirmRemove = confirm(`Really delete this contact: ${this.contact.label}?`)
             confirmRemove && this.removeAction(this.contact.label)
         }
+    },
+    components: {
+        Identicon,
+        Address
     }
 }
 </script>
@@ -63,7 +69,7 @@ window['contact'] = {
         text-overflow: ellipsis;
     }
 
-    .contact .account-address {
+    .contact .address {
         overflow: hidden;
         text-overflow: ellipsis;
         pointer-events: none;
