@@ -12,6 +12,7 @@ export default class VContactListModal extends MixinModal(XElement) {
         return `
             <div class="modal-header">
                 <x-popup-menu left-align>
+                    <button add><i class="material-icons">person_add</i> New contact</button>
                     <button manage><i class="material-icons">mode_edit</i> Manage contacts</button>
                 </x-popup-menu>
                 <i x-modal-close class="material-icons">close</i>
@@ -33,6 +34,7 @@ export default class VContactListModal extends MixinModal(XElement) {
 
     listeners() {
         return {
+            'click button[add]': this._onClickAddContact,
             'click button[manage]': this._onClickManageContacts
         }
     }
@@ -77,11 +79,12 @@ export default class VContactListModal extends MixinModal(XElement) {
     onShow() {
         // Reset local state
         this._wasClosedByContactSelection = false
-        this.$el.parentNode.scrollTo(0, 0) // Scroll contact list up to the top
+        setTimeout(() => this.$el.parentNode.scrollTo(0, 0)) // Scroll contact list up to the top
         this.vue.$refs.contactList.reset()
     }
 
     onHide() {
+        this.vue.$eventBus.$emit('contact-list-closed')
         if (this._wasClosedByContactSelection) return
         XSendTransactionModal.show('-', 'contact')
     }
@@ -92,5 +95,9 @@ export default class VContactListModal extends MixinModal(XElement) {
 
     _onContactSelected(address) {
         XSendTransactionModal.show(spaceToDash(address), 'contact')
+    }
+
+    _onClickAddContact() {
+        this.vue.$refs.contactList.addNewContact()
     }
 }

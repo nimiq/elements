@@ -1,24 +1,10 @@
 <template>
-    <div class="contact" @click="select">
-        <Identicon :address="isEditing ? workingAddress : contact.address"/>
+    <div class="contact">
+        <Identicon :address="workingAddress"/>
 
-        <div class="info" v-if="!isEditing">
-            <span class="label">{{ contact.label }}</span>
-            <Address :address="contact.address"/>
-
-            <div class="bottom" v-if="showOptions">
-                <button class="small secondary" @click.stop="edit" title="Edit contact">
-                    <i class="material-icons">edit</i>
-                </button>
-                <button class="small secondary remove" @click.stop="remove" title="Delete contact">
-                    <i class="material-icons">delete</i>
-                </button>
-            </div>
-        </div>
-
-        <div class="info" v-if="isEditing">
-            <input type="text" class="label" @click.stop ref="labelInput" v-model="workingLabel">
-            <input type="text" class="address-input" @click.stop v-model="workingAddress">
+        <div class="info">
+            <input type="text" class="label" ref="labelInput" v-model="workingLabel">
+            <input type="text" class="address-input" v-model="workingAddress">
 
             <div class="bottom">
                 <button class="small secondary save" @click.stop="save" :disabled="!isInputValid" title="Save changes">
@@ -39,18 +25,14 @@ import Address from './Address.vue'
 import ValidationUtils from '../../../../libraries/secure-utils/validation-utils/validation-utils.js'
 
 export default {
-    name: 'Contact',
-    props: ['contact', 'showOptions', 'setContactAction', 'removeContactAction'],
+    name: 'NewContact',
+    props: ['setContactAction', 'abortAction'],
     data: function() {
         return {
             // Local state
-            isEditing: false,
             workingLabel: '',
             workingAddress: ''
         }
-    },
-    created() {
-        this.$eventBus.$on('contact-list-closed', this.abort)
     },
     computed: {
         isInputValid() {
@@ -58,17 +40,10 @@ export default {
         }
     },
     methods: {
-        select() {
-            if (this.isEditing) return
-            this.$eventBus.$emit('contact-selected', this.contact.address)
-        },
         edit() {
-            this.workingLabel = this.contact.label
-            this.workingAddress = this.contact.address
-            this.isEditing = true
-
-            // Wait for DOM to update
-            Vue.nextTick(() => this.$refs.labelInput.select() && this.$refs.labelInput.focus())
+            this.workingLabel = ''
+            this.workingAddress = ''
+            this.$refs.labelInput.focus()
         },
         save() {
             const address = this.workingAddress.replace(/ /g, '').replace(/.{4}/g, '$& ').trim()
@@ -76,22 +51,10 @@ export default {
             // Update or set contact info
             this.setContactAction(this.workingLabel, address)
 
-            if (this.workingLabel !== this.contact.label) {
-                // If label was changed, remove the old label entry from the store
-                this.removeContactAction(this.contact.label)
-
-                // The removal from the store triggers the removal of this component,
-                // thus nothing more can be done here and this is an implicit return.
-            }
-
-            this.abort()
+            this.edit()
         },
         abort() {
-            this.isEditing = false
-        },
-        remove() {
-            const confirmRemove = confirm(`Delete this contact: ${this.contact.label}?`)
-            confirmRemove && this.removeContactAction(this.contact.label)
+            this.abortAction()
         }
     },
     components: {

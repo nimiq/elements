@@ -2,6 +2,12 @@
     <div class="contact-list">
         <input type="text" placeholder="Search..." v-model="searchTerm" ref="search">
         <div class="list">
+            <NewContact
+                v-if="isAddingNewContact"
+                :set-contact-action="actions.setContact"
+                :abort-action="abortNewContact"
+                ref="newContact"
+            />
             <Contact
                 v-for="contact in filteredContacts"
                 :contact="contact"
@@ -16,6 +22,7 @@
 
 <script>
 import Contact from './Contact.vue'
+import NewContact from './NewContact.vue'
 
 export default {
     name: 'ContactList',
@@ -24,7 +31,8 @@ export default {
         return {
             // Local state
             searchTerm: '',
-            isManaging: false
+            isManaging: false,
+            isAddingNewContact: false
         }
     },
     computed: {
@@ -47,14 +55,23 @@ export default {
         reset() {
             this.searchTerm = '',
             this.isManaging = false
+            this.isAddingNewContact = false
             this.$refs.search.focus()
         },
         toggleManaging() {
             this.isManaging = !this.isManaging
+        },
+        addNewContact() {
+            this.isAddingNewContact = true
+            Vue.nextTick(() => this.$refs.newContact.edit())
+        },
+        abortNewContact() {
+            this.isAddingNewContact = false
         }
     },
     components: {
-        Contact
+        Contact,
+        NewContact
     }
 }
 </script>
