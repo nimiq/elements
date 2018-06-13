@@ -53,7 +53,12 @@ export function reducer(state, action) {
         case TypeKeys.SET_CONTACT:
             const newContact = {};
             newContact[action.contact.label] = action.contact;
-            return Object.assign({}, state, newContact);
+            const unorderedContacts = Object.assign({}, state, newContact);
+            const orderedContacts = {};
+            Object.keys(unorderedContacts).sort().forEach(function(key) {
+                orderedContacts[key] = unorderedContacts[key];
+            });
+            return orderedContacts;
 
         case TypeKeys.REMOVE_CONTACT:
             const newState = Object.assign({}, state);
