@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import ValidationUtils from '../../../../libraries/secure-utils/validation-utils/validation-utils.js'
 import Iqons from '../../../../libraries/iqons/src/js/iqons.js'
 if (!location.host.includes('localhost')) Iqons.svgPath = '/iqons.min.svg'
 
@@ -14,7 +15,12 @@ export default {
     asyncComputed: {
         dataUrl: {
             get() {
-                return Iqons.toDataUrl(this.address)
+                if (ValidationUtils.isValidAddress(this.address)) {
+                    const address = this.address.replace(/ /g, '').replace(/.{4}/g, '$& ').trim()
+                    return Iqons.toDataUrl(address)
+                } else {
+                    return Iqons.placeholderToDataUrl()
+                }
             },
             default() {
                 return Iqons.placeholderToDataUrl()

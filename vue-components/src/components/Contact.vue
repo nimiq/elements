@@ -1,12 +1,32 @@
 <template>
     <div class="contact" @click="select">
-        <Identicon :address="contact.address"/>
-        <div class="info">
+        <Identicon :address="isEditing ? workingAddress : contact.address"/>
+
+        <div class="info" v-if="!isEditing">
             <span class="label">{{ contact.label }}</span>
             <Address :address="contact.address"/>
+
             <div class="bottom" v-if="showOptions">
-                <button class="small secondary" @click.stop="editMethod(contact.label, contact.address)" title="Edit contact"><i class="material-icons">edit</i></button>
-                <button class="small secondary remove" @click.stop="remove" title="Delete contact"><i class="material-icons">delete</i></button>
+                <button class="small secondary" @click.stop="edit" title="Edit contact">
+                    <i class="material-icons">edit</i>
+                </button>
+                <button class="small secondary remove" @click.stop="remove" title="Delete contact">
+                    <i class="material-icons">delete</i>
+                </button>
+            </div>
+        </div>
+
+        <div class="info" v-if="isEditing">
+            <input type="text" class="label" @click.stop ref="labelInput" v-model="workingLabel">
+            <input type="text" class="address-input" @click.stop v-model="workingAddress">
+
+            <div class="bottom">
+                <button class="small secondary save" @click.stop="save" :disabled="!isInputValid" title="Save changes">
+                    <i class="material-icons">check</i>
+                </button>
+                <button class="small secondary abort" @click.stop="abort" title="Abort">
+                    <i class="material-icons">close</i>
+                </button>
             </div>
         </div>
     </div>
@@ -16,16 +36,64 @@
 import Identicon from './Identicon.vue'
 import Address from './Address.vue'
 
+import ValidationUtils from '../../../../libraries/secure-utils/validation-utils/validation-utils.js'
+
 export default {
     name: 'Contact',
-    props: ['contact', 'showOptions', 'editMethod', 'removeAction'],
+    props: ['contact', 'showOptions', 'setContactAction', 'removeContactAction'],
+    data: function() {
+        return {
+            // Local state
+            isEditing: false,
+            workingLabel: '',
+            workingAddress: ''
+        }
+    },
+    created() {
+        this.$eventBus.$on('contact-selected', () => {
+            this.isEditing = false
+        })
+    },
+    computed: {
+        isInputValid() {
+            return this.workingLabel && ValidationUtils.isValidAddress(this.workingAddress)
+        }
+    },
     methods: {
         select() {
+            if (this.isEditing) return
             this.$eventBus.$emit('contact-selected', this.contact.address)
         },
+        edit() {
+            this.workingLabel = this.contact.label
+            this.workingAddress = this.contact.address
+            this.isEditing = true
+
+            // Wait for DOM to update
+            Vue.nextTick(() => this.$refs.labelInput.select() && this.$refs.labelInput.focus())
+        },
+        save() {
+            const address = this.workingAddress.replace(/ /g, '').replace(/.{4}/g, '$& ').trim()
+
+            // Update or set contact info
+            this.setContactAction(this.workingLabel, address)
+
+            if (this.workingLabel !== this.contact.label) {
+                // If label was changed, remove the old label entry from the store
+                this.removeContactAction(this.contact.label)
+
+                // The removal from the store triggers the removal of this component,
+                // thus nothing more can be done here and this is an implicit return.
+            }
+
+            this.isEditing = false
+        },
+        abort() {
+            this.isEditing = false
+        },
         remove() {
-            const confirmRemove = confirm(`Really delete this contact: ${this.contact.label}?`)
-            confirmRemove && this.removeAction(this.contact.label)
+            const confirmRemove = confirm(`Delete this contact: ${this.contact.label}?`)
+            confirmRemove && this.removeContactAction(this.contact.label)
         }
     },
     components: {
@@ -79,6 +147,14 @@ export default {
         opacity: 0.6;
     }
 
+    .contact input {
+        text-align: left;
+    }
+
+    .contact input.address-input {
+        font-size: 14px;
+    }
+
     .contact .bottom {
         text-align: right;
         margin-top: 4px;
@@ -90,6 +166,7 @@ export default {
         height: 29px;
         width: 29px;
         margin-bottom: 0;
+        margin-left: 4px;
         background: white;
         opacity: 0.75;
     }
