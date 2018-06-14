@@ -21,6 +21,7 @@
 </template>
 
 <script>
+/* global Vue */
 import Contact from './Contact.vue'
 import NewContact from './NewContact.vue'
 

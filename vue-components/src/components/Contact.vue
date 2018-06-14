@@ -33,6 +33,7 @@
 </template>
 
 <script>
+/* global Vue */
 import Identicon from './Identicon.vue'
 import Address from './Address.vue'
 
