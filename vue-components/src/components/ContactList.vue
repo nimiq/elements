@@ -16,6 +16,14 @@
                 :remove-contact-action="actions.removeContact"
                 :key="contact.label"
             />
+            <div class="no-contacts" v-if="!filteredContacts.length && !searchTerm">
+                <i class="material-icons">face</i>
+                Use the menu to add contacts
+            </div>
+            <div class="no-contacts" v-if="!filteredContacts.length && searchTerm">
+                <i class="material-icons">face</i>
+                No matches found
+            </div>
         </div>
     </div>
 </template>
@@ -40,15 +48,14 @@ export default {
         filteredContacts() {
             const searchTerm = this.searchTerm.trim().toLowerCase()
 
-            if (!searchTerm) return Object.assign({}, this.contacts)
+            if (!searchTerm) return Object.values(this.contacts)
 
-            var result = {}
+            var result = []
             for (var label of Object.keys(this.contacts)) {
                 if (label.toLowerCase().includes(searchTerm)) {
-                    result[label] = this.contacts[label]
+                    result.push(this.contacts[label])
                 }
             }
-
             return result
         }
     },
@@ -97,5 +104,17 @@ export default {
 
     .contact-list .contact:hover {
         background-color: rgba(0, 0, 0, 0.075);
+    }
+
+    .contact-list .no-contacts {
+        text-align: center;
+        opacity: 0.6;
+    }
+
+    .contact-list .no-contacts .material-icons {
+        display: block;
+        font-size: 120px;
+        margin: 0.1em;
+        opacity: 0.3;
     }
 </style>
