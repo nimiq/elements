@@ -79,8 +79,11 @@ export default class VContactListModal extends MixinModal(XElement) {
     onShow() {
         // Reset local state
         this._wasClosedByContactSelection = false
-        setTimeout(() => this.$el.parentNode.scrollTo(0, 0)) // Scroll contact list up to the top
-        this.vue.$refs.contactList.reset()
+        setTimeout(() => {
+            this.$el.parentNode.scrollTo(0, 0) // Scroll contact list up to the top
+            this.vue.$refs.contactList.reset()
+        })
+
     }
 
     onHide() {
