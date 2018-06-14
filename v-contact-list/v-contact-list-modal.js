@@ -76,7 +76,8 @@ export default class VContactListModal extends MixinModal(XElement) {
         })
     }
 
-    onShow() {
+    onShow(isStandalone) {
+        this._isStandalone = isStandalone
         // Reset local state
         this._wasClosedByContactSelection = false
         setTimeout(() => {
@@ -89,7 +90,7 @@ export default class VContactListModal extends MixinModal(XElement) {
     onHide() {
         this.vue.$eventBus.$emit('contact-list-closed')
         if (this._wasClosedByContactSelection) return
-        XSendTransactionModal.show('-', 'contact')
+        if (!this._isStandalone) XSendTransactionModal.show('-', 'contact')
     }
 
     _onClickManageContacts() {
