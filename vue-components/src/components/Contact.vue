@@ -17,8 +17,8 @@
         </div>
 
         <div class="info" v-if="isEditing">
-            <input type="text" class="label" @click.stop ref="labelInput" v-model="workingLabel">
-            <input type="text" class="address-input" @click.stop v-model="workingAddress">
+            <input type="text" class="label" placeholder="Label" ref="labelInput" v-model="workingLabel">
+            <input type="text" class="address-input" placeholder="Address" v-model="workingAddress">
 
             <div class="bottom">
                 <button class="small secondary save" @click.stop="save" :disabled="!isInputValid" title="Save changes">
@@ -146,7 +146,8 @@ export default {
         opacity: 0.6;
     }
 
-    .contact input {
+    .contact input,
+    .contact input::placeholder {
         text-align: left;
     }
 

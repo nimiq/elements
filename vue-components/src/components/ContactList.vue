@@ -2,6 +2,7 @@
     <div class="contact-list">
         <input type="text" placeholder="Search..." v-model="searchTerm" ref="search">
         <div class="list">
+            <span v-if="isAddingNewContact">New contact:</span>
             <NewContact
                 v-if="isAddingNewContact"
                 :set-contact-action="actions.setContact"

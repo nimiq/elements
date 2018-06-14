@@ -3,8 +3,8 @@
         <Identicon :address="workingAddress"/>
 
         <div class="info">
-            <input type="text" class="label" ref="labelInput" v-model="workingLabel">
-            <input type="text" class="address-input" v-model="workingAddress">
+            <input type="text" class="label" placeholder="Label" ref="labelInput" v-model="workingLabel">
+            <input type="text" class="address-input" placeholder="Address" v-model="workingAddress">
 
             <div class="bottom">
                 <button class="small secondary save" @click.stop="save" :disabled="!isInputValid" title="Save changes">
