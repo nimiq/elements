@@ -103,7 +103,7 @@ export default {
 </script>
 
 <style>
-    @import '/libraries/nimiq-style/material-icons/material-icons.css';
+    /* @import '/libraries/nimiq-style/material-icons/material-icons.css'; */
 
     .contact {
         display: flex;

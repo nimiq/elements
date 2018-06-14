@@ -1,5 +1,5 @@
 <template>
-    <div class="new-contact">
+    <div class="contact">
         <Identicon :address="workingAddress"/>
 
         <div class="info">
@@ -65,78 +65,5 @@ export default {
 </script>
 
 <style>
-    @import '/libraries/nimiq-style/material-icons/material-icons.css';
-
-    .new-contact {
-        display: flex;
-        max-width: 490px;
-        padding: 8px 16px;
-        /* border-bottom: 1px solid rgba(0, 0, 0, 0.1); */
-        cursor: pointer;
-        position: relative;
-    }
-
-    .new-contact .identicon {
-        width: 80px;
-        min-width: 50px;
-        height: 71px;
-    }
-
-    .new-contact .info {
-        text-align: left;
-        width: 100%;
-        padding-left: 16px;
-        max-width: calc(100% - 88px);
-    }
-
-    .new-contact .label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 2px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .new-contact input,
-    .new-contact input::placeholder {
-        text-align: left;
-    }
-
-    .new-contact input.address-input {
-        font-size: 14px;
-    }
-
-    .new-contact .bottom {
-        text-align: right;
-        margin-top: 4px;
-    }
-
-    .new-contact .bottom button {
-        padding: 0 7px;
-        min-height: 0;
-        height: 29px;
-        width: 29px;
-        margin-bottom: 0;
-        margin-left: 4px;
-        background: white;
-        opacity: 0.75;
-    }
-
-    .new-contact .bottom button:hover {
-        opacity: 1;
-    }
-
-    .new-contact .bottom button .material-icons {
-        font-size: 21px;
-        position: relative;
-        left: -4px;
-        top: -6px;
-    }
-
-    @media (max-width: 480px) {
-        .new-contact {
-            padding: 8px 0;
-        }
-    }
+    /* Uses the styles of Contact.vue */
 </style>
