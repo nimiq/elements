@@ -1,5 +1,5 @@
 <template>
-    <div class="contact">
+    <div class="new-contact">
         <Identicon :address="workingAddress"/>
 
         <div class="info">
@@ -67,7 +67,7 @@ export default {
 <style>
     @import '/libraries/nimiq-style/material-icons/material-icons.css';
 
-    .contact {
+    .new-contact {
         display: flex;
         max-width: 490px;
         padding: 8px 16px;
@@ -76,20 +76,20 @@ export default {
         position: relative;
     }
 
-    .contact .identicon {
+    .new-contact .identicon {
         width: 80px;
         min-width: 50px;
         height: 71px;
     }
 
-    .contact .info {
+    .new-contact .info {
         text-align: left;
         width: 100%;
         padding-left: 16px;
         max-width: calc(100% - 88px);
     }
 
-    .contact .label {
+    .new-contact .label {
         display: block;
         font-weight: bold;
         margin-bottom: 2px;
@@ -98,30 +98,21 @@ export default {
         text-overflow: ellipsis;
     }
 
-    .contact .address {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        pointer-events: none;
-        padding: 0;
-        min-width: auto;
-        font-weight: normal;
-        opacity: 0.6;
-    }
-
-    .contact input {
+    .new-contact input,
+    .new-contact input::placeholder {
         text-align: left;
     }
 
-    .contact input.address-input {
+    .new-contact input.address-input {
         font-size: 14px;
     }
 
-    .contact .bottom {
+    .new-contact .bottom {
         text-align: right;
         margin-top: 4px;
     }
 
-    .contact .bottom button {
+    .new-contact .bottom button {
         padding: 0 7px;
         min-height: 0;
         height: 29px;
@@ -132,27 +123,19 @@ export default {
         opacity: 0.75;
     }
 
-    .contact .bottom button:hover {
+    .new-contact .bottom button:hover {
         opacity: 1;
     }
 
-    .contact .bottom button .material-icons {
+    .new-contact .bottom button .material-icons {
         font-size: 21px;
         position: relative;
         left: -4px;
         top: -6px;
     }
 
-    .contact .bottom button.remove {
-        border-color: var(--error-color);
-    }
-
-    .contact .bottom button.remove .material-icons {
-        color: var(--error-color);
-    }
-
     @media (max-width: 480px) {
-        .contact {
+        .new-contact {
             padding: 8px 0;
         }
     }

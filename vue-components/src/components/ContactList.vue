@@ -90,7 +90,8 @@ export default {
         margin-top: 16px;
     }
 
-    .contact-list .contact {
+    .contact-list .contact,
+    .contact-list .new-contact {
         padding: 8px;
     }
 
