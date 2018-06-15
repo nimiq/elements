@@ -1,6 +1,9 @@
 <template>
     <div class="contact-list">
-        <input type="text" placeholder="Search..." v-model="searchTerm" ref="search">
+        <input type="text" class="search-field" placeholder="Search..." v-model="searchTerm" ref="search">
+        <i class="material-icons search-icon">search</i>
+        <a href="#" class="material-icons search-clear" title="Clear search" v-if="searchTerm" @click.prevent="clearSearch">clear</a>
+
         <div class="list">
             <span v-if="isAddingNewContact">New contact:</span>
             <NewContact
@@ -62,9 +65,12 @@ export default {
     },
     methods: {
         reset() {
-            this.searchTerm = '',
             this.isManaging = false
             this.isAddingNewContact = false
+            this.clearSearch()
+        },
+        clearSearch() {
+            this.searchTerm = ''
             this.$refs.search.focus()
         },
         toggleManaging() {
@@ -86,20 +92,59 @@ export default {
 </script>
 
 <style>
-    .contact-list input {
-        width: 100%;
+    .contact-list {
+        position: relative;
     }
 
-    .contact-list form .close {
-        float: right;
+    .contact-list .search-field {
+        width: 100%;
+        border: none !important;
+        padding: 12px 40px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+        text-align: left;
+    }
+
+    .contact-list .search-field:focus {
+        background: rgba(0, 0, 0, 0.075);
+    }
+
+    .contact-list .search-field::placeholder {
+        text-align: left;
+    }
+
+    .contact-list .search-icon {
+        position: absolute;
+        left: 8px;
+        top: 12px;
+        opacity: 0.4;
+    }
+
+    .contact-list .search-field:focus ~ .search-icon {
+        opacity: 0.8;
+    }
+
+    .contact-list .search-clear {
+        position: absolute;
+        right: 4px;
+        top: 8px;
+        opacity: 0.4;
+        padding: 4px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .contact-list .search-clear:hover,
+    .contact-list .search-clear:focus {
+        background: rgba(0, 0, 0, 0.1);
+        opacity: 0.8;
     }
 
     .contact-list .list {
         margin-top: 16px;
     }
 
-    .contact-list .contact,
-    .contact-list .new-contact {
+    .contact-list .contact {
         padding: 8px;
     }
 

@@ -112,6 +112,7 @@ export default {
         /* border-bottom: 1px solid rgba(0, 0, 0, 0.1); */
         cursor: pointer;
         position: relative;
+        border-radius: 4px;
     }
 
     .contact .identicon {
@@ -144,6 +145,10 @@ export default {
         min-width: auto;
         font-weight: normal;
         opacity: 0.6;
+    }
+
+    .contact input {
+        width: 100%;
     }
 
     .contact input,
