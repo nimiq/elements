@@ -17,7 +17,7 @@
         </div>
 
         <div class="info" v-if="isEditing">
-            <input type="text" class="label" placeholder="Label" ref="labelInput" v-model="workingLabel">
+            <input type="text" class="label" placeholder="Name" ref="labelInput" v-model="workingLabel">
             <input type="text" class="address-input" placeholder="Address" v-model="workingAddress">
 
             <div class="bottom">
