@@ -21,7 +21,10 @@ export function reducer(state, action) {
     switch (action.type) {
         case TypeKeys.SET_CONTACT:
             const newContact = {};
-            newContact[action.contact.label] = action.contact;
+            newContact[action.label] = {
+                label: action.label,
+                address: action.address
+            };
             const unorderedContacts = Object.assign({}, state, newContact);
             const orderedContacts = {};
             Object.keys(unorderedContacts).sort().forEach(function(key) {
@@ -40,14 +43,10 @@ export function reducer(state, action) {
 }
 
 export function setContact(label, address) {
-    const contact = {
-        label,
-        address
-    };
-
     return {
         type: TypeKeys.SET_CONTACT,
-        contact
+        label,
+        address
     };
 }
 
