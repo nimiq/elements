@@ -133,9 +133,9 @@ export default {
                     if (storedContact.address === newContact.address) continue
                     else {
                         const shouldOverwrite = confirm(
-                            `A contact with the name "${storedContact.label}",
-                            but a different address already exists.
-                            Do you want to override it?`
+`A contact with the name "${storedContact.label}", but a different address already exists.
+
+Do you want to override it?`
                         )
                         if (!shouldOverwrite) continue
                     }
