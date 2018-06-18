@@ -111,11 +111,17 @@ export default {
             reader.readAsText(file)
         },
         readFile(data) {
-            const importedContacts = JSON.parse(data)
+            let importedContacts = []
+            try {
+                importedContacts = JSON.parse(data)
+            } catch (e) {
+                this.$toast.error('Cannot import file, wrong format.')
+                return
+            }
 
             // Make sure the input is a non-empty array
             if (!importedContacts.length) {
-                this.$toast.error('Cannot import, wrong file format.')
+                this.$toast.error('Cannot import file, wrong format.')
                 return
             }
 
