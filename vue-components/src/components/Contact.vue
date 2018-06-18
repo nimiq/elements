@@ -85,6 +85,8 @@ export default {
                 // thus nothing more can be done here and this is an implicit return.
             }
 
+            this.$toast.success('Contact saved.')
+
             this.abort()
         },
         abort() {
@@ -93,6 +95,7 @@ export default {
         remove() {
             const confirmRemove = confirm(`Delete this contact: ${this.contact.label}?`)
             confirmRemove && this.removeContactAction(this.contact.label)
+            this.$toast.show('Contact removed.')
         }
     },
     components: {

@@ -115,6 +115,7 @@ export default {
 
             // Make sure the input is a non-empty array
             if (!importedContacts.length) {
+                this.$toast.error('Cannot import, wrong file format.')
                 return
             }
 
@@ -136,6 +137,8 @@ export default {
 
                 this.actions.setContact(newContact.label, newContact.address)
             }
+
+            this.$toast.success('Contact import finished.')
         }
     },
     components: {

@@ -51,6 +51,8 @@ export default {
             // Update or set contact info
             this.setContactAction(this.workingLabel, address)
 
+            this.$toast.success('Contact saved.')
+
             this.edit()
         },
         abort() {

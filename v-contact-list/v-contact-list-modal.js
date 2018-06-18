@@ -6,6 +6,7 @@ import XSendTransactionModal from '/elements/x-send-transaction/x-send-transacti
 import { spaceToDash } from '/libraries/nimiq-utils/parameter-encoding/parameter-encoding.js'
 import { setContact, removeContact } from './contacts-redux.js'
 import XPopupMenu from '/elements/x-popup-menu/x-popup-menu.js'
+import XToast from '/secure-elements/x-toast/x-toast.js';
 
 export default class VContactListModal extends MixinModal(XElement) {
     html() {
@@ -48,6 +49,7 @@ export default class VContactListModal extends MixinModal(XElement) {
         const self = this
 
         Vue.prototype.$eventBus = new Vue({})
+        Vue.prototype.$toast = XToast
 
         this.vue = new Vue({
             el: '#vue-contact-list',
