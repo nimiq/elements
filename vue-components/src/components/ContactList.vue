@@ -29,6 +29,10 @@
                 No matches found
             </div>
         </div>
+
+        <label class="file-import" ref="importLabel">
+            <input type="file" @change="loadFile">
+        </label>
     </div>
 </template>
 
@@ -82,6 +86,56 @@ export default {
         },
         abortNewContact() {
             this.isAddingNewContact = false
+        },
+        export() {
+            const text = JSON.stringify(Object.values(this.contacts))
+
+            // From https://stackoverflow.com/a/18197341/4204380
+            const element = document.createElement('a')
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+            element.setAttribute('download', 'Nimiq-Safe-Contacts.json')
+            element.style.display = 'none'
+            document.body.appendChild(element)
+            element.click()
+            document.body.removeChild(element)
+        },
+        import() {
+            this.$refs.importLabel.click()
+        },
+        loadFile(e) {
+            const file = e.target.files[0]
+            if (!file) return
+
+            const reader = new FileReader()
+            reader.onload = e => this.readFile(e.target.result)
+            reader.readAsText(file)
+        },
+        readFile(data) {
+            const importedContacts = JSON.parse(data)
+
+            // Make sure the input is a non-empty array
+            if (!importedContacts.length) {
+                return
+            }
+
+            for (const newContact of importedContacts) {
+                if (!newContact.label || !newContact.address) continue
+
+                const storedContact = this.contacts[newContact.label]
+                if (storedContact) {
+                    if (storedContact.address === newContact.address) continue
+                    else {
+                        const shouldOverwrite = confirm(
+                            `A contact with the name "${storedContact.label}",
+                            but a different address already exists.
+                            Do you want to override it?`
+                        )
+                        if (!shouldOverwrite) continue
+                    }
+                }
+
+                this.actions.setContact(newContact.label, newContact.address)
+            }
         }
     },
     components: {
@@ -162,5 +216,14 @@ export default {
         font-size: 120px;
         margin: 0.1em;
         opacity: 0.3;
+    }
+
+    .contact-list .file-import {
+        width: 0;
+        height: 0;
+        opacity: 0;
+        position: absolute;
+        left: -9999px;
+        top: -9999px;
     }
 </style>

@@ -14,6 +14,8 @@ export default class VContactListModal extends MixinModal(XElement) {
                 <x-popup-menu left-align>
                     <button add><i class="material-icons">person_add</i> New contact</button>
                     <button manage><i class="material-icons">mode_edit</i> Manage contacts</button>
+                    <button export><i class="material-icons">save</i> Export contacts</button>
+                    <button import><i class="material-icons">insert_drive_file</i> Import contacts</button>
                 </x-popup-menu>
                 <i x-modal-close class="material-icons">close</i>
                 <h2>Contacts</h2>
@@ -34,8 +36,10 @@ export default class VContactListModal extends MixinModal(XElement) {
 
     listeners() {
         return {
-            'click button[add]': this._onClickAddContact,
-            'click button[manage]': this._onClickManageContacts
+            'click button[add]': () => this.vue.$refs.contactList.addNewContact(),
+            'click button[manage]': () => this.vue.$refs.contactList.toggleManaging(),
+            'click button[export]': () => this.vue.$refs.contactList.export(),
+            'click button[import]': () => this.vue.$refs.contactList.import()
         }
     }
 
@@ -93,15 +97,7 @@ export default class VContactListModal extends MixinModal(XElement) {
         if (!this._isStandalone) XSendTransactionModal.show('-', 'contact')
     }
 
-    _onClickManageContacts() {
-        this.vue.$refs.contactList.toggleManaging()
-    }
-
     _onContactSelected(address) {
         XSendTransactionModal.show(spaceToDash(address), 'contact')
-    }
-
-    _onClickAddContact() {
-        this.vue.$refs.contactList.addNewContact()
     }
 }
