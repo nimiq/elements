@@ -77,9 +77,9 @@ export default {
             // Update or set contact info
             this.setContactAction(this.workingLabel, address)
 
-            if (this.workingLabel !== this.contact.label) {
-                // If label was changed, remove the old label entry from the store
-                this.removeContactAction(this.contact.label)
+            if (address !== this.contact.address) {
+                // If address was changed, remove the old entry from the store
+                this.removeContactAction(this.contact.address)
 
                 // The removal from the store triggers the removal of this component,
                 // thus nothing more can be done here and this is an implicit return.
@@ -93,8 +93,8 @@ export default {
             this.isEditing = false
         },
         remove() {
-            const confirmRemove = confirm(`Delete this contact: ${this.contact.label}?`)
-            confirmRemove && this.removeContactAction(this.contact.label)
+            const confirmRemove = confirm(`Delete this contact: ${this.contact.label} (${this.contact.address})?`)
+            confirmRemove && this.removeContactAction(this.contact.address)
             this.$toast.show('Contact removed.')
         }
     },

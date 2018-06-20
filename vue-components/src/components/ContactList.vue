@@ -18,7 +18,7 @@
                 :show-options="isManaging"
                 :set-contact-action="actions.setContact"
                 :remove-contact-action="actions.removeContact"
-                :key="contact.label"
+                :key="contact.address"
             />
             <div class="no-contacts" v-if="!filteredContacts.length && !searchTerm">
                 <i class="material-icons">face</i>
@@ -31,7 +31,7 @@
         </div>
 
         <label class="file-import" ref="importLabel">
-            <input type="file" @change="loadFile">
+            <input type="file" @change="loadFile" ref="importInput">
         </label>
     </div>
 </template>
@@ -58,10 +58,10 @@ export default {
 
             if (!searchTerm) return Object.values(this.contacts)
 
-            var result = []
-            for (var label of Object.keys(this.contacts)) {
-                if (label.toLowerCase().includes(searchTerm)) {
-                    result.push(this.contacts[label])
+            const result = []
+            for (const contact of Object.values(this.contacts)) {
+                if (contact.label.toLowerCase().includes(searchTerm)) {
+                    result.push(contact)
                 }
             }
             return result
@@ -111,6 +111,9 @@ export default {
             reader.readAsText(file)
         },
         readFile(data) {
+            // Reset file input
+            this.$refs.importInput.value = ''
+
             let importedContacts = []
             try {
                 importedContacts = JSON.parse(data)
@@ -128,12 +131,12 @@ export default {
             for (const newContact of importedContacts) {
                 if (!newContact.label || !newContact.address) continue
 
-                const storedContact = this.contacts[newContact.label]
+                const storedContact = this.contacts[newContact.address]
                 if (storedContact) {
-                    if (storedContact.address === newContact.address) continue
+                    if (storedContact.label === newContact.label) continue
                     else {
                         const shouldOverwrite = confirm(
-`A contact with the name "${storedContact.label}", but a different address already exists.
+`A contact with the address "${storedContact.address}", but a different name already exists.
 
 Do you want to override it?`
                         )

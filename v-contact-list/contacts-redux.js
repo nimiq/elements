@@ -7,11 +7,11 @@ export function reducer(state, action) {
     if (state === undefined) {
         return {
             // TODO Remove example contacts
-            'Leia Organa': {
+            'NQ94 VESA PKTA 9YQ0 XKGC HVH0 Q9DF VSFU STSP': {
                 label: 'Leia Organa',
                 address: 'NQ94 VESA PKTA 9YQ0 XKGC HVH0 Q9DF VSFU STSP'
             },
-            'Luke Skywalker': {
+            'NQ36 P00L 1N6T S3QL KJY8 6FH4 5XN4 DXY0 L7C8': {
                 label: 'Luke Skywalker',
                 address: 'NQ36 P00L 1N6T S3QL KJY8 6FH4 5XN4 DXY0 L7C8'
             }
@@ -21,20 +21,22 @@ export function reducer(state, action) {
     switch (action.type) {
         case TypeKeys.SET_CONTACT:
             const newContact = {};
-            newContact[action.label] = {
+            newContact[action.address] = {
                 label: action.label,
                 address: action.address
             };
             const unorderedContacts = Object.assign({}, state, newContact);
             const orderedContacts = {};
-            Object.keys(unorderedContacts).sort().forEach(function(key) {
-                orderedContacts[key] = unorderedContacts[key];
+            Object.values(unorderedContacts)
+            .sort((a, b) => a.label < b.label ? -1 : a.label > b.label ? 1 : 0)
+            .forEach(function(contact) {
+                orderedContacts[contact.address] = contact;
             });
             return orderedContacts;
 
         case TypeKeys.REMOVE_CONTACT:
             const newState = Object.assign({}, state);
-            delete newState[action.label];
+            delete newState[action.address];
             return newState;
 
         default:
@@ -50,9 +52,9 @@ export function setContact(label, address) {
     };
 }
 
-export function removeContact(label) {
+export function removeContact(address) {
     return {
         type: TypeKeys.REMOVE_CONTACT,
-        label
+        address
     };
 }
