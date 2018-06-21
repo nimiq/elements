@@ -1,9 +1,8 @@
 {
-  "name": "vue-components2",
+  "name": "nimiq-components",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name NimiqComponents src/main.js",
     "lint": "vue-cli-service lint"
   },
