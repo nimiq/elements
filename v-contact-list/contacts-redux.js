@@ -5,17 +5,7 @@ export const TypeKeys = {
 
 export function reducer(state, action) {
     if (state === undefined) {
-        return {
-            // TODO Remove example contacts
-            'NQ94 VESA PKTA 9YQ0 XKGC HVH0 Q9DF VSFU STSP': {
-                label: 'Leia Organa',
-                address: 'NQ94 VESA PKTA 9YQ0 XKGC HVH0 Q9DF VSFU STSP'
-            },
-            'NQ36 P00L 1N6T S3QL KJY8 6FH4 5XN4 DXY0 L7C8': {
-                label: 'Luke Skywalker',
-                address: 'NQ36 P00L 1N6T S3QL KJY8 6FH4 5XN4 DXY0 L7C8'
-            }
-        }
+        return {};
     }
 
     switch (action.type) {
