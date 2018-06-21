@@ -44,14 +44,12 @@ import NewContact from './NewContact.vue'
 export default {
     name: 'ContactList',
     props: ['contacts', 'actions'],
-    data: function() {
-        return {
-            // Local state
-            searchTerm: '',
-            isManaging: false,
-            isAddingNewContact: false
-        }
-    },
+    data: () => ({
+        // Local state
+        searchTerm: '',
+        isManaging: false,
+        isAddingNewContact: false
+    }),
     computed: {
         filteredContacts() {
             const searchTerm = this.searchTerm.trim().toLowerCase()

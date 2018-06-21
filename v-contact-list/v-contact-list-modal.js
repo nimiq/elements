@@ -24,9 +24,7 @@ export default class VContactListModal extends MixinModal(XElement) {
             <div class="modal-body" id="vue-contact-list">
                 <!-- Vue template -->
                 <redux-provider :map-state-to-props="mapStateToProps" :map-dispatch-to-props="mapDispatchToProps" :store="store">
-                    <template slot-scope="{contacts, actions}">
-                        <contact-list :contacts="contacts" :actions="actions" ref="contactList"></contact-list>
-                    </template>
+                    <contact-list slot-scope="{contacts, actions}" :contacts="contacts" :actions="actions" ref="contactList"></contact-list>
                 </redux-provider>
                 <!-- End Vue template -->
             </div>
@@ -90,7 +88,6 @@ export default class VContactListModal extends MixinModal(XElement) {
             this.$el.parentNode.scrollTo(0, 0) // Scroll contact list up to the top
             this.vue.$refs.contactList.reset()
         })
-
     }
 
     onHide() {
