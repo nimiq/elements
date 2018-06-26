@@ -151,12 +151,12 @@ export default {
     }
 
     .contact input {
-        width: 100%;
+        width: 100% !important;
     }
 
     .contact input,
     .contact input::placeholder {
-        text-align: left;
+        text-align: left !important;
     }
 
     .contact input.address-input {
