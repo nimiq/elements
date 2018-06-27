@@ -1,3 +1,4 @@
+@import "/elements/mixin-modal/mixin-modal.css";
 @import "./x-ledger-ui.css";
 
 x-ledger-ui-modal {

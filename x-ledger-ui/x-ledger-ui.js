@@ -189,14 +189,10 @@ export default class XLedgerUi extends XElement {
                     } catch(e) {
                         console.log(e);
                         const message = (e.message || e || '').toLowerCase();
-                        if (message.indexOf('denied') !== -1 // for confirmAddress
-                            || message.indexOf('rejected') !== -1) { // for signTransaction
-                            reject(e); // user rejected the call on the ledger device
-                            return;
-                        }
-                        if (message.indexOf('browser support') !== -1 || message.indexOf('u2f device_ineligible') !== -1
-                            || message.indexOf('u2f other_error') !== -1) {
-                            reject(new Error('Ledger not supported by browser or support not enabled.'));
+                        if (message.indexOf('denied') !== -1 // user rejected confirmAddress
+                            || message.indexOf('rejected') !== -1 // user rejected signTransaction
+                            || message.indexOf('not supported') !== -1) { // no browser support
+                            reject(e);
                             return;
                         }
                         if (message.indexOf('timeout') === -1 && message.indexOf('locked') === -1
@@ -237,6 +233,11 @@ export default class XLedgerUi extends XElement {
             return api;
         } catch(e) {
             const message = (e.message || e || '').toLowerCase();
+            if (message.indexOf('browser support') !== -1 || message.indexOf('u2f device_ineligible') !== -1
+                || message.indexOf('u2f other_error') !== -1) {
+                clearTimeout(connectInstructionsTimeout);
+                throw new Error('Ledger not supported by browser or support not enabled.');
+            }
             if (message.indexOf('busy') !== -1) {
                 clearTimeout(connectInstructionsTimeout);
                 this._showInstructions(null, 'Please cancel the previous request on your ledger');
