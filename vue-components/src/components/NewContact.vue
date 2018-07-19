@@ -46,7 +46,7 @@ export default {
             this.$refs.labelInput.focus()
         },
         save() {
-            const address = this.workingAddress.replace(/ /g, '').replace(/.{4}/g, '$& ').trim()
+            const address = this.workingAddress.replace(/ /g, '').replace(/.{4}/g, '$& ').trim().toUpperCase()
 
             // Update or set contact info
             this.setContactAction(this.workingLabel, address)
