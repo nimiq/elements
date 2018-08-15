@@ -1,0 +1,9 @@
+x-external-link-confirmation {
+    width: 600px;
+    padding: 32px;
+    font-size: 18px;
+}
+
+x-external-link-confirmation [proceed] {
+    margin-top: 48px;
+}
