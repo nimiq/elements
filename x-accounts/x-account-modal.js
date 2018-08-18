@@ -6,16 +6,17 @@ import ValidationUtils from '/libraries/secure-utils/validation-utils/validation
 import { dashToSpace } from '/libraries/nimiq-utils/parameter-encoding/parameter-encoding.js';
 import XPopupMenu from '/elements/x-popup-menu/x-popup-menu.js';
 import AccountType from '/libraries/account-manager/account-type.js';
+import { getString } from '../strings.js';
 
 export default class XAccountModal extends MixinModal(XAccount) {
     html() {
         return `
             <div class="modal-header">
                 <x-popup-menu left-align>
-                    <button rename><i class="material-icons">mode_edit</i> Rename</button>
-                    <button backupWords><i class="material-icons">text_format</i> Backup Recovery Words</button>
-                    <button upgrade><i class="material-icons">check_circle</i> Upgrade</button>
-                    <button confirmLedgerAddress><i class="material-icons">check_circle</i> Check Address on Ledger</button>
+                    <button rename><i class="material-icons">mode_edit</i> ${getString('rename')}</button>
+                    <button backupWords><i class="material-icons">text_format</i> ${getString('backup_recovery_words')}</button>
+                    <button upgrade><i class="material-icons">check_circle</i> ${getString('upgrade')}</button>
+                    <button confirmLedgerAddress><i class="material-icons">check_circle</i> ${getString('check_ledger_address')}</button>
                 </x-popup-menu>
                 <i x-modal-close class="material-icons">close</i>
                 <h2>Account</h2>
@@ -30,17 +31,17 @@ export default class XAccountModal extends MixinModal(XAccount) {
                     <x-address></x-address>
 
                     <div class="x-account-bottom">
-                        <x-amount display label="Balance"></x-amount>
+                        <x-amount display label="${getString("balance")}"></x-amount>
                     </div>
 
                     <div class="vesting-info">
-                        <x-amount display available-amount label="Available now"></x-amount>
+                        <x-amount display available-amount label="${getString('available_now')}"></x-amount>
                     </div>
                 </div>
 
                 <div class="action-button">
-                    <button send class="small">Send from this account</button>
-                    <button payout class="small display-none">Pay out</button>
+                    <button send class="small">${getString('send_from_account')}</button>
+                    <button payout class="small display-none">${getString('pay_out')}</button>
                 </div>
             </div>
         `

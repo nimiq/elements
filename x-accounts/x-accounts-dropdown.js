@@ -3,6 +3,7 @@ import XExpandable from '../x-expandable/x-expandable.js';
 import XAccount from './x-account.js';
 import XAccountsList from './x-accounts-list.js';
 import MixinRedux from '/secure-elements/mixin-redux/mixin-redux.js';
+import { getString } from '../strings.js';
 
 export default class XAccountsDropdown extends MixinRedux(XElement) {
 
@@ -102,7 +103,7 @@ export default class XAccountsDropdown extends MixinRedux(XElement) {
             dots.classList.add('dot-loader');
             this.$statusMessage.appendChild(dots);
         } else {
-            this.$statusMessage.textContent = 'No accounts yet.';
+            this.$statusMessage.textContent = getString('no_acccounts');
         }
     }
 

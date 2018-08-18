@@ -2,12 +2,13 @@ import XElement from '/libraries/x-element/x-element.js';
 import XAccount from './x-account.js';
 import MixinRedux from '/secure-elements/mixin-redux/mixin-redux.js';
 import XNoAccounts from './x-no-accounts.js';
+import { getString } from '../strings.js';
 
 export default class XAccountsList extends MixinRedux(XElement) {
     html() {
         return `
             <x-loading-animation></x-loading-animation>
-            <h2>Loading accounts...</h2>
+            <h2>${getString('loading_accounts')}</h2>
         `;
     }
 
