@@ -66,10 +66,12 @@ export default class XEducationSlideIntro extends XEducationSlide {
                 break;
 
             case 'none':
+                actionText = '';
                 this.$('.action-text-container').classList.add('display-none');
                 break;
 
             default:
+                actionText = '';
                 this.onBack();
         }
 

@@ -20,11 +20,11 @@ export default class XEducationSlideWhy extends XEducationSlide {
                             <li>${getString('why_slide_list_we_cant_list_5')}</li>
                         </ul>
 
-                        <h3><strong>You</strong> and <strong>only you</strong> are responsible for your security.</h3>
+                        <h3>${getString('why_slide_you_responsible_for_security')}</h3>
                         <ul>
-                            <li>Be diligent to keep your private key and associated 24 Recovery Words, Account Access File and Pass Phrase safe.</li>
-                            <li>If you lose your private key (24 Recovery Words), Pass Phrase or PIN, no one can recover it.</li>
-                            <li>If you enter your private key (24 Recovery Words) on a phishing website, you will have <strong>all your funds taken</strong>.</li>
+                            <li>${getString('why_slide_warning_list_1')}</li>
+                            <li>${getString('why_slide_warning_list_2')}</li>
+                            <li>${getString('why_slide_warning_list_3')}</li>
                         </ul>
                     </div>
                 </div>
