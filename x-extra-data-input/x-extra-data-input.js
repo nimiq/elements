@@ -1,11 +1,12 @@
 import XInput from '../../secure-elements/x-input/x-input.js';
 import Utf8Tools from '/libraries/secure-utils/utf8-tools/utf8-tools.js';
+import { getString } from '../strings.js';
 
 export default class XExtraDataInput extends XInput {
     html() {
         return `
             <form>
-                <input type="text" placeholder="Message">
+                <input type="text" placeholder="${getString('tx_message')}">
                 <div class="x-extra-data-info">
                     <span class="x-extra-data-help"></span>
                     <span class="x-extra-data-remaining"></span>
@@ -50,7 +51,7 @@ export default class XExtraDataInput extends XInput {
     _setRemaining() {
         const byteLength = this.valueAsBytes.length;
         const bytesRemaining = this._maxBytes - byteLength;
-        this.$remaining.textContent = bytesRemaining > 10 ? '' : `${bytesRemaining} bytes remaining`;
+        this.$remaining.textContent = bytesRemaining > 10 ? '' : getString('bytes_left').replace("%BYTES%", bytesRemaining);
         this.fire('x-extra-data-input-changed-size', byteLength);
     }
 
