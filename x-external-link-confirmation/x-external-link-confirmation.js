@@ -1,12 +1,13 @@
 import XElement from "/libraries/x-element/x-element.js";
 import MixinModal from "/elements/mixin-modal/mixin-modal.js";
+import { getString } from '../strings.js';
 
 export default class XExternalLinkConfirmation extends MixinModal(XElement) {
     html() {
         return `
-            <p>You are opening an external site. Nimiq and its affiliates are not responsible for content on external web pages.</p>
-            <a proceed button>Proceed</a>
-            <a back secondary>Back</a>
+            <p>${getString('external_site_warning')}</p>
+            <a proceed button>${getString('proceed')}</a>
+            <a back secondary>${getString('back')}</a>
         `;
     }
 
