@@ -3,13 +3,14 @@ import XAddress from '/elements/x-address/x-address.js';
 import XTransaction from './x-transaction.js';
 import MixinRedux from '/secure-elements/mixin-redux/mixin-redux.js';
 import ValidationUtils from '/libraries/secure-utils/validation-utils/validation-utils.js';
+import { getString } from '../strings.js';
 
 export default class XTransactionModal extends MixinModal(XTransaction) {
     html() {
         return `
             <div class="modal-header">
                 <i x-modal-close class="material-icons">close</i>
-                <h2>Transaction</h2>
+                <h2>${getString('tx')}</h2>
             </div>
             <div class="modal-body">
                 <div class="center">
@@ -23,7 +24,7 @@ export default class XTransactionModal extends MixinModal(XTransaction) {
                 </div>
 
                 <div class="row">
-                    <label>From</label>
+                    <label>${getString('tx_from')}</label>
                     <div class="row-data">
                         <div class="label" sender></div>
                         <x-address sender></x-address>
@@ -31,7 +32,7 @@ export default class XTransactionModal extends MixinModal(XTransaction) {
                 </div>
 
                 <div class="row">
-                    <label>To</label>
+                    <label>${getString('tx_to')}</label>
                     <div class="row-data">
                         <div class="label" recipient></div>
                         <x-address recipient></x-address>
@@ -39,28 +40,28 @@ export default class XTransactionModal extends MixinModal(XTransaction) {
                 </div>
 
                 <div class="extra-data-section display-none row">
-                    <label>Message</label>
+                    <label>${getString('tx_message')}</label>
                     <div class="row-data">
                         <div class="extra-data"></div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <label>Date</label>
+                    <label>${getString('tx_date')}</label>
                     <div class="row-data">
                         <div class="timestamp" title="">pending...</div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <label>Block</label>
+                    <label>${getString('tx_block')}</label>
                     <div class="row-data">
                         <span class="blockHeight"></span> <span class="confirmations"></span>
                     </div>
                 </div>
 
                 <div class="fee-section display-none row">
-                    <label>Fee</label>
+                    <label>${getString('tx_fee')}</label>
                     <div class="row-data">
                         <div class="fee"></div>
                     </div>
@@ -139,7 +140,7 @@ export default class XTransactionModal extends MixinModal(XTransaction) {
             return;
         }
         const confirmations = this.properties.currentHeight - this.properties.blockHeight;
-        this.$confirmations.textContent = `(${confirmations} confirmation${confirmations === 1 ? '' : 's'})`;
+        this.$confirmations.textContent = getString('tx_confirms').replace("%CONFIRMS%", confirmations);
     }
 
     allowsShow(hash) {
