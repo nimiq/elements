@@ -4,7 +4,7 @@ import PasteHandler from '/libraries/nimiq-utils/paste-handler/paste-handler.js'
 import KeyboardHandler from '/libraries/secure-utils/keyboard-handler/keyboard-handler.js';
 import InputFormat from '/libraries/nimiq-utils/input-format/index.js';
 import XIdenticon from '../../secure-elements/x-identicon/x-identicon.js';
-
+import { getString } from '../strings.js';
 
 export default class XAddressInput extends XInput {
     html() {
@@ -13,7 +13,7 @@ export default class XAddressInput extends XInput {
                 <x-identicon></x-identicon>
                 <span class="prefix">NQ</span>
                 <form action="/">
-                    <input type="text" placeholder="Recipient Address" spellcheck="false" autocomplete="off">
+                    <input type="text" placeholder="${getString('recipient_address')}" spellcheck="false" autocomplete="off">
                 </form>
             </div>
         `
