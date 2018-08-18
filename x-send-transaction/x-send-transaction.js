@@ -12,13 +12,14 @@ import XPopupMenu from '/elements/x-popup-menu/x-popup-menu.js';
 import Config from '/libraries/secure-utils/config/config.js';
 import AccountType from '../../libraries/account-manager/account-type.js';
 import VContactListModal from '/elements/v-contact-list/v-contact-list-modal.js';
+import { getString } from '../strings.js';
 
 export default class XSendTransaction extends MixinRedux(XElement) {
     html() {
         return `
             <div class="modal-header">
                 <!-- <x-popup-menu left-align>
-                    <button prepared><i class="material-icons">unarchive</i> Prepared transaction</button>
+                    <button prepared><i class="material-icons">unarchive</i> ${getString('prepared_transaction')}</button>
                 </x-popup-menu> -->
                 <i x-modal-close class="material-icons">close</i>
                 <h2>New Transaction</h2>
@@ -28,7 +29,7 @@ export default class XSendTransaction extends MixinRedux(XElement) {
                 <x-accounts-dropdown name="sender"></x-accounts-dropdown>
                 <span error sender class="display-none"></span>
 
-                <h3>Send to <span class="link-contact-list">Contact List</span></h3>
+                <h3>Send to <span class="link-contact-list">${getString('contact_list')}</span></h3>
                 <div class="row">
                     <x-address-input class="multiline" name="recipient"></x-address-input>
                 </div>
@@ -41,24 +42,24 @@ export default class XSendTransaction extends MixinRedux(XElement) {
                 <span error amount class="display-none"></span>
 
                 <x-expandable advanced-settings transparent>
-                    <h3 expandable-trigger>Advanced Settings</h3>
+                    <h3 expandable-trigger>${getString('advanced_settings')}</h3>
                     <div expandable-content>
                         <div class="extra-data-section">
-                            <h3>Message</h3>
+                            <h3>${getString('tx_message')}</h3>
                             <div class="row">
                                 <x-extra-data-input name="extraData" max-bytes="64"></x-extra-data-input>
                             </div>
                         </div>
 
-                        <h3>Fee</h3>
+                        <h3>${getString('tx_fee')}</h3>
                         <div class="row">
                             <x-fee-input name="fee" max-sats="2"></x-fee-input>
                         </div>
                         <span error fees class="display-none"></span>
 
                         <h3>Valid from</h3>
-                        <small>Only required for offline transaction creation</small>
-                        <small>Setting a wrong valid-from height can invalidate your transaction!</small>
+                        <small>${getString('tx_valid_from_hint_1')}</small>
+                        <small>${getString('tx_valid_from_hint_2')}</small>
                         <div class="row">
                             <input name="validityStartHeight" validity-start placeholder="0" type="number" min="0" step="1">
                         </div>
@@ -67,7 +68,7 @@ export default class XSendTransaction extends MixinRedux(XElement) {
                 </x-expandable>
 
                 <div class="center row">
-                    <button send>Send</button>
+                    <button send>${getString('tx_send')}</button>
                 </div>
             </form>
         `
@@ -253,7 +254,7 @@ export default class XSendTransaction extends MixinRedux(XElement) {
             if (this._validSender) {
                 this._clearError('sender');
             } else {
-                this._setError('This account has no balance', 'sender');
+                this._setError(getString('account_has_no_balance'), 'sender');
             }
         }
         else {
@@ -276,7 +277,7 @@ export default class XSendTransaction extends MixinRedux(XElement) {
         this._validRecipient = false;
 
         if (address === this.$accountsDropdown.selectedAccount.address) {
-            this._setError('This is the same address as the sender', 'recipient');
+            this._setError(getString('same_address_as_sender'), 'recipient');
             return;
         }
 
@@ -284,10 +285,10 @@ export default class XSendTransaction extends MixinRedux(XElement) {
         if (address) {
             if (!this.properties.hasConsensus) {
                 if (Config.offline) {
-                    this._setError('Cannot validate address in offline mode', 'recipient');
+                    this._setError(getString('cannot_validate_offline'), 'recipient');
                     this._validRecipient = true;
                 } else {
-                    this._setError('Cannot validate address (not connected). Retrying...', 'recipient');
+                    this._setError(getString('cannot_validate'), 'recipient');
                     this.__validateRecipientTimeout = setInterval(this._validateRecipient.bind(this), 1000);
                     this._validRecipient = true;
                 }
@@ -297,12 +298,12 @@ export default class XSendTransaction extends MixinRedux(XElement) {
         } else if (value.length === 0) {
             this._clearError('recipient');
         } else {
-            this._setError('Invalid address', 'recipient');
+            this._setError(getString('invalid_address'), 'recipient');
         }
     }
 
     async __validateRecipient(address) {
-        this._validatingRecipientTimeout = setTimeout(() => this._setError('Validating address type, please wait...', 'recipient'), 1000);
+        this._validatingRecipientTimeout = setTimeout(() => this._setError(getString('validating_address_type'), 'recipient'), 1000);
 
         const accountType = await (await networkClient.rpcClient).getAccountTypeString(address);
 
@@ -313,7 +314,7 @@ export default class XSendTransaction extends MixinRedux(XElement) {
         if (this._validRecipient) {
             this._clearError('recipient');
         } else {
-            this._setError('Cannot send to this account type', 'recipient');
+            this._setError(getString('cannot_send_to_type'), 'recipient');
         }
 
         // Because this is a debounced async function, there is no external way
@@ -328,7 +329,7 @@ export default class XSendTransaction extends MixinRedux(XElement) {
         const fees = this.$feeInput.value;
 
         if (amount < 0) {
-            this._setError('You cannot send a negative amount', 'amount');
+            this._setError(getString('cannot_send_negative'), 'amount');
         }
         if (amount === 0) {
             this._clearError('amount');
@@ -343,7 +344,7 @@ export default class XSendTransaction extends MixinRedux(XElement) {
             this._validAmountAndFees = !!(account && account.balance >= Math.round((amount + fees) * 1e5) / 1e5);
 
             if (!this._validAmountAndFees) {
-                this._setError('You do not have enough funds', 'amount');
+                this._setError(getString('cannot_send_funds'), 'amount');
             } else {
                 this._clearError('amount');
             }
