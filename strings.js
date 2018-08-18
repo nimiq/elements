@@ -41,6 +41,7 @@ const STRINGS = {
     "tx_block": "Block",
     "tx_date": "Date",
     "tx_fee": "Fee",
+    "tx_amount": "Amount",
     "tx_confirms": "(%CONFIRMS% confirm(s))",
     "account_has_no_balance": "This account has no balance",
     "same_address_as_sender": "This is the same address as the sender",
@@ -182,7 +183,7 @@ const STRINGS = {
     "outro_slide_you_are_prepared": "Thanks for your patience! Now you are prepared to <span class=\"action-text\"></span>.",
     "outro_slide_keyguard": "For that purpose, in the next step a popup window will open which contains the Keyguard app. Just follow the steps there and see you very soon in Nimiq Safe!",
     "outro_slide_keyguard_button": "Open Keyguard",
-    "outro_slide_ledger_button": "Import from Ledger",
+    "outro_slide_ledger_button": "Import from Ledger"
 };
 export function getString(id) {
     //return "TRANSLATABLE";

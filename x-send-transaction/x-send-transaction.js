@@ -25,17 +25,17 @@ export default class XSendTransaction extends MixinRedux(XElement) {
                 <h2>New Transaction</h2>
             </div>
             <form class="modal-body">
-                <h3>Send from</h3>
+                <h3>${getString('send_from')}</h3>
                 <x-accounts-dropdown name="sender"></x-accounts-dropdown>
                 <span error sender class="display-none"></span>
 
-                <h3>Send to <span class="link-contact-list">${getString('contact_list')}</span></h3>
+                <h3>${getString('send_to')} <span class="link-contact-list">${getString('contact_list')}</span></h3>
                 <div class="row">
                     <x-address-input class="multiline" name="recipient"></x-address-input>
                 </div>
                 <span error recipient class="display-none"></span>
 
-                <h3>Amount</h3>
+                <h3>${getString('tx_amount')}</h3>
                 <div class="row">
                     <x-amount-input name="value" no-screen-keyboard enable-set-max></x-amount-input>
                 </div>
@@ -57,7 +57,7 @@ export default class XSendTransaction extends MixinRedux(XElement) {
                         </div>
                         <span error fees class="display-none"></span>
 
-                        <h3>Valid from</h3>
+                        <h3>${getString('tx_valid_from')}</h3>
                         <small>${getString('tx_valid_from_hint_1')}</small>
                         <small>${getString('tx_valid_from_hint_2')}</small>
                         <div class="row">
