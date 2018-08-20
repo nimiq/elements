@@ -7,7 +7,7 @@ import { getString } from '../strings.js';
 export default class XTransaction extends MixinRedux(XElement) {
     html() {
         return `
-            <div class="timestamp" title="">${getString("tx_unconfirmed")}</div>
+            <div class="timestamp" title="">${getString('tx_unconfirmed')}</div>
             <x-identicon sender></x-identicon>
             <div class="label" sender></div>
             <div><i class="material-icons">arrow_forward</i></div>
@@ -59,7 +59,7 @@ export default class XTransaction extends MixinRedux(XElement) {
             // Doesn't need to be in else{}, because of 'continue' statement above
             switch (prop) {
                 case 'timestamp':
-                    this.$timestamp.textContent = getString("tx_unconfirmed");
+                    this.$timestamp.textContent = getString('tx_unconfirmed');
                     this.$timestamp.setAttribute('title', '');
                     break;
                 case 'blockHeight':
@@ -70,7 +70,7 @@ export default class XTransaction extends MixinRedux(XElement) {
                     this.$el.classList.remove('removed', 'expired');
                     if (this.properties.timestamp) this.timestamp = this.properties.timestamp;
                     else {
-                        this.$timestamp.textContent = getString("tx_unconfirmed");
+                        this.$timestamp.textContent = getString('tx_unconfirmed');
                         this.$timestamp.setAttribute('title', '');
                     }
                 default:
