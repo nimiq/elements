@@ -1,37 +1,38 @@
 import XEducationSlide from './x-education-slide.js';
 import XEducationSlides from './x-education-slides.js';
 import XWelcomeModal from '/apps/safe/src/elements/x-welcome-modal.js';
+import { getString } from '../strings.js';
 
 export default class XEducationSlideIntro extends XEducationSlide {
     html() {
         return `
             <h1 class="modal-header">
-                Important Information
+                ${getString('edu_slide_intro_title')}
             </h1>
             <div class="modal-body">
                 <div class="has-side-image">
                     <div>
                         <div class="spacing-bottom action-text-container">
-                            Alright, you can soon <span class="action-text"></span>. Before that, we have some important information for you.
+                            ${getString('edu_slide_intro_you_can_soon')}
                         </div>
                         <div class="warning">
-                            <p>Please take your time to understand this for your own safety. 🙏</p>
-                            <p>Your funds may be stolen if you do not heed these warnings.</p>
+                            <p>${getString('intro_slide_please_read')}</p>
+                            <p>${getString('intro_slide_funds_may_be_stolen')}</p>
                         </div>
                         <div class="warning">
-                            We cannot recover your funds or freeze your account if you visit a phishing site or lose your private key.
+                            ${getString('intro_slide_funds_unrecoverable')}
                         </div>
                     </div>
                     <div class="side-image-intro"></div>
                 </div>
 
                 <div class="button-bar">
-                    <button back>Back</button>
-                    <button next>Nimiq is not a Bank</button>
+                    <button back>${getString('back')}</button>
+                    <button next>${getString('intro_slide_next')}</button>
                 </div>
                 
                 <div class="spacing-top center">
-                    <a secondary class="skip">Skip AT YOUR OWN RISK</a>
+                    <a secondary class="skip">${getString('edu_slides_skip')}</a>
                 </div> 
             </div>
         `;
@@ -45,30 +46,32 @@ export default class XEducationSlideIntro extends XEducationSlide {
         let actionText = '';
         switch (XEducationSlides.action) {
             case 'create':
-                actionText = 'create a new account for Nimiq Safe';
+                actionText = getString('intro_slide_intro_action_create');
                 break;
 
             case 'import-words':
-                actionText = 'import an existing account';
+                actionText = getString('intro_slide_intro_action_import_words');
                 break;
 
             case 'import-file':
-                actionText = 'import an existing account';
+                actionText = getString('intro_slide_intro_action_import_file');
                 break;
 
             case 'import-ledger':
-                actionText = 'import an existing account from your ledger';
+                actionText = getString('intro_slide_intro_action_import_ledger');
                 break;
 
             case 'upgrade':
-                actionText = 'upgrade your account for Nimiq Safe';
+                actionText = getString('intro_slide_intro_action_upgrade');
                 break;
 
             case 'none':
+                actionText = '';
                 this.$('.action-text-container').classList.add('display-none');
                 break;
 
             default:
+                actionText = '';
                 this.onBack();
         }
 

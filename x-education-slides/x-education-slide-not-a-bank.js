@@ -1,34 +1,34 @@
 import XEducationSlide from './x-education-slide.js';
 import XEducationSlides from './x-education-slides.js';
+import { getString } from '../strings.js';
 
 export default class XEducationSlideNotABank extends XEducationSlide {
     html() {
         return `
             <h1 class="modal-header">
-                Nimiq Safe is <strong>not</strong> part of a bank
+                ${getString('not_bank_slide_title')}
             </h1>
             <div class="modal-body">
                 <div class="has-side-image">
                     <div class="side-image-not-a-bank"></div>
                     <div>
-                        <h3>Nimiq Safe is an Interface.</h3>
+                        <h3>${getString('not_bank_slide_subtitle')}</h3>
                         <ul>
-                            <li>When you create an account in Nimiq Safe, you are generating a cryptographic set of numbers: your private key (represented by 24 Account Recovery Words) and your public key (represented by the Account Number).</li>
-                            <li>The handling of your keys happens entirely on your computer, inside your browser.</li>
-                            <li>We never transmit, receive or store your private key, 24 Recovery Words, Pass Phrase, PIN, Account Access File or other account information.</li>
-                            <li>You are simply using our interface to <strong>interact directly with the blockchain</strong>.</li>
-                            <li>If you send your account number (public key) to someone, they can send you NIM.</li>
-                            <li>If you send your private key, 24 Recovery Words or Account Access File with PIN / Pass Phrase to someone, they now have full control of your account.</li>
+                            <li>${getString('not_bank_slide_list_1')}</li>
+                            <li>${getString('not_bank_slide_list_2')}</li>
+                            <li>${getString('not_bank_slide_list_3')}</li>
+                            <li>${getString('not_bank_slide_list_4')}</li>
+                            <li>${getString('not_bank_slide_list_5')}</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="button-bar">
-                    <button back>Introduction</button>
-                    <button next>What is a Blockchain?</button>
+                    <button back>${getString('not_bank_slide_back')}</button>
+                    <button next>${getString('not_bank_slide_next')}</button>
                 </div>
                 <div class="spacing-top center">
-                    <a secondary class="skip">Skip AT YOUR OWN RISK</a>
+                    <a secondary class="skip">${getString('edu_slides_skip')}</a>
                 </div> 
             </div>
         `;

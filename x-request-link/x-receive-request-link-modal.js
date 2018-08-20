@@ -5,24 +5,24 @@ import XAddress from '/elements/x-address/x-address.js';
 import ValidationUtils from '/libraries/secure-utils/validation-utils/validation-utils.js';
 import { dashToSpace, spaceToDash } from '/libraries/nimiq-utils/parameter-encoding/parameter-encoding.js';
 import XRouter from '/secure-elements/x-router/x-router.js';
+import { getString } from '../strings.js';
 
 export default class XReceiveRequestLinkModal extends MixinModal(XElement) {
     html() {
         return `
             <div class="modal-header">
                 <i x-modal-close class="material-icons">close</i>
-                <h2>Transaction Request</h2>
+                <h2>${getString('tx_request_title')}</h2>
             </div>
             <div class="modal-body">
                 <div class="center">
                     <x-identicon></x-identicon>
                     <i class="display-none account-icon"></i>
                     <x-address></x-address>
-                    <div class="x-message">Someone sent you a link to request a transaction. Please proceed to see
-                    further details.</div>
+                    <div class="x-message">${getString('tx_request_body')}</div>
 
-                    <button class="confirm">Ok</button>
-                    <a class="cancel" secondary>Cancel</a>
+                    <button class="confirm">${getString('ok')}</button>
+                    <a class="cancel" secondary>${getString('cancel')}</a>
                 </div>
             </div>
         `;

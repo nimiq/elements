@@ -3,6 +3,7 @@ import MixinRedux from '/secure-elements/mixin-redux/mixin-redux.js';
 import XAmount from '/elements/x-amount/x-amount.js';
 import XIdenticon from '../../secure-elements/x-identicon/x-identicon.js';
 import XAddress from '../x-address/x-address.js';
+import { getString } from '../strings.js';
 
 export default class XAccount extends MixinRedux(XElement) {
     html() {
@@ -74,17 +75,17 @@ export default class XAccount extends MixinRedux(XElement) {
             case 1: // KEYGUARD_HIGH
                 this.$icon.classList.add('secure-icon');
                 this.$icon.classList.remove('display-none');
-                this.$icon.setAttribute('title', 'High security account');
+                this.$icon.setAttribute('title', getString('upgraded_hint'));
                 break;
             case 3: // LEDGER
                 this.$icon.classList.add('ledger-icon');
                 this.$icon.classList.remove('display-none');
-                this.$icon.setAttribute('title', 'Ledger account');
+                this.$icon.setAttribute('title', getString('ledger_hint'));
                 break;
             case 4: // VESTING
                 this.$icon.classList.add('vesting-icon');
                 this.$icon.classList.remove('display-none');
-                this.$icon.setAttribute('title', 'Vesting contract');
+                this.$icon.setAttribute('title', getString('vesting_hint'));
                 break;
             default: // KEYGUARD_LOW
                 this.$icon.classList.add('display-none');

@@ -4,16 +4,17 @@ import XAccountModal from './x-account-modal.js';
 import XAccountsList from './x-accounts-list.js';
 import { spaceToDash } from '/libraries/nimiq-utils/parameter-encoding/parameter-encoding.js';
 import XPopupMenu from '/elements/x-popup-menu/x-popup-menu.js';
+import { getString } from '../strings.js';
 
 export default class XAccounts extends MixinRedux(XElement) {
 
     html() {
         return `
             <x-popup-menu x-icon="add">
-                <button class="waiting create"><i class="material-icons">add</i> Create New Account</button>
-                <button class="import-ledger"><i class="material-icons ledger-icon">&nbsp;</i> Import Ledger Account</button>
-                <button class="waiting import-words"><i class="material-icons">text_format</i> Import Recovery Words</button>
-                <button class="waiting import-file"><i class="material-icons">crop_portrait</i> Import Access File</button>
+                <button class="waiting create"><i class="material-icons">add</i> ${getString('create_account')}</button>
+                <button class="import-ledger"><i class="material-icons ledger-icon">&nbsp;</i> ${getString('import_ledger')}</button>
+                <button class="waiting import-words"><i class="material-icons">text_format</i> ${getString('import_24_words')}</button>
+                <button class="waiting import-file"><i class="material-icons">crop_portrait</i> ${getString('import_access_file')}</button>
             </x-popup-menu>
             <x-accounts-list></x-accounts-list>
             <x-account-modal x-route-aside="account"></x-account-modal>

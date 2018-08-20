@@ -1,25 +1,25 @@
 import XEducationSlide from './x-education-slide.js';
 import XEducationSlides from './x-education-slides.js';
+import { getString } from '../strings.js';
 
 export default class XEducationSlideOutro extends XEducationSlide {
     html() {
         return `
             <h1 class="modal-header">
-                Let's go
+                ${getString('outro_slide_title')}
             </h1>
             <div class="modal-body">
                 <div class="has-side-image">
                     <div>
-                        Thanks for your patience! Now you are prepared to <span class="action-text"></span>.
+                        ${getString('outro_slide_you_are_prepared')}
                         <span class="keyguard-popup-info">
-                            For that purpose, in the next step a popup window will open which contains the Keyguard app.
-                            Just follow the steps there and see you very soon in Nimiq Safe!
+                            ${getString('outro_slide_keyguard')}
                         </span>
                     </div>
                 </div>
 
                 <div class="button-bar">
-                    <button next>Open Keyguard</button>
+                    <button next>${getString('outro_slide_keyguard_button')}</button>
                 </div>
             </div>
         `;
@@ -30,27 +30,30 @@ export default class XEducationSlideOutro extends XEducationSlide {
 
         let actionText;
         switch (XEducationSlides.action) {
+            // we use the same strings as the intro does when descibing what the user is prepared to do
             case 'create':
-                actionText = 'create a new account for Nimiq Safe';
+                actionText = getString('intro_slide_intro_action_create');
                 break;
 
             case 'import-words':
-                actionText = 'import an existing account';
+                actionText = getString('intro_slide_intro_action_import_words');
                 break;
 
             case 'import-file':
-                actionText = 'import an existing account';
+                actionText = getString('intro_slide_intro_action_import_file');
                 break;
 
             case 'import-ledger':
-                actionText = 'import an existing account from your ledger';
-                this.$nextButton.textContent = 'Import from Ledger';
+                this.$nextButton.textContent = getString('outro_slide_ledger_button');
                 this.$('.keyguard-popup-info').style.display = 'none';
+                actionText = getString('intro_slide_intro_action_import_ledger');
                 break;
 
             case 'upgrade':
-                actionText = 'upgrade your account for Nimiq Safe';
+                actionText = getString('intro_slide_intro_action_upgrade');
                 break;
+            
+            // if we don't have a case for the action, then they will just see that they are prepared to continue
         }
         this.$('.action-text').innerText = actionText;
     }

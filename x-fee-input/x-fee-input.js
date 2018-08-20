@@ -1,13 +1,14 @@
 import XInput from '../../secure-elements/x-input/x-input.js';
+import { getString } from '../strings.js';
 
 export default class XFeeInput extends XInput {
     html() {
         return `
             <form>
                 <div class="x-fee-labels">
-                    <!-- <label free>free</label> --> <label free>free&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                    <!-- <label low>low</label>   --> <label low>standard</label>
-                    <!-- <label high>high</label> --> <label high>express</label>
+                    <!-- <label free>free</label> --> <label free>${getString('fee_free')}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <!-- <label low>low</label>   --> <label low>${getString('fee_standard')}</label>
+                    <!-- <label high>high</label> --> <label high>${getString('fee_express')}</label>
                 </div>
 
                 <input type="range" min="0" value="0">

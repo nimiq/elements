@@ -9,19 +9,20 @@ import networkClient from '/apps/safe/src/network-client.js';
 import XPopupMenu from '/elements/x-popup-menu/x-popup-menu.js';
 import Config from '/libraries/secure-utils/config/config.js';
 import AddressBook from '/libraries/nimiq-utils/address-book/address-book.js';
+import { getString } from '../strings.js';
 
 export default class XTransactions extends MixinRedux(XElement) {
     html() {
         return `
             <x-popup-menu x-loading-tooltip="Refreshing transaction history" x-icon="refresh">
-                <button refresh><i class="material-icons">refresh</i> Refresh</button>
+                <button refresh><i class="material-icons">refresh</i> ${getString('refresh_txs')}</button>
             </x-popup-menu>
             <x-transactions-list>
                 <x-loading-animation></x-loading-animation>
-                <h2>Loading transactions...</h2>
+                <h2>${getString('loading_txs')}</h2>
             </x-transactions-list>
             <x-paginator store-path="transactions"></x-paginator>
-            <a secondary x-href="history" class="display-none">View more</a>
+            <a secondary x-href="history" class="display-none">${getString('more_txs')}</a>
         `
     }
 

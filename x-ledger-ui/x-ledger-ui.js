@@ -1,5 +1,6 @@
 import XElement from '/libraries/x-element/x-element.js';
 import LazyLoading from '/libraries/nimiq-utils/lazy-loading/lazy-loading.js';
+import { getString } from '../strings.js';
 
 // The following flows should be tested if changing this code:
 // - ledger not connected yet
@@ -103,14 +104,14 @@ export default class XLedgerUi extends XElement {
 
     async confirmAddress(userFriendlyAddress) {
         const confirmedAddress = await this._callLedger(async api => {
-            this._showInstructions('confirm-address', 'Confirm Address', [
-                'Confirm that the address on your Ledger matches',
+            this._showInstructions('confirm-address', getString('ledger_confirm_address_title'), [
+                getString('ledger_confirm_address_body'),
                 userFriendlyAddress
             ]);
             const result = await api.getAddress(XLedgerUi.BIP32_PATH, /*validate*/ true, /*display*/ true);
             return result.address;
         });
-        if (userFriendlyAddress !== confirmedAddress) throw Error('Address mismatch');
+        if (userFriendlyAddress !== confirmedAddress) throw Error(getString('ledger_address_mismatch'));
         return confirmedAddress;
     }
 
@@ -120,19 +121,19 @@ export default class XLedgerUi extends XElement {
     }
 
     async signTransaction(transaction) {
-        if (!transaction) throw Error('Invalid transaction');
-        if (typeof transaction.value !== 'number') throw Error('Invalid transaction value');
-        if (typeof transaction.fee !== 'number') throw Error('Invalid transaction fee');
+        if (!transaction) throw Error(getString('ledger_invalid_tx'));
+        if (typeof transaction.value !== 'number') throw Error(getString('ledger_invalid_tx_value'));
+        if (typeof transaction.fee !== 'number') throw Error(getString('ledger_invalid_tx_fee'));
         if (typeof transaction.validityStartHeight !== 'number'
             || Math.round(transaction.validityStartHeight) !== transaction.validityStartHeight)
-            throw Error('Invalid validity start height');
+            throw Error(getString('ledger_invalid_start_height'));
         const senderPubKeyBytes = await this.getPublicKey(); // also loads Nimiq as a side effect
         const senderPubKey = Nimiq.PublicKey.unserialize(new Nimiq.SerialBuffer(senderPubKeyBytes));
         const senderAddress = senderPubKey.toAddress().toUserFriendlyAddress();
         if (transaction.sender.replace(/ /g, '') !== senderAddress.replace(/ /g, ''))
-            throw Error('Sender Address doesn\'t match this ledger account');
+            throw Error(getString('ledger_invalid_send_address'));
         const genesisConfig = Nimiq.GenesisConfig.CONFIGS[transaction.network];
-        if (!genesisConfig) throw Error('Invalid network');
+        if (!genesisConfig) throw Error(getString('ledger_invalid_network'));
         const networkId = genesisConfig.NETWORK_ID;
         const recipient = Nimiq.Address.fromUserFriendlyAddress(transaction.recipient);
         const value = Nimiq.Policy.coinsToSatoshis(transaction.value);
@@ -143,11 +144,11 @@ export default class XLedgerUi extends XElement {
 
         return this._callLedger(async api => {
             this._showInstructions('confirm-transaction', 'Confirm transaction', [
-                'Confirm on your Ledger if you want to send the following transaction:',
-                `From: ${transaction.sender}`,
-                `To: ${transaction.recipient}`,
-                `Value: ${transaction.value}`,
-                `Fee: ${transaction.fee}`
+                getString('ledger_confirm_body'),
+                `${getString('ledger_confirm_from')}${transaction.sender}`,
+                `${getString('ledger_confirm_to')}${transaction.recipient}`,
+                `${getString('ledger_confirm_value')}${transaction.value}`,
+                `${getString('ledger_confirm_fee')}${transaction.fee}`
             ]);
             const signature = (await api.signTransaction(XLedgerUi.BIP32_PATH, nimiqTx.serializeContent())).signature;
             transaction.signature = signature;
@@ -173,13 +174,13 @@ export default class XLedgerUi extends XElement {
     }
 
     async _callLedger(call) {
-        if (this.busy) throw new Error('Only one call at a time allowed');
+        if (this.busy) throw new Error(getString('ledger_one_call_at_a_time'));
         try {
             return await new Promise(async (resolve, reject) => {
                 let cancelled = false;
                 this._cancelRequest = () => {
                     cancelled = true;
-                    reject(new Error('Request cancelled'));
+                    reject(new Error(getString('ledger_cancelled')));
                 };
                 while (!cancelled) {
                     try {
@@ -236,11 +237,11 @@ export default class XLedgerUi extends XElement {
             if (message.indexOf('browser support') !== -1 || message.indexOf('u2f device_ineligible') !== -1
                 || message.indexOf('u2f other_error') !== -1) {
                 clearTimeout(connectInstructionsTimeout);
-                throw new Error('Ledger not supported by browser or support not enabled.');
+                throw new Error(getString('ledger_unsupported'));
             }
             if (message.indexOf('busy') !== -1) {
                 clearTimeout(connectInstructionsTimeout);
-                this._showInstructions(null, 'Please cancel the previous request on your ledger');
+                this._showInstructions(null, getString('ledger_cancel_needed'));
             }
             throw e;
         }

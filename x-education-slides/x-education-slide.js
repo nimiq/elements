@@ -3,6 +3,7 @@ import MixinModal from '../mixin-modal/mixin-modal.js';
 import XEducationSlides from './x-education-slides.js';
 import XToast from '/secure-elements/x-toast/x-toast.js';
 import XWelcomeModal from '/apps/safe/src/elements/x-welcome-modal.js';
+import { getString } from '../strings.js';
 
 export default class XEducationSlide extends MixinModal(XElement) {
     onCreate() {
@@ -56,7 +57,7 @@ export default class XEducationSlide extends MixinModal(XElement) {
             return true;
         }
 
-        XToast.warn('Please read through this important information.');
+        XToast.warn(getString('edu_slides_please_read'));
 
         return false;
     }
