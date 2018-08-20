@@ -31,7 +31,7 @@ export default class XAccountModal extends MixinModal(XAccount) {
                     <x-address></x-address>
 
                     <div class="x-account-bottom">
-                        <x-amount display label="${getString("balance")}"></x-amount>
+                        <x-amount display label="${getString('balance')}"></x-amount>
                     </div>
 
                     <div class="vesting-info">
