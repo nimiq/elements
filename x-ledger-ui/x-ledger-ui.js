@@ -200,7 +200,7 @@ export default class XLedgerUi extends XElement {
                             && message.indexOf('busy') === -1)
                             console.warn('Unknown Ledger Error', e);
                         // Wait a little when replacing a previous request (see notes at top).
-                        const waitTime = message.indexOf('timeout')!==-1 ? XLedgerUi.WAIT_lTIME_BETWEEN_REQUESTS
+                        const waitTime = message.indexOf('timeout')!==-1 ? XLedgerUi.WAIT_TIME_BETWEEN_REQUESTS
                             // If the API tells us that the ledger is busy (see notes at top) use a longer wait time to
                             // reduce the chance that we hit unfortunate 1.5s window after timeout of cancelled call
                             : message.indexOf('busy')!==-1 ? 4 * XLedgerUi.WAIT_TIME_BETWEEN_REQUESTS
