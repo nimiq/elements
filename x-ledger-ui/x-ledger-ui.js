@@ -191,6 +191,7 @@ export default class XLedgerUi extends XElement {
                         const message = (e.message || e || '').toLowerCase();
                         if (message.indexOf('denied') !== -1 // user rejected confirmAddress
                             || message.indexOf('rejected') !== -1 // user rejected signTransaction
+                            || message.indexOf('internet') !== -1 // failed to load dependencies
                             || message.indexOf('not supported') !== -1) { // no browser support
                             reject(e);
                             return;
@@ -233,6 +234,9 @@ export default class XLedgerUi extends XElement {
             return api;
         } catch(e) {
             const message = (e.message || e || '').toLowerCase();
+            if (message.indexOf('internet') !== -1) {
+                clearTimeout(connectInstructionsTimeout);
+            }
             if (message.indexOf('browser support') !== -1 || message.indexOf('u2f device_ineligible') !== -1
                 || message.indexOf('u2f other_error') !== -1) {
                 clearTimeout(connectInstructionsTimeout);
@@ -249,7 +253,11 @@ export default class XLedgerUi extends XElement {
     async _getApi() {
         XLedgerUi._api = XLedgerUi._api
             || this._loadLibraries().then(() => LedgerjsNimiq.Transport.create())
-                .then(transport => new LedgerjsNimiq.Api(transport));
+                .then(transport => new LedgerjsNimiq.Api(transport))
+                .catch(e => {
+                    XLedgerUi._api = null;
+                    throw e;
+                });
         return XLedgerUi._api;
     }
 
@@ -257,7 +265,9 @@ export default class XLedgerUi extends XElement {
         await Promise.all([
             LazyLoading.loadScript(XLedgerUi.LIB_PATH),
             LazyLoading.loadNimiq()
-        ]);
+        ]).catch(() => {
+            throw new Error('Could not connect to the internet. Loading dependencies failed.');
+        });
     }
 }
 XLedgerUi.BIP32_PATH = "44'/242'/0'/0'";
