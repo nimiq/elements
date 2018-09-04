@@ -173,18 +173,30 @@ export default class XLedgerUi extends XElement {
     }
 
     async _callLedger(call) {
-        if (this.busy) throw new Error('Only one call at a time allowed');
+        if (this.busy) throw new Error('Only one call to Ledger at a time allowed');
         try {
             return await new Promise(async (resolve, reject) => {
                 let cancelled = false;
-                this._cancelRequest = () => {
+                let wasConnected = false;
+                this._cancelRequest = async () => {
+                    if (cancelled) return;
                     cancelled = true;
-                    reject(new Error('Request cancelled'));
+                    // If the call is still ongoing tell the user he should cancel the call on the ledger,
+                    // otherwise cancel right away.
+                    if (!wasConnected || !(await this._isCallOngoing())) {
+                        reject(new Error('Request cancelled'));
+                    } else {
+                        this._showInstructions(null, 'Please cancel the call on your Ledger.');
+                    }
                 };
                 while (!cancelled) {
                     try {
                         const api = await this._connect();
-                        if (!cancelled) resolve(await call(api));
+                        wasConnected = true;
+                        if (cancelled) break;
+                        const result = await call(api);
+                        if (cancelled) break;
+                        resolve(result);
                         return;
                     } catch(e) {
                         console.log(e);
@@ -211,6 +223,7 @@ export default class XLedgerUi extends XElement {
                         await new Promise(resolve => setTimeout(resolve, waitTime));
                     }
                 }
+                reject(new Error('Request cancelled'));
             });
         } finally {
             this._cancelRequest = null;
@@ -248,6 +261,23 @@ export default class XLedgerUi extends XElement {
             }
             throw e;
         }
+    }
+
+    async _isCallOngoing() {
+        // Guesses whether a call is currently ongoing or whether the Ledger was not connected yet or disconnected or
+        // got locked. Note that disconnected or locked Ledger is not immediately detectable.
+        if (!this.busy) return false;
+        return await new Promise(async resolve => {
+            setTimeout(() => resolve(false), 400); // Ledger doesn't respond -> not connected
+            try {
+                const api = await this._getApi();
+                await api.getPublicKey(XLedgerUi.BIP32_PATH, /*validate*/ false, /*display*/ false);
+                resolve(false); // ledger was not busy
+            } catch(e) {
+                const message = (e.message || e || '').toLowerCase();
+                resolve(message.indexOf('busy') !== -1);
+            }
+        });
     }
 
     async _getApi() {
