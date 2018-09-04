@@ -1,16 +1,18 @@
 import XElement from '/libraries/x-element/x-element.js';
 import LazyLoading from '/libraries/nimiq-utils/lazy-loading/lazy-loading.js';
+import UTF8Tools from '/libraries/secure-utils/utf8-tools/utf8-tools.js';
 
 // The following flows should be tested if changing this code:
 // - ledger not connected yet
 // - ledger connected
 // - ledger was connected but relocked
 // - ledger connected but in another app
+// - ledger connected but with old app version
 // - connect timed out
 // - request timed out
-// - user approved action
-// - user denied action
-// - user cancel
+// - user approved action on Ledger
+// - user denied action on Ledger
+// - user cancel in UI
 // - user cancel and immediately make another request
 // - ledger already handling another request (from another tab)
 
@@ -20,6 +22,19 @@ import LazyLoading from '/libraries/nimiq-utils/lazy-loading/lazy-loading.js';
 // - Firefox' implementation of U2F (when enabled in about:config) does not seem to be compatible with ledger and
 //   throws "U2F DEVICE_INELIGIBLE"
 // - The browsers U2F API has a timeout after which the call fails in the browser. The timeout is about 30s
+// - The Nimiq Ledger App avoids timeouts by keeping the call alive via a heartbeat when the Ledger is connected and the
+//   app opened. However when the Ledger is not connected or gets disconnected, timeouts still occur.
+// - If the ledger is busy with another call it throws an exception that it is busy. The ledger API however only knows,
+//   if the ledger is busy by another call from this same page (and same API instance?).
+// - If we make another call while the other call is still ongoing and the ledger not detected as being busy, the
+//   heartbeat breaks and a timeout occurs.
+// - Requests that were cancelled in XLedgerUi are not actually cancelled on the ledger and keep the ledger busy until
+//   the request times out or the user confirms/declines. This is the only case where we can actually get the busy
+//   exception in XLedgerUi.
+//
+//
+// Notes about app versions < 1.3.1:
+// - Versions < 1.3.1 did not have a heartbeat to avoid timeouts
 // - For requests with display on the ledger, the ledger keeps displaying the request even if it timed out. When the
 //   user confirms or declines that request after the timeout the ledger ignores that and freezes on second press.
 // - After a request timed out, it is possible to send a new request to the ledger essentially replacing the old
@@ -36,12 +51,6 @@ import LazyLoading from '/libraries/nimiq-utils/lazy-loading/lazy-loading.js';
 //   otherwise the Nimiq app gets displayed. If the user confirms the new request, the app afterwards behaves normal.
 //   If he declines the request though, any request afterwards seems to time out and the nimiq ledger app needs to be
 //   restarted. This is a corner case that is not covered in XLedgerUi.
-// - If the ledger is busy with another call it throws an exception that it is busy. The ledger API however only knows,
-//   if the ledger is busy by another call from this same page. It doesn't know about requests from other tabs and also
-//   doesn't recognize that the device is busy if we make the exact same api call.
-// - Requests that were cancelled in XLedgerUi are not actually cancelled on the ledger and keep the ledger busy until
-//   the request times out or the user confirms/declines. This is the only case where we can actually get the busy
-//   busy exception in XLedgerUi.
 
 export default class XLedgerUi extends XElement {
     html() {
@@ -126,6 +135,8 @@ export default class XLedgerUi extends XElement {
         if (typeof transaction.validityStartHeight !== 'number'
             || Math.round(transaction.validityStartHeight) !== transaction.validityStartHeight)
             throw Error('Invalid validity start height');
+        if (typeof transaction.extraData !== 'undefined' && !(transaction.extraData instanceof Uint8Array))
+            throw Error('Ivalid extra data');
         const senderPubKeyBytes = await this.getPublicKey(); // also loads Nimiq as a side effect
         const senderPubKey = Nimiq.PublicKey.unserialize(new Nimiq.SerialBuffer(senderPubKeyBytes));
         const senderAddress = senderPubKey.toAddress().toUserFriendlyAddress();
@@ -138,19 +149,30 @@ export default class XLedgerUi extends XElement {
         const value = Nimiq.Policy.coinsToSatoshis(transaction.value);
         const fee = Nimiq.Policy.coinsToSatoshis(transaction.fee);
         // for now only basic transactions allowed
-        const nimiqTx = new Nimiq.BasicTransaction(senderPubKey, recipient, value, fee, transaction.validityStartHeight,
-            undefined, networkId);
+        let nimiqTx;
+        if (transaction.extraData && transaction.extraData.length !== 0) {
+            nimiqTx = new Nimiq.ExtendedTransaction(senderPubKey.toAddress(), Nimiq.Account.Type.BASIC,
+                recipient, Nimiq.Account.Type.BASIC, value - fee, fee, transaction.validityStartHeight,
+                Nimiq.Transaction.Flag.NONE, transaction.extraData, undefined, networkId);
+        } else {
+            nimiqTx = new Nimiq.BasicTransaction(senderPubKey, recipient, value, fee, transaction.validityStartHeight,
+                undefined, networkId);
+        }
 
         return this._callLedger(async api => {
+            // TODO handle cashlink funding extra data
             this._showInstructions('confirm-transaction', 'Confirm transaction', [
                 'Confirm on your Ledger if you want to send the following transaction:',
                 `From: ${transaction.sender}`,
                 `To: ${transaction.recipient}`,
                 `Value: ${transaction.value}`,
                 `Fee: ${transaction.fee}`
-            ]);
-            const signature = (await api.signTransaction(XLedgerUi.BIP32_PATH, nimiqTx.serializeContent())).signature;
-            transaction.signature = signature;
+            ].concat(!transaction.extraData? [] : [`Data: ${UTF8Tools.utf8ByteArrayToString(transaction.extraData)}`]));
+            let signature = (await api.signTransaction(XLedgerUi.BIP32_PATH, nimiqTx.serializeContent())).signature;
+            signature = Nimiq.Signature.unserialize(new Nimiq.SerialBuffer(signature));
+            const proof = Nimiq.SignatureProof.singleSig(senderPubKey, signature);
+            transaction.signature = signature.serialize();
+            transaction.proof = proof.serialize();
             transaction.senderPubKey = senderPubKeyBytes;
             transaction.hash = nimiqTx.hash().toBase64();
             return transaction;
@@ -209,7 +231,7 @@ export default class XLedgerUi extends XElement {
                             return;
                         }
                         if (message.indexOf('timeout') === -1 && message.indexOf('locked') === -1
-                            && message.indexOf('busy') === -1)
+                            && message.indexOf('busy') === -1 && message.indexOf('outdated') === -1)
                             console.warn('Unknown Ledger Error', e);
                         // Wait a little when replacing a previous request (see notes at top).
                         const waitTime = message.indexOf('timeout')!==-1 ? XLedgerUi.WAIT_TIME_BETWEEN_REQUESTS
@@ -235,15 +257,16 @@ export default class XLedgerUi extends XElement {
         // Resolves when connected to unlocked ledger with open Nimiq app otherwise throws an exception after timeout.
         // if the Ledger is already connected and the library already loaded, the call typically takes < 250ms.
         // If it takes longer, we ask the user to connect his ledger.
-        const connectInstructionsTimeout = setTimeout(() => this._showInstructions('connect', 'Connect'), 300);
+        const connectInstructionsTimeout = setTimeout(() => this._showInstructions('connect', 'Connect'), 500);
         try {
             const api = await this._getApi();
-            // To check whether the connection is established. This can also unfreeze the ledger app, see notes at top.
-            // Using getPublicKey and not getAppConfiguration, as other apps also respond to getAppConfiguration.
-            // Set validate to false as otherwise the call is much slower.
+            // To check whether the connection to Nimiq app is established. This can also unfreeze the ledger app, see
+            // notes at top. Using getPublicKey and not getAppConfiguration, as other apps also respond to
+            // getAppConfiguration. Set validate to false as otherwise the call is much slower.
             await api.getPublicKey(XLedgerUi.BIP32_PATH, /*validate*/ false, /*display*/ false);
-            clearTimeout(connectInstructionsTimeout); // in the case of exception the connectInstructionsTimeout doesn't
-            // get cleared as we interpret exceptions as "still trying to connect"
+            const version = (await api.getAppConfiguration()).version;
+            if (!this._isAppVersionSupported(version)) throw new Error('Ledger Nimiq App is outdated.');
+            clearTimeout(connectInstructionsTimeout);
             return api;
         } catch(e) {
             const message = (e.message || e || '').toLowerCase();
@@ -255,14 +278,24 @@ export default class XLedgerUi extends XElement {
                 clearTimeout(connectInstructionsTimeout);
                 throw new Error('Ledger not supported by browser or support not enabled.');
             }
+            if (message.indexOf('outdated') !== -1) {
+                clearTimeout(connectInstructionsTimeout);
+                this._showInstructions(null, 'Your Ledger Nimiq App is outdated', 'Please update using Ledger Manager.');
+            }
             if (message.indexOf('busy') !== -1) {
                 clearTimeout(connectInstructionsTimeout);
                 this._showInstructions(null, 'Please cancel the previous request on your ledger');
             }
+            // in the case of other exceptions the connectInstructionsTimeout doesn't get cleared as we interpret
+            // these exceptions as "still trying to connect"
             throw e;
         }
     }
 
+    // TODO maybe remove this check? It doesn't really detect disconnected Ledger as the request gets resend after
+    // timeout and thus the API is also busy when Ledger disconnected. Also, while it it detects if the Ledger is
+    // locked the Ledger behaves weird after cancelling the call in the UI as it is still ongoing on the device but
+    // in the case of signTransaction without displayed data
     async _isCallOngoing() {
         // Guesses whether a call is currently ongoing or whether the Ledger was not connected yet or disconnected or
         // got locked. Note that disconnected or locked Ledger is not immediately detectable.
@@ -299,8 +332,18 @@ export default class XLedgerUi extends XElement {
             throw new Error('Could not connect to the internet. Loading dependencies failed.');
         });
     }
+
+    _isAppVersionSupported(versionString) {
+        const version = versionString.split('.').map(part => parseInt(part));
+        for (let i=0; i<XLedgerUi.MIN_SUPPORTED_VERSION.length; ++i) {
+            if (typeof version[i] === 'undefined' || version[i] < XLedgerUi.MIN_SUPPORTED_VERSION[i]) return false;
+            if (version[i] > XLedgerUi.MIN_SUPPORTED_VERSION) return true;
+        }
+        return true;
+    }
 }
 XLedgerUi.BIP32_PATH = "44'/242'/0'/0'";
 // @asset(/libraries/ledger-api/ledgerjs-nimiq.min.js)
 XLedgerUi.LIB_PATH = '/libraries/ledger-api/ledgerjs-nimiq.min.js';
+XLedgerUi.MIN_SUPPORTED_VERSION = [1, 3, 1];
 XLedgerUi.WAIT_TIME_BETWEEN_REQUESTS = 1500;

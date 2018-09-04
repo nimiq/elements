@@ -32,9 +32,4 @@ export default class XLedgerUiModal extends MixinModal(XLedgerUi) {
         }
     }
 
-    cancelRequest() {
-        super.cancelRequest();
-        this.hide();
-    }
-
 }

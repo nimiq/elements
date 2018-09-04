@@ -24,7 +24,7 @@
         }
         textarea {
             width: 720px;
-            height: 132px;
+            height: 160px;
         }
     </style>
 </head>
@@ -32,7 +32,7 @@
 <body>
 <h1 id="protocol-warning">Needs to be served via https.</h1>
 <div class="button-container">
-    <label><input type="checkbox" id="use-modal"> Use Modal</label>
+    <label><input type="checkbox" id="use-modal" checked> Use Modal</label>
 </div>
 
 <x-ledger-ui></x-ledger-ui>
@@ -51,7 +51,8 @@
         "value": 3.14,
         "fee": 0.01,
         "validityStartHeight": 0,
-        "network": "test"
+        "network": "test",
+        "extraData": null
     }
 </textarea>
 
@@ -61,6 +62,7 @@
     import XLedgerUi from '../x-ledger-ui.js';
     import XLedgerUiModal from '../x-ledger-ui-modal.js';
     import XToast from '/secure-elements/x-toast/x-toast.js';
+    import UTF8Tools from '/libraries/secure-utils/utf8-tools/utf8-tools.js';
 
     window.$ledgerUi = new XLedgerUi();
     window.$ledgerUiModal = new XLedgerUiModal();
@@ -90,8 +92,10 @@
 
     document.querySelector('#sign-transaction').addEventListener('click', () => {
         const transaction = JSON.parse(document.querySelector('textarea').value);
+        if (transaction.extraData === null) delete transaction.extraData;
+        else transaction.extraData = UTF8Tools.stringToUtf8ByteArray(transaction.extraData);
         ledgerUiToUse().signTransaction(transaction).then(
-            signature => { console.log(signature); XToast.show('Signature: ' + JSON.stringify(signature)); },
+            signedTx => { console.log(signedTx); XToast.show('Signature: ' + JSON.stringify(signedTx)); },
             e => { console.error(e); XToast.show(e.message || e); }
         );
     });
