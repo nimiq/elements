@@ -32,6 +32,10 @@ import CashlinkExtraData from '/libraries/cashlink/cashlink-extra-data.js';
 // - Requests that were cancelled in XLedgerUi are not actually cancelled on the ledger and keep the ledger busy until
 //   the request times out or the user confirms/declines. This is the only case where we can actually get the busy
 //   exception in XLedgerUi.
+// - If the ledger locks during a signTransaction request and the "dongle locked" exception gets thrown after some while
+//   and the user then unlocks the ledger again, the request data is gone or not displayed (amount, recipient, fee,
+//   network, extra data etc). If the user then rejects/confirms, the ledger freezes and can not be unfrozen. This does
+//   not occur with this UI, as the UI replaces that call after unlock.
 //
 //
 // Notes about app versions < 1.3.1:
@@ -120,7 +124,7 @@ export default class XLedgerUi extends XElement {
             const result = await api.getAddress(XLedgerUi.BIP32_PATH, /*validate*/ true, /*display*/ true);
             return result.address;
         });
-        if (userFriendlyAddress !== confirmedAddress) throw Error('Address mismatch');
+        if (userFriendlyAddress !== confirmedAddress) throw new Error('Address mismatch');
         return confirmedAddress;
     }
 
@@ -130,21 +134,21 @@ export default class XLedgerUi extends XElement {
     }
 
     async signTransaction(transaction) {
-        if (!transaction) throw Error('Invalid transaction');
-        if (typeof transaction.value !== 'number') throw Error('Invalid transaction value');
-        if (typeof transaction.fee !== 'number') throw Error('Invalid transaction fee');
+        if (!transaction) throw new Error('Invalid transaction');
+        if (typeof transaction.value !== 'number') throw new Error('Invalid transaction value');
+        if (typeof transaction.fee !== 'number') throw new Error('Invalid transaction fee');
         if (typeof transaction.validityStartHeight !== 'number'
             || Math.round(transaction.validityStartHeight) !== transaction.validityStartHeight)
-            throw Error('Invalid validity start height');
+            throw new Error('Invalid validity start height');
         if (typeof transaction.extraData !== 'undefined' && !(transaction.extraData instanceof Uint8Array))
-            throw Error('Ivalid extra data');
+            throw new Error('Ivalid extra data');
         const senderPubKeyBytes = await this.getPublicKey(); // also loads Nimiq as a side effect
         const senderPubKey = Nimiq.PublicKey.unserialize(new Nimiq.SerialBuffer(senderPubKeyBytes));
         const senderAddress = senderPubKey.toAddress().toUserFriendlyAddress();
         if (transaction.sender.replace(/ /g, '') !== senderAddress.replace(/ /g, ''))
-            throw Error('Sender Address doesn\'t match this ledger account');
+            throw new Error('Sender Address doesn\'t match this ledger account');
         const genesisConfig = Nimiq.GenesisConfig.CONFIGS[transaction.network];
-        if (!genesisConfig) throw Error('Invalid network');
+        if (!genesisConfig) throw new Error('Invalid network');
         const networkId = genesisConfig.NETWORK_ID;
         const recipient = Nimiq.Address.fromUserFriendlyAddress(transaction.recipient);
         const value = Nimiq.Policy.coinsToSatoshis(transaction.value);
@@ -193,30 +197,33 @@ export default class XLedgerUi extends XElement {
         try {
             return await new Promise(async (resolve, reject) => {
                 let cancelled = false;
-                let wasConnected = false;
+                let isConnected = false;
+                let wasLocked = false;
                 this._cancelRequest = async () => {
                     if (cancelled) return;
                     cancelled = true;
-                    // If the call is still ongoing tell the user he should cancel the call on the ledger,
-                    // otherwise cancel right away.
-                    if (!wasConnected || !(await this._isCallOngoing())) {
+                    // If the ledger is not connected, we can cancel the call right away. Otherwise tell the user he
+                    // should cancel the call on the ledger.
+                    if (!isConnected) {
                         reject(new Error('Request cancelled'));
                     } else {
                         this._showInstructions(null, 'Please cancel the call on your Ledger.');
                     }
                 };
-                while (!cancelled) {
+                while (!cancelled || wasLocked) { // when locked continue even when cancelled to replace call, see notes
                     try {
                         const api = await this._connect();
-                        wasConnected = true;
-                        if (cancelled) break;
+                        isConnected = true;
+                        if (cancelled && !wasLocked) break; // don't break on wasLocked to replace the call
                         const result = await call(api);
-                        if (cancelled) break;
+                        if (cancelled) break; // don't check wasLocked here as if cancelled call should never resolve
                         resolve(result);
                         return;
                     } catch(e) {
                         console.log(e);
                         const message = (e.message || e || '').toLowerCase();
+                        wasLocked = message.indexOf('locked') !== -1;
+                        if (message.indexOf('timeout') !== -1) isConnected = false;
                         if (message.indexOf('denied') !== -1 // user rejected confirmAddress
                             || message.indexOf('rejected') !== -1 // user rejected signTransaction
                             || message.indexOf('internet') !== -1 // failed to load dependencies
@@ -284,27 +291,6 @@ export default class XLedgerUi extends XElement {
             // these exceptions as "still trying to connect"
             throw e;
         }
-    }
-
-    // TODO maybe remove this check? It doesn't really detect disconnected Ledger as the request gets resend after
-    // timeout and thus the API is also busy when Ledger disconnected. Also, while it it detects if the Ledger is
-    // locked the Ledger behaves weird after cancelling the call in the UI as it is still ongoing on the device but
-    // in the case of signTransaction without displayed data
-    async _isCallOngoing() {
-        // Guesses whether a call is currently ongoing or whether the Ledger was not connected yet or disconnected or
-        // got locked. Note that disconnected or locked Ledger is not immediately detectable.
-        if (!this.busy) return false;
-        return await new Promise(async resolve => {
-            setTimeout(() => resolve(false), 400); // Ledger doesn't respond -> not connected
-            try {
-                const api = await this._getApi();
-                await api.getPublicKey(XLedgerUi.BIP32_PATH, /*validate*/ false, /*display*/ false);
-                resolve(false); // ledger was not busy
-            } catch(e) {
-                const message = (e.message || e || '').toLowerCase();
-                resolve(message.indexOf('busy') !== -1);
-            }
-        });
     }
 
     async _getApi() {
