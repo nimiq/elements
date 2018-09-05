@@ -1,6 +1,7 @@
 import XElement from '/libraries/x-element/x-element.js';
 import LazyLoading from '/libraries/nimiq-utils/lazy-loading/lazy-loading.js';
 import UTF8Tools from '/libraries/secure-utils/utf8-tools/utf8-tools.js';
+import CashlinkExtraData from '/libraries/cashlink/cashlink-extra-data.js';
 
 // The following flows should be tested if changing this code:
 // - ledger not connected yet
@@ -148,7 +149,6 @@ export default class XLedgerUi extends XElement {
         const recipient = Nimiq.Address.fromUserFriendlyAddress(transaction.recipient);
         const value = Nimiq.Policy.coinsToSatoshis(transaction.value);
         const fee = Nimiq.Policy.coinsToSatoshis(transaction.fee);
-        // for now only basic transactions allowed
         let nimiqTx;
         if (transaction.extraData && transaction.extraData.length !== 0) {
             nimiqTx = new Nimiq.ExtendedTransaction(senderPubKey.toAddress(), Nimiq.Account.Type.BASIC,
@@ -160,14 +160,8 @@ export default class XLedgerUi extends XElement {
         }
 
         return this._callLedger(async api => {
-            // TODO handle cashlink funding extra data
-            this._showInstructions('confirm-transaction', 'Confirm transaction', [
-                'Confirm on your Ledger if you want to send the following transaction:',
-                `From: ${transaction.sender}`,
-                `To: ${transaction.recipient}`,
-                `Value: ${transaction.value}`,
-                `Fee: ${transaction.fee}`
-            ].concat(!transaction.extraData? [] : [`Data: ${UTF8Tools.utf8ByteArrayToString(transaction.extraData)}`]));
+            this._showInstructions('confirm-transaction', 'Confirm transaction',
+                this._generateSignTransactionInstructions(transaction));
             let signature = (await api.signTransaction(XLedgerUi.BIP32_PATH, nimiqTx.serializeContent())).signature;
             signature = Nimiq.Signature.unserialize(new Nimiq.SerialBuffer(signature));
             const proof = Nimiq.SignatureProof.singleSig(senderPubKey, signature);
@@ -340,6 +334,27 @@ export default class XLedgerUi extends XElement {
             if (version[i] > XLedgerUi.MIN_SUPPORTED_VERSION) return true;
         }
         return true;
+    }
+
+    _generateSignTransactionInstructions(transaction) {
+        const instructions = [];
+        const isCashlinkCreation = transaction.extraData
+            && Nimiq.BufferUtils.equals(transaction.extraData, CashlinkExtraData.FUNDING);
+        if (isCashlinkCreation) {
+            instructions.push('Confirm on your Ledger if you want to create the following Cashlink:');
+        } else {
+            instructions.push('Confirm on your Ledger if you want to send the following transaction:');
+        }
+        instructions.push(`From: ${transaction.sender}`);
+        if (!isCashlinkCreation) {
+            instructions.push(`To: ${transaction.recipient}`);
+            if (transaction.extraData && transaction.extraData.length !== 0) {
+                instructions.push(`Data: ${UTF8Tools.utf8ByteArrayToString(transaction.extraData)}`);
+            }
+        }
+        instructions.push(`Value: ${transaction.value}`);
+        instructions.push(`Fee: ${transaction.fee}`);
+        return instructions;
     }
 }
 XLedgerUi.BIP32_PATH = "44'/242'/0'/0'";
