@@ -281,7 +281,7 @@ export default class XLedgerUi extends XElement {
             }
             if (message.indexOf('outdated') !== -1) {
                 clearTimeout(connectInstructionsTimeout);
-                this._showInstructions(null, 'Your Ledger Nimiq App is outdated', 'Please update using Ledger Manager.');
+                this._showInstructions(null, 'Your Ledger Nimiq App is outdated', 'Please update using Ledger Live.');
             }
             if (message.indexOf('busy') !== -1) {
                 clearTimeout(connectInstructionsTimeout);
