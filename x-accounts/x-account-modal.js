@@ -14,7 +14,7 @@ export default class XAccountModal extends MixinModal(XAccount) {
                 <x-popup-menu left-align>
                     <button rename><i class="material-icons">mode_edit</i> Rename</button>
                     <button backup><i class="material-icons">vertical_align_bottom</i> Backup</button>
-                    <button change-passphrase><i class="material-icons">swap_horiz</i> Change Passphrase</button>
+                    <button change-password><i class="material-icons">swap_horiz</i> Change Password</button>
                     <button confirmLedgerAddress><i class="material-icons">check_circle</i> Check Address on Ledger</button>
                     <button logout><i class="material-icons">exit_to_app</i> Logout</button>
                 </x-popup-menu>
@@ -67,7 +67,7 @@ export default class XAccountModal extends MixinModal(XAccount) {
     listeners() {
         return {
             'click button[backup]': _ => this.fire('x-account-modal-backup', this.properties.walletId),
-            'click button[change-passphrase]': _ => this.fire('x-account-modal-change-passphrase', this.properties.walletId),
+            'click button[change-password]': _ => this.fire('x-account-modal-change-password', this.properties.walletId),
             'click button[rename]': _ => this.fire('x-account-modal-rename', {
                 walletId: this.properties.walletId,
                 address: this.properties.address,
