@@ -1,10 +1,9 @@
 import XQrFileInput from '../x-qr-file-input/x-qr-file-input.js';
-import Nimiq from '/libraries/nano-api/nano-api.js';
+import ValidationUtils from '/libraries/secure-utils/validation-utils/validation-utils.js';
 
 export default class XAddressFileInput extends XQrFileInput {
     _validate(address) {
-        const isValid = Nimiq.validateAddress(address);
-        if(isValid) return true;
+        if (ValidationUtils.isValidAddress(address)) return true;
         this._onInvalid('No Address in QR Code!');
     }
 }

@@ -11,12 +11,14 @@
 <body>
     <screen-recipient></screen-recipient>
     <script type="module">
+        window.location.hash = '#intro';
+
         import ScreenRecipient from "../screen-recipient.js";
         import XToast from "/secure-elements/x-toast/x-toast.js";
-        const $screen = new ScreenRecipient();
-        
+        window.$recipientScreen = new ScreenRecipient();
+
         const onAddressScanned = e => XToast.show(`address-scanned: ${e.detail}`);
-        $screen.addEventListener('x-address-scanned', onAddressScanned);
+        window.$recipientScreen.addEventListener('x-address-scanned', onAddressScanned);
     </script>
 </body>
 

@@ -1,10 +1,10 @@
-import XScreenFit from '../../x-screen/x-screen-fit.js';
+import XAppScreen from '../x-screen/x-app-screen.js';
 import XToast from '../../../secure-elements/x-toast/x-toast.js';
 import ScreenRecipientIntro from './screen-recipient-intro.js';
 import ScreenRecipientScanner from './screen-recipient-scanner.js';
 import ScreenRecipientFallback from './screen-recipient-fallback.js';
 
-export default class ScreenRecipient extends XScreenFit {
+export default class ScreenRecipient extends XAppScreen {
     html() {
         return `
                 <screen-recipient-intro></screen-recipient-intro>
@@ -14,7 +14,7 @@ export default class ScreenRecipient extends XScreenFit {
     }
 
     children() {
-        return [ScreenRecipientIntro, ScreenRecipientScanner, ScreenRecipientFallback, XToast];
+        return [ScreenRecipientIntro, ScreenRecipientScanner, ScreenRecipientFallback];
     }
 
     listeners() {
@@ -50,7 +50,7 @@ export default class ScreenRecipient extends XScreenFit {
     _onCameraError() {
         this.goTo('fallback');
         ScannerSettingsStorage.useScanner = false;
-        this.$toast.error('Failed to start scanner. Make sure nimiq.com is allowed to access your camera.');
+        XToast.error('Failed to start scanner. Make sure nimiq.com is allowed to access your camera.');
     }
 
     _getDefaultScreen() {

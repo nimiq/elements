@@ -1,5 +1,5 @@
-import XScreen from '../../x-screen/x-screen.js';
-export default class ScreenRecipientIntro extends XScreen {
+import XScreenFit from '../x-screen/x-screen-fit.js';
+export default class ScreenRecipientIntro extends XScreenFit {
     html() {
         return `
             <div background class="move-bottom-in"></div>

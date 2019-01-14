@@ -1,4 +1,4 @@
-@import "../../x-screen/x-screen.css";
+@import "../x-screen/x-screen.css";
 @import '../../../secure-elements/x-toast/x-toast.css';
 @import '../../x-address-input/x-address-input.css';
 @import '../../x-address-file-input/x-address-file-input.css';
@@ -11,7 +11,7 @@ screen-recipient {
 }
 
 screen-recipient-intro>[background] {
-    background-image: url('/elements/legacy/screen-recipientcipient/recipient-intro.svg');
+    background-image: url('/elements/legacy/screen-recipient/recipient-intro.svg');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;

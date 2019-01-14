@@ -1,6 +1,6 @@
-import XScreenFit from '../../x-screen/x-screen-fit.js';
 import XAddressInput from '../../x-address-scanner/x-address-scanner.js';
 import XAddressScanner from '../../x-address-input/x-address-input.js';
+import XScreenFit from '../x-screen/x-screen-fit.js';
 
 export default class ScreenRecipientScanner extends XScreenFit {
     html() {

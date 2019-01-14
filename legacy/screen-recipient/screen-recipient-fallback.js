@@ -1,8 +1,8 @@
-import XScreen from '../../x-screen/x-screen.js';
-import XAddressInput from "../../x-address-input/x-address-input.js";
+import XAddressInput from '../../x-address-input/x-address-input.js';
 import XAddressFileInput from '../../x-address-file-input/x-address-file-input.js';
+import XScreenFit from '../x-screen/x-screen-fit.js';
 
-export default class ScreenRecipientFallback extends XScreen {
+export default class ScreenRecipientFallback extends XScreenFit {
     html() {
         return `
             <h1>Transaction Recipient</h1>
