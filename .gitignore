@@ -1,3 +1,4 @@
 .DS_Store
 .ts
 .idea
+node_modules
