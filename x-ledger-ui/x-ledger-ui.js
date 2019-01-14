@@ -25,6 +25,9 @@ import CashlinkExtraData from '/libraries/cashlink/cashlink-extra-data.js';
 // - The browsers U2F API has a timeout after which the call fails in the browser. The timeout is about 30s
 // - The Nimiq Ledger App avoids timeouts by keeping the call alive via a heartbeat when the Ledger is connected and the
 //   app opened. However when the Ledger is not connected or gets disconnected, timeouts still occur.
+// - If the ledger is locked while the nimiq app (or another app throwing that same exception) was running, a "dongle
+//   locked" exception gets thrown. It does however not get thrown when the ledger was just being connected or when
+//   the ledger locks on the homescreen. (If I remember correctly, need to verify again).
 // - If the ledger is busy with another call it throws an exception that it is busy. The ledger API however only knows,
 //   if the ledger is busy by another call from this same page (and same API instance?).
 // - If we make another call while the other call is still ongoing and the ledger not detected as being busy, the
@@ -199,7 +202,7 @@ export default class XLedgerUi extends XElement {
                 let cancelled = false;
                 let isConnected = false;
                 let wasLocked = false;
-                this._cancelRequest = async () => {
+                this._cancelRequest = () => {
                     if (cancelled) return;
                     cancelled = true;
                     // If the ledger is not connected, we can cancel the call right away. Otherwise tell the user he
@@ -317,7 +320,7 @@ export default class XLedgerUi extends XElement {
         const version = versionString.split('.').map(part => parseInt(part));
         for (let i=0; i<XLedgerUi.MIN_SUPPORTED_VERSION.length; ++i) {
             if (typeof version[i] === 'undefined' || version[i] < XLedgerUi.MIN_SUPPORTED_VERSION[i]) return false;
-            if (version[i] > XLedgerUi.MIN_SUPPORTED_VERSION) return true;
+            if (version[i] > XLedgerUi.MIN_SUPPORTED_VERSION[i]) return true;
         }
         return true;
     }
