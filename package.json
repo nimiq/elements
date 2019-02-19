@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "repository": "git@github.com:nimiq/elements.git",
-  "author": "sisou <hello@soerenschwert.de>",
+  "author": "Nimiq (www.nimiq.com)",
   "license": "MIT",
   "devDependencies": {
     "vuejs-redux": "https://github.com/nimiq/vuejs-redux#d62dda09e2417eb890e4ffa5c26ace2807661ec2"
