@@ -52,7 +52,7 @@ export default class XSendTransaction extends MixinRedux(XElement) {
 
                         <h3>Fee</h3>
                         <div class="row">
-                            <x-fee-input name="fee" max-sats="10" default-sats="2"></x-fee-input>
+                            <x-fee-input name="fee" max-sats="10" default-sats="0"></x-fee-input>
                         </div>
                         <span error fees class="display-none"></span>
 
