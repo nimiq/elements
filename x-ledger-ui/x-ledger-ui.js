@@ -162,7 +162,7 @@ export default class XLedgerUi extends XElement {
         let nimiqTx;
         if (transaction.extraData && transaction.extraData.length !== 0) {
             nimiqTx = new Nimiq.ExtendedTransaction(senderPubKey.toAddress(), Nimiq.Account.Type.BASIC,
-                recipient, Nimiq.Account.Type.BASIC, value - fee, fee, transaction.validityStartHeight,
+                recipient, Nimiq.Account.Type.BASIC, value, fee, transaction.validityStartHeight,
                 Nimiq.Transaction.Flag.NONE, transaction.extraData, undefined, networkId);
         } else {
             nimiqTx = new Nimiq.BasicTransaction(senderPubKey, recipient, value, fee, transaction.validityStartHeight,
