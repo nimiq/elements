@@ -2,7 +2,6 @@ import XElement from '/libraries/x-element/x-element.js';
 import LazyLoading from '/libraries/nimiq-utils/lazy-loading/lazy-loading.js';
 import UTF8Tools from '/libraries/secure-utils/utf8-tools/utf8-tools.js';
 import CashlinkExtraData from '/libraries/cashlink/cashlink-extra-data.js';
-import BrowserDetection from '/libraries/secure-utils/browser-detection/browser-detection.js';
 
 // The following flows should be tested if changing this code:
 // - ledger not connected yet
@@ -23,7 +22,6 @@ import BrowserDetection from '/libraries/secure-utils/browser-detection/browser-
 // - If the browser doesn't support U2F, an exception gets thrown ("U2F browser support is needed for Ledger")
 // - Firefox' implementation of U2F (when enabled in about:config) does not seem to be compatible with ledger and
 //   throws "U2F DEVICE_INELIGIBLE"
-// - Chrome 72+ is incompatible with Ledger, see https://github.com/LedgerHQ/ledgerjs/issues/306.
 // - The browsers U2F API has a timeout after which the call fails in the browser. The timeout is about 30s
 // - The Nimiq Ledger App avoids timeouts by keeping the call alive via a heartbeat when the Ledger is connected and the
 //   app opened. However when the Ledger is not connected or gets disconnected, timeouts still occur.
@@ -42,6 +40,9 @@ import BrowserDetection from '/libraries/secure-utils/browser-detection/browser-
 //   network, extra data etc). If the user then rejects/confirms, the ledger freezes and can not be unfrozen. This does
 //   not occur with this UI, as the UI replaces that call after unlock.
 //
+// Notes about app versions < 1.4.1 / 1.4.0:
+// - Chrome 72+ is incompatible with app versions < 1.4.0, see https://github.com/LedgerHQ/ledgerjs/issues/306.
+// - Chrome 72-73 is incompatible wih app version < 1.4.1
 //
 // Notes about app versions < 1.3.1:
 // - Versions < 1.3.1 did not have a heartbeat to avoid timeouts
@@ -260,9 +261,6 @@ export default class XLedgerUi extends XElement {
     }
 
     async _connect() {
-        if (BrowserDetection.isChrome() && BrowserDetection.detectVersion().major >= 72) {
-            throw new Error('Ledger currently not supported by Chrome 72+');
-        }
         // Resolves when connected to unlocked ledger with open Nimiq app otherwise throws an exception after timeout.
         // if the Ledger is already connected and the library already loaded, the call typically takes < 250ms.
         // If it takes longer, we ask the user to connect his ledger.
@@ -289,7 +287,9 @@ export default class XLedgerUi extends XElement {
             }
             if (message.indexOf('outdated') !== -1) {
                 clearTimeout(connectInstructionsTimeout);
-                this._showInstructions(null, 'Your Ledger Nimiq App is outdated', 'Please update using Ledger Live.');
+                this._showInstructions(null, 'Your Ledger Nimiq App is outdated',
+                    'Please update using Ledger Live. You might need to also update your Ledger firmware to be able' +
+                    'to install the newest Ledger Nimiq App.');
             }
             if (message.indexOf('busy') !== -1) {
                 clearTimeout(connectInstructionsTimeout);
@@ -354,5 +354,5 @@ export default class XLedgerUi extends XElement {
 XLedgerUi.BIP32_PATH = "44'/242'/0'/0'";
 // @asset(/libraries/ledger-api/ledgerjs-nimiq.min.js)
 XLedgerUi.LIB_PATH = '/libraries/ledger-api/ledgerjs-nimiq.min.js';
-XLedgerUi.MIN_SUPPORTED_VERSION = [1, 3, 1];
+XLedgerUi.MIN_SUPPORTED_VERSION = [1, 4, 1];
 XLedgerUi.WAIT_TIME_BETWEEN_REQUESTS = 1500;
